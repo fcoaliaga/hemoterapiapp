@@ -19,6 +19,7 @@
   --cond:#8f5600; --cond-bg:#fdefd0;
   --no:#b01f2e; --no-bg:#fbe3e5;
   --radius:14px;
+  --cell:#b3192e; --gel:#f3eee6;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -28,6 +29,7 @@
     --alt:#84b8f0; --alt-bg:#172c44;
     --cond:#f0bf5e; --cond-bg:#3b2d10;
     --no:#f08a94; --no-bg:#41191d;
+    --cell:#e0475b; --gel:#2c2724;
     color-scheme:dark;
   }
 }
@@ -38,6 +40,7 @@
     --alt:#84b8f0; --alt-bg:#172c44;
     --cond:#f0bf5e; --cond-bg:#3b2d10;
     --no:#f08a94; --no-bg:#41191d;
+    --cell:#e0475b; --gel:#2c2724;
     color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -106,6 +109,34 @@ header.top p{margin:2px 0 0;font-size:.82rem;opacity:.9}
 .btn.danger{background:var(--no);color:var(--surface)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom, 0px));z-index:60;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-size:.9rem;font-weight:600}
 @media (min-width:720px){.modal{align-items:center}.toast{bottom:24px}}
+.learnrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.learn{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent);border:0;border-radius:99px;padding:7px 12px;font-size:.85rem;font-weight:600;min-height:36px;text-align:left}
+.learn svg{flex:none}
+#tIndex{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+#tIndex button{background:var(--surface);border:1.5px solid var(--line);border-radius:99px;padding:7px 12px;font-size:.84rem;font-weight:600;min-height:36px;text-align:left}
+details.topic{scroll-margin-top:72px}
+details.topic summary span{display:flex;flex-direction:column;gap:2px}
+details.topic summary small{color:var(--muted);font-weight:400;font-size:.85rem}
+details.topic h4{margin:14px 0 2px;font-size:.95rem}
+.unis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.uni{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.uni small{display:block;color:var(--muted);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.uni b{display:block;font-size:1.3rem;color:var(--accent);margin:2px 0}
+.uni span{font-size:.85rem}
+.gelfig{margin:12px 0;text-align:center}
+.gelfig svg{width:100%;max-width:340px;height:auto}
+.gelfig figcaption{font-size:.8rem;color:var(--muted)}
+.gloss dt{font-weight:700;margin-top:.7em}
+.gloss dd{margin:0;color:var(--muted);font-size:.94rem}
+.qgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.qcell{background:var(--surface2);border:1.5px solid var(--line);border-radius:10px;padding:10px 4px;min-height:52px;font-weight:700;font-size:1.15rem}
+.qcell[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.qcell span{display:block;font-size:.68rem;margin-top:2px}
+.qcell:disabled{cursor:default}
+.qcell.first{background:var(--first-bg);color:var(--first);border-color:var(--first)}
+.qcell.cond{background:var(--cond-bg);color:var(--cond);border-color:var(--cond)}
+.qcell.no{background:var(--no-bg);color:var(--no);border-color:var(--no)}
+@media (max-width:400px){.unis{grid-template-columns:1fr}}
 dl{margin:.4em 0}
 dt{font-weight:700;margin-top:.7em}
 dd{margin:0;color:var(--muted);font-size:.94rem}
@@ -119,7 +150,7 @@ nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border
 nav.tabs .wrap{display:flex;padding-left:max(4px, env(safe-area-inset-left, 0px));padding-right:max(4px, env(safe-area-inset-right, 0px))}
 nav.tabs .long{display:none}
 @media (max-width:360px){header.top p{display:none}.helpbtn{padding:6px 10px}}
-nav.tabs button{flex:1;background:none;border:0;padding:10px 2px 9px;font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;border-top:3px solid transparent;min-width:0}
+nav.tabs button{flex:1;background:none;border:0;padding:10px 1px 9px;font-size:.66rem;white-space:nowrap;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;border-top:3px solid transparent;min-width:0}
 nav.tabs button svg{width:22px;height:22px}
 nav.tabs button[aria-selected="true"]{color:var(--accent);border-top-color:var(--accent);font-weight:600}
 main section{display:none;padding-top:18px}
@@ -227,6 +258,7 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
   <button role="tab" data-tab="abs" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9M12 12L6 4M12 12l6-8M4 7l3.500 2.500M20 7l-3.500 2.500"/></svg>Anticuerpos</button>
   <button role="tab" data-tab="tech" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8v8M10.300 8v8M13.700 8v8M17 8v8"/></svg>Técnica</button>
   <button role="tab" data-tab="urg" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2L12 3z"/><path d="M12 10v5M12 18h.01"/></svg>Urgencia</button>
+  <button role="tab" data-tab="learn" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h7M8 11h5"/></svg>Teoría</button>
 </div></nav>
 
 <noscript><div class="wrap"><div class="note red" style="margin-top:16px"><b>La app no puede funcionar en esta vista previa.</b> Estás viendo el archivo en un visor que no ejecuta programas (por ejemplo, la vista previa de Archivos en iPhone o de una app de mensajería). Ábrelo con un navegador: Chrome o Firefox en Android; en iPhone, publícalo en una web o usa una app que abra archivos HTML con JavaScript.</div></div></noscript>
@@ -259,6 +291,7 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
 <section id="abs">
   <h2>Anticuerpos irregulares</h2>
   <p class="lead">Selecciona los anticuerpos identificados para estimar cuántas unidades hay que fenotipar.</p>
+  <div class="learnrow" data-ll="irregulares,enzimas"></div>
   <div class="card">
     <div class="label">Anticuerpos identificados</div>
     <div class="chips" id="abChips"></div>
@@ -277,6 +310,7 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
 <section id="tech">
   <h2>Técnica en tarjetas de gel (Bio-Rad ID-System)</h2>
   <p class="lead">Resumen orientativo. Volúmenes y tiempos deben confirmarse con el inserto del fabricante y el PNT del centro.</p>
+  <div class="learnrow" data-ll="gel,coombs,enzimas"></div>
   <div id="techOut"></div>
 </section>
 
@@ -284,6 +318,7 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
 <section id="urg">
   <h2>Transfusión urgente</h2>
   <p class="lead">Cuando no hay tiempo para completar las pruebas pretransfusionales.</p>
+  <div class="learnrow" data-ll="universal,reacciones,seguridad"></div>
   <div class="note red"><b>Antes de transfundir nada:</b> extraer la muestra pretransfusional (EDTA) correctamente identificada. Una vez transfundido, el grupo puede no ser valorable.</div>
   <div class="card">
     <h3>Grupo desconocido (extrema urgencia)</h3>
@@ -308,6 +343,24 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
       <li>Paciente Rh negativo que ha recibido hematíes Rh positivo: registrarlo, vigilar la aparición de anti-D en estudios posteriores y comunicar al hematólogo.</li>
     </ul>
   </div>
+</section>
+
+<!-- ============ TEORÍA ============ -->
+<section id="learn">
+  <h2>Teoría básica</h2>
+  <p class="lead">Lo que hay detrás de cada regla de la app, explicado desde cero. Si eres nuevo, léelo en orden: cada tema se apoya en el anterior.</p>
+  <div id="tIndex"></div>
+  <div id="tOut"></div>
+  <div class="card" id="quiz">
+    <h3>Ponte a prueba</h3>
+    <p class="lead">Casos al azar de compatibilidad. Marca los grupos y pulsa «Comprobar».</p>
+    <p id="qText"></p>
+    <div class="qgrid" id="qGrid"></div>
+    <div class="row"><button type="button" class="btn" id="qCheck">Comprobar</button><button type="button" class="btn ghost" id="qNext">Otro caso</button></div>
+    <div id="qOut"></div>
+    <p class="lead" id="qScore" style="margin-top:10px"></p>
+  </div>
+  <p class="lead">Contenido basado en las referencias 1, 2, 3, 6, 7, 10 y 11 de la bibliografía (pestaña Ayuda). Es orientativo y no sustituye la formación ni el PNT del centro.</p>
 </section>
 
 <!-- ============ INFORME ============ -->
@@ -390,6 +443,7 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
       <li>Lee la línea «Puede recibir» y la cuadrícula: busca primero una unidad en <b>verde</b> (mismo grupo).</li>
       <li>Si el paciente es Rh negativo, pulsa «Abrir algoritmo Rh negativo» y sigue los pasos: Du, escrutinio en Coombs y ampliado en papaína.</li>
       <li>Si el escrutinio sale positivo, el algoritmo te lleva al estudio de anticuerpos irregulares; usa la pestaña <b>Anticuerpos</b> para calcular cuántas unidades fenotipar.</li>
+      <li>¿No entiendes el porqué de algo? Pulsa los botones con un libro o abre la pestaña <b>Teoría</b>.</li>
     </ol>
   </div>
 
@@ -446,19 +500,10 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
     <li><b>Técnica:</b> pulsa cada título para desplegar los pasos en tarjeta de gel. Son un recordatorio; mandan el inserto del fabricante y el PNT.</li>
     <li><b>Urgencia:</b> qué entregar cuando no hay tiempo de completar las pruebas. Recuerda extraer la muestra antes de transfundir.</li></ul></div></details>
 
-  <details><summary>Glosario</summary><div class="body"><dl>
-    <dt>EAI</dt><dd>Escrutinio de anticuerpos irregulares: plasma del paciente frente a 3 hematíes de fenotipo conocido.</dd>
-    <dt>Du (D débil)</dt><dd>Búsqueda de antígeno D de expresión débil mediante antiglobulina indirecta en pacientes que tipan como Rh negativo.</dd>
-    <dt>Coombs indirecto</dt><dd>Prueba de antiglobulina indirecta: detecta anticuerpos libres en el plasma (escrutinio, panel, prueba cruzada).</dd>
-    <dt>Coombs directo</dt><dd>Prueba de antiglobulina directa: detecta anticuerpos o complemento ya fijados al hematíe del paciente.</dd>
-    <dt>Papaína</dt><dd>Enzima que potencia la detección de anticuerpos Rh, Kidd y Lewis y destruye los antígenos Duffy, M, N y S.</dd>
-    <dt>Autocontrol</dt><dd>Plasma del paciente frente a sus propios hematíes; orienta hacia autoanticuerpo si es positivo.</dd>
-    <dt>Panel</dt><dd>Conjunto de 11 hematíes fenotipados para identificar la especificidad del anticuerpo.</dd>
-    <dt>Isogrupo</dt><dd>Mismo grupo ABO y Rh que el paciente.</dd>
-    <dt>DP</dt><dd>Doble población: mezcla de hematíes aglutinados y no aglutinados en el mismo pocillo.</dd>
-    <dt>PAS</dt><dd>Solución aditiva de plaquetas; reduce la cantidad de plasma de la unidad.</dd>
-    <dt>PNT</dt><dd>Procedimiento normalizado de trabajo del centro.</dd>
-  </dl></div></details>
+  <details><summary>Pestaña Teoría</summary><div class="body"><ul>
+    <li>Explica desde cero los conceptos: componentes, ABO, donantes y receptores universales, Rh, D débil, anticuerpos irregulares, pruebas, Coombs, papaína, tarjetas de gel, administración segura y reacciones transfusionales. Incluye un glosario.</li>
+    <li>Los botones rosados con un libro que aparecen en otras pantallas llevan directamente al tema que explica esa regla.</li>
+    <li>«Ponte a prueba» propone casos al azar para practicar la compatibilidad de hematíes y plasma.</li></ul></div></details>
 
   <div class="card" id="criterios">
     <h3>Criterios aplicados</h3>
@@ -560,70 +605,70 @@ const ABS = [
 /* Algoritmos: cada nodo tiene título, cuerpo (HTML) y opciones {l: etiqueta, to: nodo}.
    Un nodo sin opciones es un final.                                            */
 const NODES = {
-  sol:{t:"Verificar solicitud y muestra", b:`<ul>
+  sol:{learn:["seguridad"],t:"Verificar solicitud y muestra", b:`<ul>
       <li>Identificación inequívoca: nombre, apellidos y n.º de historia coinciden en solicitud, tubo y pulsera.</li>
       <li>Tubo EDTA etiquetado en la cabecera del paciente, con fecha, hora y extractor.</li>
       <li>Vigencia de la muestra: 72 h si ha habido transfusión o embarazo en los últimos 3 meses.</li>
       <li>Consultar histórico: grupo previo, anticuerpos conocidos, requerimientos especiales (irradiado, fenotipado…).</li></ul>`,
     o:[{l:"Todo correcto",to:"grupo"},{l:"Discrepancia o muestra mal identificada",to:"rechazo"}]},
-  rechazo:{end:1,t:"Rechazar la muestra", b:`<p>No corregir etiquetas ni solicitudes. Pedir <b>nueva extracción</b> y registrar la incidencia (hemovigilancia). Si la transfusión es vital, actuar según el protocolo de urgencia (pestaña Urgencia).</p>`},
-  grupo:{t:"Grupo ABO y RhD", b:`<p>Grupo hemático y sérico en tarjeta ID. Comparar con el histórico del paciente.</p>`,
+  rechazo:{learn:["abo"],end:1,t:"Rechazar la muestra", b:`<p>No corregir etiquetas ni solicitudes. Pedir <b>nueva extracción</b> y registrar la incidencia (hemovigilancia). Si la transfusión es vital, actuar según el protocolo de urgencia (pestaña Urgencia).</p>`},
+  grupo:{learn:["pruebas"],t:"Grupo ABO y RhD", b:`<p>Grupo hemático y sérico en tarjeta ID. Comparar con el histórico del paciente.</p>`,
     o:[{l:"Hemático y sérico concordantes, coincide con histórico",to:"rh"},
        {l:"Concordante, pero sin histórico previo",to:"grupo2"},
        {l:"Discrepancia hemático/sérico o con el histórico",to:"discrep"}]},
-  grupo2:{t:"Paciente sin grupo previo", b:`<p>Confirmar el grupo con una <b>segunda determinación</b> (idealmente sobre una segunda muestra extraída de forma independiente), según el protocolo del centro.</p>
+  grupo2:{learn:["pruebas"],t:"Paciente sin grupo previo", b:`<p>Confirmar el grupo con una <b>segunda determinación</b> (idealmente sobre una segunda muestra extraída de forma independiente), según el protocolo del centro.</p>
       <p>Si hay que transfundir antes de la confirmación: hematíes grupo O.</p>`,
     o:[{l:"Continuar",to:"rh"}]},
-  discrep:{end:1,t:"No emitir grupo: investigar la discrepancia", b:`<ul>
+  discrep:{learn:["abo"],end:1,t:"No emitir grupo: investigar la discrepancia", b:`<ul>
       <li>Repetir la técnica; descartar error de muestra o de identificación (nueva extracción).</li>
       <li>Valorar: transfusión reciente, trasplante de progenitores, subgrupos de A, crioaglutininas, rouleaux, recién nacido, hipogammaglobulinemia.</li>
       <li>Avisar al hematólogo.</li>
       <li>Si urge transfundir mientras tanto: <b>hematíes O</b> y <b>plasma AB</b>.</li></ul>`},
-  rh:{t:"Resultado del RhD", b:`<p>Lectura del pocillo anti-D de la tarjeta (control negativo válido).</p>`,
+  rh:{learn:["rh"],t:"Resultado del RhD", b:`<p>Lectura del pocillo anti-D de la tarjeta (control negativo válido).</p>`,
     o:[{l:"RhD positivo",to:"eai_pos"},{l:"RhD negativo (o reacción débil ≤ 2+)",to:"du"}]},
 
-  du:{tag:"Rh negativo", t:"Realizar Du (D débil)", b:`<p>Prueba de antiglobulina indirecta con anti-D IgG en tarjeta <b>ID-Card LISS/Coombs</b>, con control (Coombs directo / autocontrol) en paralelo.</p>
+  du:{learn:["du"],tag:"Rh negativo", t:"Realizar Du (D débil)", b:`<p>Prueba de antiglobulina indirecta con anti-D IgG en tarjeta <b>ID-Card LISS/Coombs</b>, con control (Coombs directo / autocontrol) en paralelo.</p>
       <p class="lead">Técnica: pestaña Técnica → «Du (D débil)».</p>`,
     o:[{l:"Du negativo, control negativo",to:"du_neg"},
        {l:"Du positivo, control negativo",to:"du_pos"},
        {l:"Control (Coombs directo) positivo",to:"du_inv"}]},
-  du_neg:{tag:"Rh negativo", t:"Rh negativo confirmado", b:`<p>Informar como <b>RhD negativo</b>. Transfundir hematíes Rh negativo.</p><p>Siguiente paso: escrutinio de anticuerpos irregulares.</p>`,
+  du_neg:{learn:["du"],tag:"Rh negativo", t:"Rh negativo confirmado", b:`<p>Informar como <b>RhD negativo</b>. Transfundir hematíes Rh negativo.</p><p>Siguiente paso: escrutinio de anticuerpos irregulares.</p>`,
     o:[{l:"Continuar con el escrutinio",to:"eai_neg"}]},
-  du_pos:{tag:"Rh negativo", t:"D débil (Du positivo)", b:`<ul>
+  du_pos:{learn:["du"],tag:"Rh negativo", t:"D débil (Du positivo)", b:`<ul>
       <li>Registrar como <b>D débil</b> y comunicar al hematólogo.</li>
       <li><b>Como receptor:</b> hasta que el centro defina otra cosa (p. ej. genotipado D débil tipo 1, 2 o 3), manejar como <b>Rh negativo</b>, sobre todo en mujeres en edad fértil y niñas, por la posibilidad de D parcial.</li>
       <li><b>Como donante / recién nacido de madre Rh negativo:</b> se considera Rh positivo.</li></ul>
       <p>Siguiente paso: escrutinio de anticuerpos irregulares.</p>`,
     o:[{l:"Continuar con el escrutinio",to:"eai_neg"}]},
-  du_inv:{tag:"Rh negativo", t:"Du no valorable", b:`<p>Con Coombs directo positivo el hematíe ya está sensibilizado y el Du no es interpretable.</p><ul>
+  du_inv:{learn:["coombs"],tag:"Rh negativo", t:"Du no valorable", b:`<p>Con Coombs directo positivo el hematíe ya está sensibilizado y el Du no es interpretable.</p><ul>
       <li>Manejar al paciente como <b>Rh negativo</b>.</li>
       <li>Estudiar el Coombs directo positivo (autoanticuerpo, transfusión reciente, fármacos).</li>
       <li>Realizar igualmente el escrutinio de anticuerpos irregulares y avisar al hematólogo.</li></ul>`,
     o:[{l:"Continuar con el escrutinio",to:"eai_neg"}]},
 
-  eai_pos:{t:"Escrutinio de anticuerpos irregulares (EAI)", b:`<p>Plasma del paciente frente a <b>ID-DiaCell I-II-III</b> en tarjeta <b>LISS/Coombs</b> (antiglobulina indirecta, 37 °C).</p>`,
+  eai_pos:{learn:["pruebas","coombs"],t:"Escrutinio de anticuerpos irregulares (EAI)", b:`<p>Plasma del paciente frente a <b>ID-DiaCell I-II-III</b> en tarjeta <b>LISS/Coombs</b> (antiglobulina indirecta, 37 °C).</p>`,
     o:[{l:"Negativo en las 3 células",to:"fin_ok"},{l:"Positivo en alguna célula",to:"ident"}]},
-  eai_neg:{tag:"Rh negativo", t:"Escrutinio de anticuerpos irregulares (EAI)", b:`<p>Plasma del paciente frente a <b>ID-DiaCell I-II-III</b> en tarjeta <b>LISS/Coombs</b> (antiglobulina indirecta, 37 °C).</p>`,
+  eai_neg:{learn:["pruebas","coombs"],tag:"Rh negativo", t:"Escrutinio de anticuerpos irregulares (EAI)", b:`<p>Plasma del paciente frente a <b>ID-DiaCell I-II-III</b> en tarjeta <b>LISS/Coombs</b> (antiglobulina indirecta, 37 °C).</p>`,
     o:[{l:"Negativo en las 3 células",to:"pap"},{l:"Positivo en alguna célula",to:"ident"}]},
-  pap:{tag:"Rh negativo", t:"Escrutinio ampliado en papaína", b:`<p>Con el escrutinio en Coombs negativo, ampliar con hematíes papainizados <b>ID-DiaCell I-II-III P</b> en tarjeta <b>ID-Card NaCl / Enzyme test</b>.</p>
+  pap:{learn:["enzimas"],tag:"Rh negativo", t:"Escrutinio ampliado en papaína", b:`<p>Con el escrutinio en Coombs negativo, ampliar con hematíes papainizados <b>ID-DiaCell I-II-III P</b> en tarjeta <b>ID-Card NaCl / Enzyme test</b>.</p>
       <p>La papaína potencia los anticuerpos del sistema Rh (anti-D, -C, -E, -c), Kidd y Lewis, y permite detectar un <b>anti-D incipiente o a título bajo</b> que aún no se ve en Coombs.</p>
       <p class="lead">Técnica: pestaña Técnica → «Escrutinio en papaína».</p>`,
     o:[{l:"Papaína negativa",to:"fin_ok_neg"},{l:"Papaína positiva",to:"pap_pos"}]},
-  pap_pos:{tag:"Rh negativo", t:"Positivo solo en papaína", b:`<ul>
+  pap_pos:{learn:["enzimas"],tag:"Rh negativo", t:"Positivo solo en papaína", b:`<ul>
       <li>Sospechar anticuerpo del sistema Rh en fase inicial (anti-D, anti-E, anti-C…) u otro potenciado por enzimas.</li>
       <li>Preguntar por gammaglobulina anti-D reciente (anti-D pasivo), embarazo y transfusiones previas.</li>
       <li>Pasar a identificación con panel en Coombs <b>y</b> en papaína.</li></ul>`,
     o:[{l:"Ir a identificación de anticuerpos",to:"ident"}]},
-  fin_ok:{end:1,t:"Escrutinio negativo", b:`<ul>
+  fin_ok:{learn:["universal"],end:1,t:"Escrutinio negativo", b:`<ul>
       <li>Seleccionar hematíes ABO/Rh compatibles (pestaña Compatibilidad).</li>
       <li>Prueba de compatibilidad según protocolo del centro (prueba cruzada o «tipar y escrutar» con comprobación ABO de la unidad).</li>
       <li>Registrar resultados y etiquetar la unidad para el paciente.</li></ul>`},
-  fin_ok_neg:{end:1,tag:"Rh negativo", t:"Escrutinio negativo (Coombs y papaína)", b:`<ul>
+  fin_ok_neg:{learn:["rh"],end:1,tag:"Rh negativo", t:"Escrutinio negativo (Coombs y papaína)", b:`<ul>
       <li>Seleccionar hematíes <b>Rh negativo</b> ABO compatibles.</li>
       <li>Prueba de compatibilidad según protocolo del centro.</li>
       <li>Si por falta de stock se plantea transfundir Rh positivo: decisión del hematólogo; evitar en mujeres en edad fértil y niñas.</li></ul>`},
 
-  ident:{tag:"Estudio AI", t:"Identificación del anticuerpo", b:`<ol>
+  ident:{learn:["irregulares","coombs"],tag:"Estudio AI", t:"Identificación del anticuerpo", b:`<ol>
       <li>Revisar historia: transfusiones, embarazos, Ig anti-D, fármacos (daratumumab / anti-CD38), diagnóstico.</li>
       <li><b>Panel de identificación</b> (ID-DiaPanel, 11 células) en LISS/Coombs y <b>panel papainizado</b> (ID-DiaPanel-P) en tarjeta NaCl/Enzima.</li>
       <li><b>Autocontrol</b> y <b>Coombs directo</b>.</li>
@@ -633,34 +678,34 @@ const NODES = {
        {l:"Autocontrol o Coombs directo positivo",to:"auto"},
        {l:"Todas las células positivas, autocontrol negativo",to:"pan"},
        {l:"Patrón no concluyente",to:"nc"}]},
-  alo:{tag:"Estudio AI", t:"Confirmar la especificidad", b:`<ul>
+  alo:{learn:["irregulares"],tag:"Estudio AI", t:"Confirmar la especificidad", b:`<ul>
       <li><b>Regla de 3:</b> al menos 3 células antígeno-positivo reactivas y 3 antígeno-negativo no reactivas.</li>
       <li><b>Fenotipo del paciente</b> negativo para el antígeno correspondiente (no valorable si se transfundió en los últimos 3 meses).</li>
       <li>Excluir anticuerpos adicionales enmascarados (células seleccionadas, comportamiento en papaína).</li></ul>
       <p>¿El anticuerpo es clínicamente significativo? (ver tabla en pestaña Anticuerpos)</p>`,
     o:[{l:"Sí: Rh, Kell, Duffy, Kidd, S/s…",to:"fin_sig"},{l:"Habitualmente no: Lea, Leb, P1, N, M frío",to:"fin_nosig"}]},
-  fin_sig:{end:1,tag:"Estudio AI", t:"Aloanticuerpo clínicamente significativo", b:`<ul>
+  fin_sig:{learn:["irregulares"],end:1,tag:"Estudio AI", t:"Aloanticuerpo clínicamente significativo", b:`<ul>
       <li>Transfundir hematíes <b>antígeno-negativo</b> para cada anticuerpo identificado (fenotipar unidades; calculadora en pestaña Anticuerpos).</li>
       <li><b>Prueba cruzada en Coombs</b> (antiglobulina) obligatoria con cada unidad.</li>
       <li>Registrar el anticuerpo de forma permanente en el histórico: se respeta de por vida aunque deje de detectarse.</li>
       <li>Informe para el paciente / tarjeta de anticuerpos. En gestantes: comunicar a obstetricia y titular si procede.</li>
       <li>Valorar con el hematólogo el fenotipo ampliado preventivo (Rh-Kell) en pacientes politransfundidos.</li></ul>`},
-  fin_nosig:{end:1,tag:"Estudio AI", t:"Anticuerpo habitualmente sin significación clínica", b:`<ul>
+  fin_nosig:{learn:["irregulares"],end:1,tag:"Estudio AI", t:"Anticuerpo habitualmente sin significación clínica", b:`<ul>
       <li>No es imprescindible seleccionar unidades antígeno-negativo.</li>
       <li>Transfundir unidades <b>compatibles en prueba cruzada en Coombs a 37 °C</b>.</li>
       <li>Si reacciona a 37 °C / en Coombs (p. ej. anti-M activo a 37 °C), tratar como significativo.</li>
       <li>Registrar en el histórico.</li></ul>`},
-  auto:{end:1,tag:"Estudio AI", t:"Autocontrol / Coombs directo positivo", b:`<ul>
+  auto:{learn:["coombs"],end:1,tag:"Estudio AI", t:"Autocontrol / Coombs directo positivo", b:`<ul>
       <li><b>Transfusión en los últimos 3 meses:</b> sospechar aloanticuerpo sobre hematíes transfundidos (reacción hemolítica retardada) → eluido e identificación.</li>
       <li><b>Sin transfusión reciente:</b> probable autoanticuerpo (caliente o frío) o fármacos. Coombs directo monoespecífico (IgG / C3d).</li>
       <li>Lo importante es <b>descartar aloanticuerpos ocultos</b>: adsorciones / eluido, habitualmente en centro de referencia.</li>
       <li>Avisar al hematólogo. Si hay que transfundir: unidades con fenotipo Rh-Kell lo más compatible posible, bajo indicación médica.</li></ul>`},
-  pan:{end:1,tag:"Estudio AI", t:"Panreactividad con autocontrol negativo", b:`<ul>
+  pan:{learn:["irregulares"],end:1,tag:"Estudio AI", t:"Panreactividad con autocontrol negativo", b:`<ul>
       <li>Posible anticuerpo frente a un <b>antígeno de alta frecuencia</b> o <b>mezcla de varios aloanticuerpos</b>.</li>
       <li>Descartar tratamiento con <b>anti-CD38 (daratumumab)</b>: repetir con hematíes tratados con DTT; respetar Kell.</li>
       <li>Comparar el comportamiento en papaína frente a Coombs para orientar.</li>
       <li>Enviar a centro de referencia. Avisar al hematólogo: la búsqueda de unidades puede requerir tiempo.</li></ul>`},
-  nc:{end:1,tag:"Estudio AI", t:"Estudio no concluyente", b:`<ul>
+  nc:{learn:["irregulares"],end:1,tag:"Estudio AI", t:"Estudio no concluyente", b:`<ul>
       <li>Ampliar con otro panel o lote, células seleccionadas y otras técnicas (papaína, temperatura).</li>
       <li>Repetir en nueva muestra si se sospecha anticuerpo en formación.</li>
       <li>Enviar a centro de referencia si persiste.</li>
@@ -796,6 +841,7 @@ function renderCompat(){
       <p class="summary">${okList.length ? "Puede recibir: " + okList.join(", ") : ""}</p>
       <div class="grid">${cells}</div>
       <div class="legend"><span><i style="background:var(--first)"></i>1.ª elección</span><span><i style="background:var(--alt)"></i>Compatible</span><span><i style="background:var(--cond)"></i>Con condiciones</span><span><i style="background:var(--no)"></i>No transfundir</span></div>
+      ${learnLinks(comp==="plasma" ? ["universal"] : comp==="plaquetas" ? ["plasmaplaq","rh"] : rh==="-" ? ["universal","rh","du"] : ["abo","universal"])}
     </div>${notes}`;
 }
 
@@ -818,7 +864,7 @@ function renderFlow(){
   out.innerHTML = `${trail}
     <div class="card step ${n.end && !n.o ? "end":""}">
       ${n.tag ? `<span class="tag">${n.tag}</span>` : ""}${n.end ? `<span class="tag">Conclusión</span>` : ""}
-      <h3>${n.t}</h3>${n.b}${opts}
+      <h3>${n.t}</h3>${n.b}${n.learn ? learnLinks(n.learn) : ""}${opts}
     </div>
     <div class="row">
       ${path.length ? `<button class="btn ghost" id="fBack">← Paso anterior</button>` : ""}
@@ -864,6 +910,338 @@ $("uMinus").onclick = () => { units=Math.max(1,units-1); renderAbs(); };
 $("uPlus").onclick  = () => { units=Math.min(20,units+1); renderAbs(); };
 $("abTable").innerHTML = `<thead><tr><th>Anticuerpo</th><th>Sistema</th><th>Significación clínica</th><th>Papaína</th><th>Donantes Ag+</th><th>Unidades compatibles</th></tr></thead><tbody>` +
   ABS.map(a => `<tr><td><b>${abName(a.id)}</b></td><td>${a.sis}</td><td><span class="pill ${SIG[a.sig][1]}">${SIG[a.sig][0]}</span></td><td>${a.pap}</td><td class="num">${String(a.f).replace(".",",")} %</td><td class="num">${String(+(100-a.f).toFixed(1)).replace(".",",")} %</td></tr>`).join("") + `</tbody>`;
+
+/* =====================================================================
+   TEORÍA BÁSICA (para personal sin experiencia)
+   Cada tema: id, t (título), s (resumen de una línea), b (contenido HTML).
+   ===================================================================== */
+const THEORY = [
+{id:"componentes", t:"La sangre y sus componentes", s:"Qué se transfunde y cómo se conserva cada cosa.", b:`
+  <p>Tras la donación, la sangre se separa en componentes. Cada paciente recibe solo lo que necesita, y <b>cada componente tiene sus propias reglas de compatibilidad</b>.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Componente</th><th>Para qué sirve</th><th>Conservación</th><th>Caducidad habitual</th></tr></thead>
+    <tbody>
+      <tr><td><b>Concentrado de hematíes</b></td><td>Llevar oxígeno: anemia, hemorragia.</td><td>Nevera controlada a 2–6 °C.</td><td>Hasta 42 días, según la solución conservante.</td></tr>
+      <tr><td><b>Plasma</b></td><td>Aportar factores de coagulación: hemorragia con alteración de la coagulación, recambio plasmático.</td><td>Congelado a −25 °C o menos. Se descongela a 37 °C antes de usarlo.</td><td>Congelado, hasta 36 meses. Descongelado, unas horas (según protocolo).</td></tr>
+      <tr><td><b>Plaquetas</b></td><td>Prevenir o tratar la hemorragia por plaquetas bajas o que no funcionan.</td><td>20–24 °C en agitación continua. <b>Nunca en nevera.</b></td><td>5 días (hasta 7 con algunos métodos).</td></tr>
+      <tr><td><b>Crioprecipitado</b></td><td>Aportar fibrinógeno.</td><td>Congelado.</td><td>Según normativa.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note blue"><b>Recuerda:</b> los tiempos de conservación son orientativos. Manda la etiqueta de la bolsa y el procedimiento del centro.</div>`},
+
+{id:"abo", t:"El sistema ABO: antígenos y anticuerpos", s:"Por qué un error de grupo puede ser mortal.", b:`
+  <p>Los hematíes llevan en su superficie unas «marcas» llamadas <b>antígenos</b>. El grupo sanguíneo indica qué antígenos tiene cada persona:</p>
+  <ul>
+    <li><b>Grupo A:</b> antígeno A. <b>Grupo B:</b> antígeno B. <b>Grupo AB:</b> los dos. <b>Grupo O:</b> ninguno.</li>
+  </ul>
+  <p>Además, el plasma de cada persona contiene <b>anticuerpos contra los antígenos que no tiene</b>. Se llaman anticuerpos naturales porque aparecen en los primeros meses de vida, sin necesidad de transfusiones ni embarazos.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Grupo</th><th>Antígeno en el hematíe</th><th>Anticuerpos en el plasma</th><th>Frecuencia aprox. en España</th></tr></thead>
+    <tbody>
+      <tr><td><b>O</b></td><td>Ninguno</td><td>Anti-A y anti-B</td><td class="num">≈ 45 %</td></tr>
+      <tr><td><b>A</b></td><td>A</td><td>Anti-B</td><td class="num">≈ 41 %</td></tr>
+      <tr><td><b>B</b></td><td>B</td><td>Anti-A</td><td class="num">≈ 10 %</td></tr>
+      <tr><td><b>AB</b></td><td>A y B</td><td>Ninguno</td><td class="num">≈ 3 %</td></tr>
+    </tbody>
+  </table></div>
+  <p>Los anticuerpos anti-A y anti-B son potentes: si encuentran hematíes con «su» antígeno, los rompen dentro de los vasos en minutos (<b>hemólisis intravascular</b>). Es la <b>reacción hemolítica aguda</b>, que puede causar shock, fallo renal y la muerte.</p>
+  <div class="note green"><b>Ejemplo:</b> un paciente del grupo A tiene anti-B en su plasma. Si recibe hematíes B, su anti-B los destruye. Si recibe hematíes O, no pasa nada: los hematíes O no tienen antígeno B.</div>
+  <div class="note red"><b>Lo más importante:</b> casi todos los errores ABO se deben a una <b>identificación incorrecta</b> del paciente, del tubo o de la bolsa, no a un fallo de la técnica. Comprobar la identidad en cada paso es la medida de seguridad más eficaz.</div>`},
+
+{id:"universal", t:"Donantes y receptores universales", s:"Por qué en hematíes y en plasma las reglas son al revés.", b:`
+  <p>La pregunta es siempre la misma: <b>¿lo que entra puede ser atacado, o puede atacar?</b></p>
+  <ul>
+    <li><b>Hematíes:</b> se mira el <b>hematíe del donante</b>. No debe tener antígenos contra los que el paciente tenga anticuerpos.</li>
+    <li><b>Plasma:</b> se mira el <b>plasma del donante</b>. No debe traer anticuerpos contra los hematíes del paciente.</li>
+  </ul>
+  <div class="unis">
+    <div class="uni"><small>Donante universal de hematíes</small><b>O negativo</b><span>Sin antígenos A, B ni D: nadie tiene anticuerpos contra él.</span></div>
+    <div class="uni"><small>Receptor universal de hematíes</small><b>AB positivo</b><span>Sin anti-A ni anti-B: acepta hematíes de cualquier grupo ABO.</span></div>
+    <div class="uni"><small>Donante universal de plasma</small><b>AB</b><span>Su plasma no lleva anti-A ni anti-B.</span></div>
+    <div class="uni"><small>Receptor universal de plasma</small><b>O</b><span>Sus hematíes no tienen A ni B: ningún plasma los ataca.</span></div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Grupo del paciente</th><th>Hematíes que puede recibir</th><th>Plasma que puede recibir</th></tr></thead>
+    <tbody>
+      <tr><td><b>O</b></td><td>O</td><td>O, A, B, AB</td></tr>
+      <tr><td><b>A</b></td><td>A, O</td><td>A, AB</td></tr>
+      <tr><td><b>B</b></td><td>B, O</td><td>B, AB</td></tr>
+      <tr><td><b>AB</b></td><td>AB, A, B, O</td><td>AB</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note blue"><b>Truco para recordarlo:</b> el grupo O da hematíes a todos y recibe plasma de todos. El grupo AB es justo lo contrario: recibe hematíes de todos y da plasma a todos.</div>
+  <div class="note"><b>«Universal» no significa «ideal».</b> Lo correcto es transfundir el <b>mismo grupo</b> del paciente (isogrupo). El O negativo es escaso (alrededor de 1 de cada 10 donantes) y se reserva para urgencias y para pacientes O negativo. El plasma AB también es escaso.</div>`},
+
+{id:"rh", t:"El factor Rh (antígeno D)", s:"Por qué se protege a las mujeres en edad fértil.", b:`
+  <p>Ser <b>Rh positivo</b> significa que los hematíes tienen el <b>antígeno D</b>. Lo tiene alrededor del 85 % de la población; el resto es Rh negativo.</p>
+  <p><b>La gran diferencia con el ABO:</b> nadie nace con anti-D. Una persona Rh negativo solo fabrica anti-D si entra en contacto con hematíes Rh positivo, por una transfusión o por un embarazo o parto de un hijo Rh positivo. El antígeno D provoca esa respuesta con mucha facilidad.</p>
+  <ul>
+    <li>La <b>primera</b> exposición no suele causar una reacción inmediata, pero puede dejar al paciente <b>sensibilizado</b> (con anti-D) para siempre.</li>
+    <li>En una transfusión <b>posterior</b> de hematíes Rh positivo, el anti-D los destruiría.</li>
+    <li>En un <b>embarazo</b>, el anti-D de la madre atraviesa la placenta y destruye los hematíes de un feto Rh positivo: es la <b>enfermedad hemolítica del feto y del recién nacido</b>, que puede ser grave.</li>
+  </ul>
+  <div class="note red"><b>Por eso</b> a las niñas y mujeres en edad fértil Rh negativo se les evita cualquier hematíe Rh positivo, y a las gestantes Rh negativo se les administra <b>inmunoglobulina anti-D</b> para que no lleguen a fabricarlo.</div>
+  <ul>
+    <li><b>Plasma:</b> no lleva hematíes, así que el Rh no importa.</li>
+    <li><b>Plaquetas:</b> no tienen antígeno D, pero llevan unos pocos hematíes. El riesgo es bajo; en mujeres en edad fértil Rh negativo que reciben plaquetas Rh positivo se valora la inmunoglobulina anti-D.</li>
+  </ul>`},
+
+{id:"du", t:"D débil (Du) y D parcial", s:"Qué es el Du y por qué se trata distinto a donantes y a pacientes.", b:`
+  <p>Algunas personas tienen el antígeno D, pero:</p>
+  <ul>
+    <li>en <b>poca cantidad</b> (<b>D débil</b>), o</li>
+    <li><b>incompleto</b>, con alguna parte ausente (<b>D parcial</b>).</li>
+  </ul>
+  <p>Con el reactivo anti-D habitual pueden dar negativo o una reacción débil. La prueba del <b>Du</b> usa la antiglobulina (Coombs) para potenciar la reacción y descubrir ese D escondido.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Si la persona es D débil y actúa como…</th><th>Se considera</th><th>Motivo</th></tr></thead>
+    <tbody>
+      <tr><td><b>Donante</b></td><td>Rh positivo</td><td>Sus hematíes podrían sensibilizar a un receptor Rh negativo.</td></tr>
+      <tr><td><b>Receptor (paciente)</b></td><td>Rh negativo, hasta estudio</td><td>Si en realidad es D parcial, podría fabricar anti-D al recibir el D completo.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note blue"><b>Regla corta:</b> «D débil donante = positivo; D débil receptor = negativo». El estudio genético (tipos de D débil 1, 2 o 3) permite a veces tratarlo como Rh positivo.</div>
+  <div class="note"><b>Cuidado:</b> si el Coombs directo del paciente es positivo, sus hematíes ya vienen recubiertos de anticuerpos y el Du daría un falso positivo. Por eso el Du siempre lleva un control.</div>`},
+
+{id:"irregulares", t:"Anticuerpos irregulares", s:"Qué son, quién los tiene y por qué cambian la transfusión.", b:`
+  <p>Además del ABO y el D, los hematíes tienen <b>cientos de antígenos</b> agrupados en decenas de sistemas: Kell, Duffy, Kidd, MNS, Lewis…</p>
+  <p>Contra ellos no hay anticuerpos naturales. Una persona los fabrica solo si se expone a hematíes ajenos, por <b>transfusión o embarazo</b>. Se llaman <b>irregulares</b> porque no los tiene todo el mundo: aparecen en una pequeña parte de los pacientes (alrededor del 1–3 %), y en bastantes más entre los que reciben transfusiones a menudo.</p>
+  <ul>
+    <li><b>Clínicamente significativos</b> (Rh, Kell, Duffy, Kidd, S/s): actúan a temperatura corporal y pueden destruir los hematíes transfundidos o causar enfermedad hemolítica en el feto.</li>
+    <li><b>Habitualmente sin importancia</b> (Lewis, P1, M y N si solo reaccionan en frío): rara vez causan problemas.</li>
+  </ul>
+  <div class="note"><b>Reacción hemolítica retardada:</b> algunos anticuerpos bajan tanto con el tiempo que dejan de detectarse (es típico del sistema Kidd). Si el paciente vuelve a recibir el antígeno, el anticuerpo reaparece en días y destruye los hematíes transfundidos: anemia, ictericia y orina oscura días después. Por eso <b>un anticuerpo se registra de por vida</b>, aunque deje de verse.</div>
+  <div class="note green"><b>En la práctica:</b> un paciente con anti-K necesita bolsas K negativo, que hay que buscar y fenotipar. Eso lleva tiempo, así que conviene avisar al banco de sangre con antelación.</div>`},
+
+{id:"pruebas", t:"Grupo, escrutinio, identificación y prueba cruzada", s:"Qué pregunta responde cada prueba.", b:`
+  <div class="tablewrap"><table>
+    <thead><tr><th>Prueba</th><th>Pregunta que responde</th><th>Cómo se hace</th></tr></thead>
+    <tbody>
+      <tr><td><b>Grupo ABO y Rh</b></td><td>¿De qué grupo es el paciente?</td><td><b>Hemático:</b> hematíes del paciente con reactivos anti-A, anti-B y anti-D. <b>Sérico:</b> plasma del paciente con hematíes A1 y B conocidos. Los dos resultados deben coincidir.</td></tr>
+      <tr><td><b>Escrutinio de anticuerpos (EAI)</b></td><td>¿Tiene algún anticuerpo irregular?</td><td>Plasma del paciente frente a 3 hematíes que reúnen los antígenos importantes. Responde sí o no.</td></tr>
+      <tr><td><b>Identificación</b></td><td>¿Cuál es el anticuerpo?</td><td>Plasma frente a un panel de 11 hematíes con antígenos conocidos. El patrón de células positivas y negativas señala el anticuerpo.</td></tr>
+      <tr><td><b>Prueba cruzada</b></td><td>¿Es compatible esta bolsa concreta?</td><td>Plasma del paciente frente a los hematíes de la unidad que se va a transfundir.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note blue"><b>Por qué dos pruebas de grupo:</b> la prueba hemática y la sérica se comprueban entre sí. Si no coinciden, puede haber un error de muestra o una situación especial (subgrupo, transfusión reciente, recién nacido), y no se informa el grupo hasta aclararlo.</div>`},
+
+{id:"coombs", t:"La prueba de antiglobulina (Coombs)", s:"La base de casi todas las pruebas del banco de sangre.", b:`
+  <p>Muchos anticuerpos importantes (de tipo <b>IgG</b>) se pegan a los hematíes pero son demasiado pequeños para unirlos entre sí. Los hematíes quedan «recubiertos», pero no se ve aglutinación.</p>
+  <p>La <b>antiglobulina</b> (reactivo de Coombs) es un anticuerpo contra los anticuerpos humanos: hace de <b>puente</b> entre hematíes recubiertos y los aglutina. Así se hace visible lo que antes no se veía.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th>Coombs directo</th><th>Coombs indirecto</th></tr></thead>
+    <tbody>
+      <tr><td><b>Pregunta</b></td><td>¿Los hematíes del paciente <b>ya vienen recubiertos</b> de anticuerpos desde su cuerpo?</td><td>¿Hay <b>anticuerpos libres</b> en el plasma del paciente?</td></tr>
+      <tr><td><b>Cómo</b></td><td>Hematíes del paciente + antiglobulina, sin incubar.</td><td>Plasma del paciente + hematíes de reactivo, incubados a 37 °C, + antiglobulina.</td></tr>
+      <tr><td><b>Se usa en</b></td><td>Anemia hemolítica autoinmune, sospecha de reacción transfusional, recién nacido con ictericia, efecto de fármacos.</td><td>Escrutinio, identificación, prueba cruzada y Du.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note blue">En las tarjetas LISS/Coombs de Bio-Rad la antiglobulina ya está dentro del gel; no hay que añadirla ni lavar los hematíes.</div>`},
+
+{id:"enzimas", t:"Las enzimas: para qué sirve la papaína", s:"Por qué se amplía el escrutinio en los Rh negativo.", b:`
+  <p>La superficie del hematíe tiene carga negativa, y eso hace que los hematíes se repelan. La <b>papaína</b> es una enzima que recorta parte de esa superficie: los hematíes quedan más cerca unos de otros y algunos anticuerpos los aglutinan con más facilidad.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Efecto de la papaína</th><th>Antígenos</th><th>Consecuencia</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill first">Potencia</span></td><td>Rh (D, C, E, c, e), Kidd, Lewis, P1</td><td>Detecta anticuerpos débiles o recién formados.</td></tr>
+      <tr><td><span class="pill no">Destruye</span></td><td>Duffy (Fy<sup>a</sup>, Fy<sup>b</sup>), M, N, S</td><td>Esos anticuerpos <b>no</b> se ven en papaína.</td></tr>
+      <tr><td><span class="pill alt">Sin cambio</span></td><td>Kell</td><td>Se detecta igual.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note green"><b>Por qué en los Rh negativo:</b> un anti-D que está empezando a formarse puede estar en cantidad tan baja que no se vea en Coombs. La papaína lo potencia y permite detectarlo antes de que cause un problema.</div>
+  <div class="note red"><b>Nunca sustituye al Coombs:</b> se perderían los anticuerpos Duffy, M, N y S. Es un complemento.</div>`},
+
+{id:"gel", t:"Cómo funciona la tarjeta de gel", s:"Cómo leer un pocillo y qué significa cada grado.", b:`
+  <p>Cada tarjeta tiene varios microtubos. Arriba hay una pequeña cámara donde se ponen los hematíes y el plasma o reactivo; debajo, una columna de <b>gel que hace de filtro</b>. Tras incubar, la tarjeta se centrifuga:</p>
+  <ul>
+    <li>Los hematíes <b>sueltos</b> atraviesan el gel y forman un botón en el fondo: <b>negativo</b>.</li>
+    <li>Los hematíes <b>aglutinados</b> son demasiado grandes y quedan atrapados en el gel: <b>positivo</b>. Cuanto más arriba se quedan, más fuerte es la reacción.</li>
+  </ul>
+  <figure class="gelfig"><div id="gelSvg"></div><figcaption>Lectura de las reacciones en gel, de más fuerte (4+) a negativa (0). DP: doble población.</figcaption></figure>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Tipo de tarjeta</th><th>Para qué</th></tr></thead>
+    <tbody>
+      <tr><td><b>Con antisueros (ABO/D)</b></td><td>Grupo del paciente. El gel ya contiene anti-A, anti-B y anti-D.</td></tr>
+      <tr><td><b>LISS/Coombs</b></td><td>Contiene antiglobulina: escrutinio, identificación, prueba cruzada, Coombs directo y Du.</td></tr>
+      <tr><td><b>NaCl / enzimas</b></td><td>Gel neutro: pruebas con hematíes tratados con papaína y aglutininas frías.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note blue">Lee cada pocillo con buena luz, por delante y por detrás, y anota siempre el grado. Un resultado dudoso se repite.</div>`},
+
+{id:"plasmaplaq", t:"Compatibilidad de plasma y plaquetas", s:"Qué se mira cuando no se transfunden hematíes.", b:`
+  <p><b>Plasma.</b> Lo que se transfunde son los anticuerpos del donante, así que deben ser compatibles con los hematíes del paciente (ver «Donantes y receptores universales»). No necesita prueba cruzada y el Rh no cuenta.</p>
+  <p><b>Plaquetas.</b> Hay que pensar en dos cosas a la vez:</p>
+  <ul>
+    <li><b>Las propias plaquetas</b> llevan algo de antígeno A y B. Si el paciente tiene anticuerpos contra ellas, rinden algo menos (sube menos la cifra de plaquetas).</li>
+    <li><b>El plasma</b> en el que van suspendidas lleva anti-A y anti-B del donante. Plaquetas O dadas a un paciente A, B o AB pueden causar hemólisis si esos anticuerpos están a título alto. Por eso se prefieren las plaquetas en solución aditiva (menos plasma) o con título bajo.</li>
+  </ul>
+  <div class="note blue"><b>Orden de preferencia en plaquetas:</b> mismo grupo ABO → plasma compatible con el paciente → cualquier otro, si no hay alternativa y según el protocolo del centro.</div>`},
+
+{id:"seguridad", t:"Administración segura (enfermería)", s:"Comprobaciones antes, durante y después de transfundir.", b:`
+  <h4>Antes</h4>
+  <ul>
+    <li><b>Identificación en la cabecera:</b> la pulsera del paciente y, si está consciente, su nombre preguntado, frente a la bolsa y la etiqueta de compatibilidad. Nunca identificar por el número de cama.</li>
+    <li>Comprobar grupo, número de unidad, caducidad y aspecto de la bolsa: color, coágulos, burbujas, fugas.</li>
+    <li>Tomar constantes basales: temperatura, tensión, frecuencia cardiaca y saturación.</li>
+  </ul>
+  <h4>Durante</h4>
+  <ul>
+    <li>Equipo de transfusión con <b>filtro</b> (170–200 µm).</li>
+    <li>Por la misma vía, <b>solo suero fisiológico 0,9 %</b>. Nunca medicación, suero glucosado (rompe hematíes) ni Ringer lactato (su calcio coagula la sangre).</li>
+    <li>Empezar despacio y <b>vigilar al paciente los primeros 15 minutos</b>: es cuando aparecen las reacciones más graves.</li>
+    <li>Ajustar el ritmo según el componente y el paciente (más lento si hay riesgo de sobrecarga).</li>
+  </ul>
+  <h4>Después</h4>
+  <ul>
+    <li>Constantes al terminar y vigilancia posterior.</li>
+    <li><b>Registrar</b> el número de cada unidad, la hora de inicio y fin y cualquier incidencia. La trazabilidad de cada bolsa hasta el paciente es <b>obligatoria por ley</b>.</li>
+  </ul>
+  <div class="note">Los tiempos máximos de transfusión y la frecuencia de toma de constantes dependen del protocolo del centro.</div>`},
+
+{id:"reacciones", t:"Reacciones transfusionales: qué hacer", s:"Cómo reconocerlas y cómo actuar.", b:`
+  <div class="note red"><b>Ante cualquier signo sospechoso:</b>
+    <ol>
+      <li><b>Parar</b> la transfusión.</li>
+      <li>Mantener la vía con <b>suero fisiológico</b> por otro equipo.</li>
+      <li>Volver a <b>comprobar la identidad</b> del paciente y la bolsa.</li>
+      <li>Avisar al <b>médico</b> y al <b>banco de sangre</b>. Tomar constantes.</li>
+      <li>Enviar al banco la <b>bolsa con su equipo</b> y <b>nuevas muestras</b> del paciente, según protocolo.</li>
+      <li>Notificar a <b>hemovigilancia</b>.</li>
+    </ol>
+  </div>
+  <p><b>Signos de alarma:</b> fiebre o escalofríos, bajada de tensión o taquicardia, dificultad respiratoria, ronchas o picor, dolor lumbar o en el pecho, angustia, orina oscura, sangrado por los puntos de punción.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Reacción</th><th>Cuándo</th><th>Qué la sugiere</th></tr></thead>
+    <tbody>
+      <tr><td><b>Hemolítica aguda</b></td><td>Minutos</td><td>Fiebre, dolor lumbar, hipotensión, orina oscura. Casi siempre por error ABO. <b>Muy grave.</b></td></tr>
+      <tr><td><b>Febril no hemolítica</b></td><td>Durante o al poco</td><td>Fiebre y escalofríos sin otros signos. Frecuente y leve, pero hay que descartar las graves.</td></tr>
+      <tr><td><b>Alérgica</b></td><td>Durante</td><td>Urticaria y picor; en casos graves, anafilaxia (broncoespasmo, shock).</td></tr>
+      <tr><td><b>Sobrecarga circulatoria (TACO)</b></td><td>Durante o en horas</td><td>Disnea, tensión alta, crepitantes. Más en ancianos, cardiópatas e insuficiencia renal. Se previene con ritmo lento.</td></tr>
+      <tr><td><b>Lesión pulmonar aguda (TRALI)</b></td><td>Hasta 6 h</td><td>Disnea y falta de oxígeno intensas, a menudo con fiebre e hipotensión.</td></tr>
+      <tr><td><b>Contaminación bacteriana</b></td><td>Minutos u horas</td><td>Fiebre alta, escalofríos intensos, shock. Más probable con plaquetas.</td></tr>
+      <tr><td><b>Hemolítica retardada</b></td><td>Días</td><td>Anemia que no mejora, ictericia. Debida a un anticuerpo irregular.</td></tr>
+    </tbody>
+  </table></div>`},
+
+{id:"glosario", t:"Glosario", s:"Términos que aparecen en la app.", b:`<dl class="gloss">
+    <dt>Aglutinación</dt><dd>Hematíes unidos entre sí por anticuerpos. Es lo que se ve como reacción positiva.</dd>
+    <dt>Aloanticuerpo</dt><dd>Anticuerpo contra antígenos de otra persona, formado tras transfusión o embarazo.</dd>
+    <dt>Antígeno</dt><dd>Molécula de la superficie del hematíe que los anticuerpos pueden reconocer (A, B, D, K…).</dd>
+    <dt>Anticuerpo</dt><dd>Proteína del plasma que reconoce un antígeno concreto y puede destruir el hematíe que lo lleva.</dd>
+    <dt>Autoanticuerpo</dt><dd>Anticuerpo contra los propios hematíes del paciente.</dd>
+    <dt>Autocontrol</dt><dd>Plasma del paciente frente a sus propios hematíes; si es positivo, orienta a autoanticuerpo.</dd>
+    <dt>Coombs directo / indirecto</dt><dd>Prueba de antiglobulina: directa, anticuerpos ya pegados al hematíe del paciente; indirecta, anticuerpos libres en su plasma.</dd>
+    <dt>DP (doble población)</dt><dd>Mezcla de hematíes aglutinados y no aglutinados en el mismo pocillo. Típico tras una transfusión reciente.</dd>
+    <dt>Du (D débil)</dt><dd>Antígeno D de expresión débil, detectado con antiglobulina.</dd>
+    <dt>EAI</dt><dd>Escrutinio de anticuerpos irregulares.</dd>
+    <dt>EHFRN</dt><dd>Enfermedad hemolítica del feto y del recién nacido: anticuerpos de la madre que destruyen los hematíes del hijo.</dd>
+    <dt>Fenotipo</dt><dd>Lista de antígenos que tienen unos hematíes (por ejemplo, «K negativo, E negativo»).</dd>
+    <dt>Hemólisis</dt><dd>Rotura de los hematíes.</dd>
+    <dt>Hemovigilancia</dt><dd>Sistema de notificación y estudio de reacciones e incidentes transfusionales.</dd>
+    <dt>IgM / IgG</dt><dd>Tipos de anticuerpo. IgM: grandes, aglutinan directamente (anti-A, anti-B). IgG: pequeños, necesitan antiglobulina para verse y atraviesan la placenta.</dd>
+    <dt>Ig anti-D</dt><dd>Inmunoglobulina que se administra a mujeres Rh negativo para evitar que fabriquen anti-D.</dd>
+    <dt>Isogrupo</dt><dd>Mismo grupo ABO y Rh que el paciente.</dd>
+    <dt>LISS</dt><dd>Solución de baja fuerza iónica que acelera la unión de los anticuerpos al hematíe.</dd>
+    <dt>Panel</dt><dd>Conjunto de 11 hematíes con antígenos conocidos para identificar un anticuerpo.</dd>
+    <dt>PAS</dt><dd>Solución aditiva de plaquetas; reduce el plasma de la unidad.</dd>
+    <dt>PNT</dt><dd>Procedimiento normalizado de trabajo del centro.</dd>
+    <dt>TACO / TRALI</dt><dd>Sobrecarga circulatoria / lesión pulmonar aguda asociadas a transfusión.</dd>
+    <dt>Título</dt><dd>Medida de la cantidad de un anticuerpo: la mayor dilución del plasma que todavía reacciona.</dd>
+  </dl>`}
+];
+
+const tNum = id => THEORY.findIndex(x => x.id===id) + 1;
+$("tIndex").innerHTML = THEORY.map((x,i) => `<button type="button" data-t="${x.id}">${i+1}. ${x.t}</button>`).join("");
+$("tOut").innerHTML = THEORY.map((x,i) => `<details id="t-${x.id}" class="topic"><summary><span><b>${i+1}. ${x.t}</b><small>${x.s}</small></span></summary><div class="body">${x.b}</div></details>`).join("");
+$("tIndex").onclick = e => { const b = e.target.closest("[data-t]"); if (b) learn(b.dataset.t); };
+
+/* Abre un tema de teoría desde cualquier pantalla */
+function learn(id){
+  showTab("learn");
+  const d = $("t-" + id); if (!d) return;
+  d.open = true;
+  requestAnimationFrame(() => d.scrollIntoView({block:"start"}));
+}
+const BOOK = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h7"/></svg>`;
+const learnLinks = ids => `<div class="learnrow">` + ids.map(id => `<button type="button" class="learn" data-learn="${id}">${BOOK}${THEORY[tNum(id)-1].t}</button>`).join("") + `</div>`;
+document.addEventListener("click", e => { const b = e.target.closest("[data-learn]"); if (b) learn(b.dataset.learn); });
+
+/* Dibujo de las reacciones en gel (6 microtubos) */
+(function drawGel(){
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const W = 52, top = 34, bot = 176, cols = ["4+","3+","2+","1+","0","DP"];
+  let s = `<svg viewBox="0 0 ${cols.length*W+8} 200" role="img" aria-label="Seis microtubos de gel con reacciones de 4+ a 0 y doble población">`;
+  cols.forEach((g,i) => {
+    const x = 8 + i*W, cx = x + 18;
+    s += `<path d="M${x} 6h36v14l-8 8v${bot-28+8}a4 4 0 0 1-4 4h-12a4 4 0 0 1-4-4v-${bot-28+8}l-8-8z" fill="var(--gel)" stroke="var(--muted)" stroke-width="1.2"/>`;
+    const dot = (px,py,r=2.2) => s += `<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${r}" fill="var(--cell)"/>`;
+    const spread = (y1,y2,n,clump) => { for (let k=0;k<n;k++){ const yy=y1+rnd()*(y2-y1), xx=cx-7+rnd()*14; dot(xx,yy, clump?2.6:2); if(clump){dot(xx+2.4,yy+1.2,2.2);dot(xx-1.8,yy+2,2);} } };
+    const band = () => { for (let k=0;k<26;k++) dot(cx-8+rnd()*16, top+rnd()*7, 2.3); };
+    const button = n => { for (let k=0;k<n;k++) dot(cx-7+rnd()*14, bot-2-rnd()*5, 2.2); };
+    if (g==="4+") band();
+    if (g==="3+") spread(top, top+55, 9, true);
+    if (g==="2+") spread(top, bot-8, 12, true);
+    if (g==="1+") { spread(top+60, bot-10, 9, false); button(8); }
+    if (g==="0") button(26);
+    if (g==="DP") { band(); button(18); }
+    s += `<text x="${cx}" y="194" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">${g}</text>`;
+  });
+  $("gelSvg").innerHTML = s + `</svg>`;
+})();
+
+/* =====================================================================
+   PONTE A PRUEBA (ejercicio de autoevaluación)
+   ===================================================================== */
+const quiz = {case:null, picked:new Set(), checked:false, ok:0, n:0};
+const ANTI = g => ["A","B"].filter(x => !AG[g].includes(x));
+function newCase(){
+  const comp = Math.random() < 0.65 ? "hematies" : "plasma";
+  const abo = ABO[Math.floor(Math.random()*4)];
+  const rh = comp==="plasma" ? "" : (Math.random() < 0.6 ? "+" : "-");
+  quiz.case = {comp, abo, rh}; quiz.picked = new Set(); quiz.checked = false;
+  renderQuiz();
+}
+function quizOptions(){
+  const {comp,abo,rh} = quiz.case, out = [];
+  for (const r of (comp==="plasma" ? [""] : ["+","-"])) for (const d of ABO){
+    const c = evalCell(comp, abo, rh, d, r, false);
+    out.push({name: d + (r==="+" ? "+" : r==="-" ? "−" : ""), ok: c.s==="first" || c.s==="alt"});
+  }
+  return out;
+}
+function renderQuiz(){
+  const {comp,abo,rh} = quiz.case, opts = quizOptions();
+  $("qText").innerHTML = `Paciente <b>${abo}${comp==="plasma" ? "" : " Rh " + (rh==="+" ? "positivo" : "negativo")}</b>. Se solicita <b>${comp==="plasma" ? "plasma" : "concentrado de hematíes"}</b>. Marca todos los grupos que se le pueden transfundir.`;
+  $("qGrid").innerHTML = opts.map(o => {
+    let cls = "";
+    if (quiz.checked) cls = o.ok ? (quiz.picked.has(o.name) ? "first" : "cond") : (quiz.picked.has(o.name) ? "no" : "");
+    const tag = !quiz.checked ? "" : o.ok ? (quiz.picked.has(o.name) ? "Bien" : "Faltaba") : (quiz.picked.has(o.name) ? "Error" : "");
+    return `<button type="button" class="qcell ${cls}" data-q="${o.name}" aria-pressed="${quiz.picked.has(o.name)}" ${quiz.checked ? "disabled" : ""}><b>${o.name}</b>${tag ? `<span>${tag}</span>` : ""}</button>`;
+  }).join("");
+  $("qCheck").hidden = quiz.checked;
+  $("qScore").textContent = quiz.n ? `Casos acertados: ${quiz.ok} de ${quiz.n}` : "";
+  if (!quiz.checked){ $("qOut").innerHTML = ""; return; }
+  const anti = ANTI(abo);
+  let why;
+  if (comp==="plasma"){
+    const ok = ABO.filter(d => plasmaOK(abo,d));
+    why = `En plasma se mira el <b>plasma del donante</b>. ` + (AG[abo].length
+      ? `Los hematíes del paciente ${abo} tienen antígeno ${AG[abo].join(" y ")}, así que el plasma no puede traer ${AG[abo].map(a => "anti-" + a).join(" ni ")}.`
+      : `Los hematíes del paciente O no tienen antígeno A ni B, así que ningún plasma los ataca.`) + ` Válidos: <b>${ok.join(", ")}</b>. El Rh no cuenta.`;
+  } else {
+    why = `En hematíes se mira el <b>hematíe del donante</b>. El plasma del paciente ${abo} tiene ${anti.length ? anti.map(a => "anti-" + a).join(" y ") : "ni anti-A ni anti-B"}, así que ${anti.length ? "no puede recibir hematíes con antígeno " + anti.join(" ni ") : "acepta cualquier grupo ABO"}.`;
+    why += rh==="-" ? ` Además es <b>Rh negativo</b>: debe recibir hematíes Rh negativo para no fabricar anti-D.` : ` Es <b>Rh positivo</b>, así que puede recibir Rh positivo o negativo.`;
+  }
+  const allOk = opts.every(o => o.ok === quiz.picked.has(o.name));
+  $("qOut").innerHTML = `<div class="note ${allOk ? "green" : "red"}"><b>${allOk ? "¡Correcto!" : "No del todo."}</b> ${why}</div>` + learnLinks([comp==="plasma" ? "universal" : rh==="-" ? "rh" : "abo"]);
+}
+$("qGrid").onclick = e => { const b = e.target.closest("[data-q]"); if (!b || quiz.checked) return; const v = b.dataset.q; quiz.picked.has(v) ? quiz.picked.delete(v) : quiz.picked.add(v); renderQuiz(); };
+$("qCheck").onclick = () => { quiz.checked = true; quiz.n++; if (quizOptions().every(o => o.ok === quiz.picked.has(o.name))) quiz.ok++; renderQuiz(); };
+$("qNext").onclick = newCase;
+newCase();
+
+
+document.querySelectorAll("[data-ll]").forEach(el => el.outerHTML = learnLinks(el.dataset.ll.split(",")));
 
 /* =====================================================================
    TÉCNICA + NAVEGACIÓN
