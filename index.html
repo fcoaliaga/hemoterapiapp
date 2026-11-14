@@ -1,0 +1,1065 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HemoterapiApp</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="HemoterapiApp">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Crect width=%2224%22 height=%2224%22 rx=%225%22 fill=%22%23a3182b%22/%3E%3Cpath d=%22M12 4s-5.5 6-5.5 9.5a5.5 5.5 0 0 0 11 0C17.5 10 12 4 12 4z%22 fill=%22white%22/%3E%3C/svg%3E">
+<meta name="theme-color" content="#a3182b">
+<style>
+:root{
+  --bg:#f6f3f0; --surface:#ffffff; --surface2:#faf8f6; --ink:#1d1a19; --muted:#6a625d; --line:#e3ddd7;
+  --accent:#a3182b; --accent-ink:#ffffff; --accent-soft:#f8e6e8;
+  --first:#16774a; --first-bg:#e1f3e8;
+  --alt:#1a5a9e; --alt-bg:#e1edfa;
+  --cond:#8f5600; --cond-bg:#fdefd0;
+  --no:#b01f2e; --no-bg:#fbe3e5;
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151312; --surface:#1f1c1b; --surface2:#262221; --ink:#f1ecea; --muted:#a79e99; --line:#38322f;
+    --accent:#e0586a; --accent-ink:#1a0e10; --accent-soft:#3a1c20;
+    --first:#6fd39c; --first-bg:#173626;
+    --alt:#84b8f0; --alt-bg:#172c44;
+    --cond:#f0bf5e; --cond-bg:#3b2d10;
+    --no:#f08a94; --no-bg:#41191d;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+    --bg:#151312; --surface:#1f1c1b; --surface2:#262221; --ink:#f1ecea; --muted:#a79e99; --line:#38322f;
+    --accent:#e0586a; --accent-ink:#1a0e10; --accent-soft:#3a1c20;
+    --first:#6fd39c; --first-bg:#173626;
+    --alt:#84b8f0; --alt-bg:#172c44;
+    --cond:#f0bf5e; --cond-bg:#3b2d10;
+    --no:#f08a94; --no-bg:#41191d;
+    color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+button,input,select,label,summary{touch-action:manipulation}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(84px + env(safe-area-inset-bottom, 0px))}
+h1,h2,h3{line-height:1.2;margin:0}
+h2{font-size:1.25rem;margin-bottom:4px}
+h3{font-size:1rem}
+p{margin:.5em 0}
+ul,ol{margin:.4em 0;padding-left:1.25em}
+li{margin:.25em 0}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+header.top{background:var(--accent);color:var(--accent-ink);padding-block:12px}
+header.top .wrap{display:flex;align-items:center;gap:8px 12px}
+header.top .brand{flex:1 1 auto;min-width:0}
+header.top .hbtns2{display:flex;gap:8px;flex:none}
+header.top h1{font-size:1.2rem;letter-spacing:.01em;display:flex;align-items:center;gap:8px}
+header.top p{margin:2px 0 0;font-size:.82rem;opacity:.9}
+.drop{width:18px;height:22px;flex:none}
+.helpbtn{background:none;border:1.5px solid currentColor;border-radius:99px;padding:6px 14px;font-size:.85rem;font-weight:600;min-height:36px;margin-top:2px}
+.helpbtn[aria-pressed="true"]{background:var(--accent-ink);color:var(--accent)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+.fgrid .full{grid-column:1/-1}
+.f{display:block;font-size:.78rem;font-weight:600;color:var(--muted)}
+.f input,.f select,.f textarea{display:block;width:100%;margin-top:3px;font:inherit;font-size:1rem;font-weight:400;color:var(--ink);background:var(--surface2);border:1.5px solid var(--line);border-radius:10px;padding:9px 10px;min-height:44px}
+.f textarea{min-height:80px;resize:vertical}
+.unit{border:1.5px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;background:var(--surface2)}
+.unit .f input,.unit .f select{background:var(--surface)}
+.unit .uhead{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:8px}
+.unit .uhead button{background:none;border:0;color:var(--no);font-weight:600;padding:6px}
+.hitem{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding:10px 0}
+.hitem small{color:var(--muted)}
+.hbtns{display:flex;gap:6px}
+.hbtns .btn{padding:8px 12px;min-height:40px}
+.ustat{margin-top:8px;font-size:.88rem;font-weight:700}
+.report{background:#fff;color:#111;border:1px solid #bbb;border-radius:6px;padding:24px;margin:16px 0;font-size:.9rem}
+.report h2{font-size:1.2rem;margin:0}
+.report h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:1.5px solid #111;padding-bottom:3px;margin:18px 0 6px}
+.report .rhead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:3px solid #a3182b;padding-bottom:10px}
+.report .rhead small{display:block;color:#444}
+.report table{min-width:0;font-size:.88rem}
+.report th,.report td{border-bottom:1px solid #ccc;color:#111;padding:5px 6px}
+.report th{color:#444}
+.report .kv{display:grid;grid-template-columns:1fr 1fr;gap:2px 20px}
+.report .kv div{display:flex;gap:8px;border-bottom:1px dotted #bbb;padding:3px 0}
+.report .kv span{color:#444;flex:none;min-width:11.5em}
+.report .alerts{border:2px solid #b01f2e;color:#8a1320;padding:8px 12px;margin-top:14px;border-radius:4px}
+.report .okbox{border:1.5px solid #16774a;color:#0f5a37;padding:8px 12px;margin-top:14px;border-radius:4px}
+.report .signs{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:34px}
+.report .signs div{border-top:1px solid #111;padding-top:4px;font-size:.82rem}
+.report .fine{color:#555;font-size:.72rem;margin-top:18px}
+@media (max-width:520px){.report{padding:14px}.report .kv{grid-template-columns:1fr}}
+@media print{
+  body{background:#fff;padding:0}
+  header.top,nav.tabs,footer,#repForm,#rep>h2,#rep>.lead,.noprint,main section:not(#rep){display:none!important}
+  main.wrap{max-width:none;padding:0}
+  .report{border:0;margin:0;padding:0}
+}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(20,10,12,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:max(16px, env(safe-area-inset-bottom, 0px))}
+.modal .box{background:var(--surface);color:var(--ink);border-radius:var(--radius);padding:18px;max-width:420px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.modal .box p{margin:0 0 14px;font-weight:600}
+.modal .row{justify-content:flex-end;margin-top:0}
+.btn.danger{background:var(--no);color:var(--surface)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom, 0px));z-index:60;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-size:.9rem;font-weight:600}
+@media (min-width:720px){.modal{align-items:center}.toast{bottom:24px}}
+dl{margin:.4em 0}
+dt{font-weight:700;margin-top:.7em}
+dd{margin:0;color:var(--muted);font-size:.94rem}
+.refs{font-size:.9rem;padding-left:1.6em}
+.refs li{margin:.55em 0}
+.footlink{background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;font-size:inherit}
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{counter-increment:s;position:relative;padding-left:38px;margin:.8em 0}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:.85rem;display:grid;place-items:center}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);z-index:10;padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs .wrap{display:flex;padding-left:max(4px, env(safe-area-inset-left, 0px));padding-right:max(4px, env(safe-area-inset-right, 0px))}
+nav.tabs .long{display:none}
+@media (max-width:360px){header.top p{display:none}.helpbtn{padding:6px 10px}}
+nav.tabs button{flex:1;background:none;border:0;padding:10px 2px 9px;font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;border-top:3px solid transparent;min-width:0}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button[aria-selected="true"]{color:var(--accent);border-top-color:var(--accent);font-weight:600}
+main section{display:none;padding-top:18px}
+main section.on{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:12px 0}
+.lead{color:var(--muted);font-size:.92rem;margin:0 0 6px}
+.label{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.label:first-child{margin-top:0}
+.seg{display:grid;gap:8px}
+.seg.c4{grid-template-columns:repeat(4,1fr)}
+.seg.c3{grid-template-columns:repeat(3,1fr)}
+.seg.c2{grid-template-columns:repeat(2,1fr)}
+.seg button{background:var(--surface2);border:1.5px solid var(--line);border-radius:10px;padding:12px 6px;font-weight:600;min-height:48px}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:.92rem}
+.check input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent);flex:none}
+.summary{font-size:1.05rem;font-weight:600;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cell{border-radius:10px;padding:10px 4px 8px;text-align:center;border:1.5px solid transparent}
+.cell b{display:block;font-size:1.25rem;line-height:1.1}
+.cell span{display:block;font-size:.68rem;font-weight:600;margin-top:4px;line-height:1.2}
+.first{background:var(--first-bg);color:var(--first);border-color:var(--first)}
+.alt{background:var(--alt-bg);color:var(--alt)}
+.cond{background:var(--cond-bg);color:var(--cond)}
+.no{background:var(--no-bg);color:var(--no);opacity:.8}
+.no b{text-decoration:line-through}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:12px;font-size:.78rem;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.note{border-left:4px solid var(--cond);background:var(--cond-bg);padding:10px 12px;border-radius:0 10px 10px 0;margin:12px 0;font-size:.92rem}
+.note.red{border-color:var(--no);background:var(--no-bg)}
+.note.blue{border-color:var(--alt);background:var(--alt-bg)}
+.note.green{border-color:var(--first);background:var(--first-bg)}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:11px 16px;font-weight:600;min-height:44px}
+.btn.ghost{background:none;color:var(--accent);border:1.5px solid var(--line)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+/* flows */
+.flowlist button{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin:10px 0}
+.flowlist button b{display:block}
+.flowlist button small{color:var(--muted)}
+.trail{list-style:none;padding:0;margin:0 0 4px}
+.trail li{font-size:.85rem;color:var(--muted);padding:6px 0 6px 18px;border-left:2px solid var(--line);margin:0 0 0 6px;position:relative}
+.trail li::before{content:"";position:absolute;left:-6px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--line)}
+.trail li b{color:var(--ink);font-weight:600}
+.step h3{font-size:1.1rem;margin-bottom:6px}
+.step.end{border-color:var(--accent);border-width:2px}
+.opts{display:grid;gap:8px;margin-top:14px}
+.opts button{text-align:left;background:var(--surface2);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;font-weight:600;min-height:48px}
+.opts button:hover{border-color:var(--accent)}
+.opts button::after{content:"›";float:right;color:var(--muted)}
+.tag{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);margin-bottom:8px}
+/* antibodies */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{background:var(--surface2);border:1.5px solid var(--line);border-radius:99px;padding:8px 12px;font-size:.9rem;font-weight:600;min-height:40px}
+.chips button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.big{font-size:2rem;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.stats div{background:var(--surface2);border-radius:10px;padding:12px}
+.stats small{color:var(--muted);display:block;margin-top:2px}
+.stepper{display:flex;align-items:center;gap:10px;margin-top:6px}
+.stepper button{width:44px;height:44px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface2);font-size:1.3rem;font-weight:600}
+.stepper output{font-size:1.2rem;font-weight:700;min-width:2ch;text-align:center}
+.tablewrap{overflow-x:auto;margin:0 -4px}
+table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:520px}
+th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;padding:1px 8px;border-radius:99px;font-size:.75rem;font-weight:700;white-space:nowrap}
+details{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin:10px 0;padding:0 16px}
+details summary{font-weight:600;padding:14px 0;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"+";color:var(--muted);font-size:1.2rem;line-height:1}
+details[open] summary::after{content:"–"}
+details .body{padding:0 0 14px;font-size:.94rem}
+footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
+@media (min-width:720px){
+  body{padding-bottom:24px}
+  nav.tabs{position:sticky;top:env(safe-area-inset-top, 0px);bottom:auto;padding-bottom:0;border-top:0;border-bottom:1px solid var(--line)}
+  nav.tabs button{flex-direction:row;justify-content:center;gap:8px;font-size:.9rem;padding:13px 6px;border-top:0;border-bottom:3px solid transparent}
+  nav.tabs button[aria-selected="true"]{border-bottom-color:var(--accent)}
+  nav.tabs .long{display:inline}
+  nav.tabs .short{display:none}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--surface)}
+  .cell b{font-size:1.5rem}.cell span{font-size:.75rem}
+}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <div class="brand">
+  <h1><svg class="drop" viewBox="0 0 18 22" fill="currentColor" aria-hidden="true"><path d="M9 0C9 0 1 9.2 1 14a8 8 0 0 0 16 0C17 9.2 9 0 9 0z"/></svg>HemoterapiApp</h1>
+  <p>Apoyo para enfermería y técnicos de laboratorio · Banco de sangre</p>
+  </div>
+  <div class="hbtns2">
+  <button type="button" class="helpbtn" id="repBtn" onclick="openReport()">Informe</button>
+  <button type="button" class="helpbtn" id="helpBtn" onclick="showTab('help');window.scrollTo({top:0})">? Ayuda</button>
+  </div>
+</div></header>
+
+<nav class="tabs" aria-label="Secciones"><div class="wrap" role="tablist">
+  <button role="tab" data-tab="compat" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s-6 6.5-6 10.5a6 6 0 0 0 12 0C18 9.500 12 3 12 3z"/></svg><span class="long">Compatibilidad</span><span class="short">Grupos</span></button>
+  <button role="tab" data-tab="flows" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/></svg>Algoritmos</button>
+  <button role="tab" data-tab="abs" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9M12 12L6 4M12 12l6-8M4 7l3.500 2.500M20 7l-3.500 2.500"/></svg>Anticuerpos</button>
+  <button role="tab" data-tab="tech" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8v8M10.300 8v8M13.700 8v8M17 8v8"/></svg>Técnica</button>
+  <button role="tab" data-tab="urg" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2L12 3z"/><path d="M12 10v5M12 18h.01"/></svg>Urgencia</button>
+</div></nav>
+
+<noscript><div class="wrap"><div class="note red" style="margin-top:16px"><b>La app no puede funcionar en esta vista previa.</b> Estás viendo el archivo en un visor que no ejecuta programas (por ejemplo, la vista previa de Archivos en iPhone o de una app de mensajería). Ábrelo con un navegador: Chrome o Firefox en Android; en iPhone, publícalo en una web o usa una app que abra archivos HTML con JavaScript.</div></div></noscript>
+<main class="wrap">
+
+<!-- ============ COMPATIBILIDAD ============ -->
+<section id="compat" class="on">
+  <h2>¿Qué se le puede transfundir?</h2>
+  <p class="lead">Indica el grupo del paciente y el componente solicitado.</p>
+  <div class="card">
+    <div class="label">Grupo ABO del paciente</div>
+    <div class="seg c4" id="selAbo"></div>
+    <div class="label">Rh (D) del paciente</div>
+    <div class="seg c2" id="selRh"></div>
+    <div class="label">Componente</div>
+    <div class="seg c3" id="selComp"></div>
+    <label class="check"><input type="checkbox" id="protect"><span>Mujer en edad fértil (&lt; 50 años) o niña — prevenir aloinmunización anti-D</span></label>
+  </div>
+  <div id="compatOut"></div>
+</section>
+
+<!-- ============ ALGORITMOS ============ -->
+<section id="flows">
+  <h2>Algoritmos de trabajo</h2>
+  <p class="lead">Responde a cada paso y la app indica el siguiente.</p>
+  <div id="flowOut"></div>
+</section>
+
+<!-- ============ ANTICUERPOS ============ -->
+<section id="abs">
+  <h2>Anticuerpos irregulares</h2>
+  <p class="lead">Selecciona los anticuerpos identificados para estimar cuántas unidades hay que fenotipar.</p>
+  <div class="card">
+    <div class="label">Anticuerpos identificados</div>
+    <div class="chips" id="abChips"></div>
+    <div class="label">Unidades compatibles necesarias</div>
+    <div class="stepper"><button id="uMinus" aria-label="Menos">−</button><output id="uVal">2</output><button id="uPlus" aria-label="Más">+</button></div>
+    <div id="abOut"></div>
+  </div>
+  <div class="card">
+    <h3>Tabla de referencia</h3>
+    <p class="lead">Frecuencia antigénica aproximada en población caucásica. Efecto de la papaína sobre el antígeno.</p>
+    <div class="tablewrap"><table id="abTable"></table></div>
+  </div>
+</section>
+
+<!-- ============ TÉCNICA ============ -->
+<section id="tech">
+  <h2>Técnica en tarjetas de gel (Bio-Rad ID-System)</h2>
+  <p class="lead">Resumen orientativo. Volúmenes y tiempos deben confirmarse con el inserto del fabricante y el PNT del centro.</p>
+  <div id="techOut"></div>
+</section>
+
+<!-- ============ URGENCIA ============ -->
+<section id="urg">
+  <h2>Transfusión urgente</h2>
+  <p class="lead">Cuando no hay tiempo para completar las pruebas pretransfusionales.</p>
+  <div class="note red"><b>Antes de transfundir nada:</b> extraer la muestra pretransfusional (EDTA) correctamente identificada. Una vez transfundido, el grupo puede no ser valorable.</div>
+  <div class="card">
+    <h3>Grupo desconocido (extrema urgencia)</h3>
+    <ul>
+      <li><b>Hematíes: O Rh negativo.</b> Si el stock es limitado y el protocolo del centro lo permite: O Rh positivo en varones y en mujeres &gt; 50 años.</li>
+      <li><b>Plasma: AB.</b> (Algunos centros aceptan plasma A como alternativa; ver protocolo local.)</li>
+      <li><b>Plaquetas:</b> cualquier grupo disponible; preferible Rh negativo en mujeres en edad fértil y niñas.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Grupo ABO/Rh conocido, escrutinio pendiente</h3>
+    <ul>
+      <li>Hematíes isogrupo (ABO y Rh) sin esperar al escrutinio, bajo responsabilidad del médico solicitante / hematólogo.</li>
+      <li>Completar escrutinio y prueba cruzada en paralelo; avisar de inmediato si aparece una incompatibilidad.</li>
+      <li>Guardar segmentos (macarrones) de todas las unidades entregadas.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>En cuanto se conozca el grupo</h3>
+    <ul>
+      <li>Pasar a componentes isogrupo.</li>
+      <li>Paciente Rh negativo que ha recibido hematíes Rh positivo: registrarlo, vigilar la aparición de anti-D en estudios posteriores y comunicar al hematólogo.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ INFORME ============ -->
+<section id="rep">
+  <h2>Informe final</h2>
+  <p class="lead">Rellena los datos del paciente y de las unidades y genera un informe para imprimir o guardar como PDF.</p>
+  <div id="repForm">
+    <div class="note blue">Cada informe generado se guarda en el <b>historial de este navegador</b> (al final de la página) y no se envía a ningún sitio. Cualquiera que use este equipo puede verlo: úsalo solo en ordenadores del servicio. El registro oficial sigue siendo el del sistema del banco de sangre.</div>
+    <div class="card">
+      <h3>Paciente</h3>
+      <div class="fgrid" style="margin-top:10px">
+        <label class="f full">Apellidos y nombre<input data-k="nombre" autocomplete="off"></label>
+        <label class="f">N.º de historia clínica<input data-k="nhc" autocomplete="off"></label>
+        <label class="f">Fecha de nacimiento<input type="date" data-k="fnac"></label>
+        <label class="f">Sexo<select data-k="sexo"><option></option><option>Mujer</option><option>Hombre</option></select></label>
+        <label class="f">Servicio / cama<input data-k="servicio" autocomplete="off"></label>
+        <label class="f full">N.º de solicitud<input data-k="solicitud" autocomplete="off"></label>
+      </div>
+      <label class="check"><input type="checkbox" data-k="protect"><span>Mujer en edad fértil (&lt; 50 años) o niña</span></label>
+    </div>
+    <div class="card">
+      <h3>Muestra y resultados</h3>
+      <div class="fgrid" style="margin-top:10px">
+        <label class="f">N.º de muestra<input data-k="muestra" autocomplete="off"></label>
+        <label class="f">Fecha y hora de extracción<input type="datetime-local" data-k="fext"></label>
+        <label class="f">Grupo ABO<select data-k="abo"><option></option><option>O</option><option>A</option><option>B</option><option>AB</option></select></label>
+        <label class="f">Rh (D)<select data-k="rh"><option></option><option value="+">Positivo</option><option value="-">Negativo</option></select></label>
+        <label class="f">Du (D débil)<select data-k="du"><option></option><option>No procede</option><option>Negativo</option><option>Positivo (D débil)</option><option>No valorable</option></select></label>
+        <label class="f">Coombs directo<select data-k="cd"><option></option><option>No realizado</option><option>Negativo</option><option>Positivo</option></select></label>
+        <label class="f">Escrutinio en Coombs (EAI)<select data-k="eai"><option></option><option>Negativo</option><option>Positivo</option><option>Pendiente</option></select></label>
+        <label class="f">Escrutinio en papaína<select data-k="pap"><option></option><option>No procede</option><option>Negativo</option><option>Positivo</option><option>Pendiente</option></select></label>
+        <label class="f full">Anticuerpos irregulares identificados<input data-k="acs" placeholder="p. ej. anti-E, anti-K" autocomplete="off"></label>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Componente y unidades</h3>
+      <div class="fgrid" style="margin-top:10px">
+        <label class="f full">Componente solicitado<select data-k="comp"><option value="hematies">Concentrado de hematíes</option><option value="plasma">Plasma</option><option value="plaquetas">Plaquetas</option></select></label>
+      </div>
+      <div id="repUnits"></div>
+      <button type="button" class="btn ghost" id="addUnit">+ Añadir unidad</button>
+    </div>
+    <div class="card">
+      <h3>Cierre</h3>
+      <div class="fgrid" style="margin-top:10px">
+        <label class="f full">Centro / servicio de transfusión<input data-k="centro" autocomplete="off"></label>
+        <label class="f full">Observaciones<textarea data-k="obs"></textarea></label>
+        <label class="f">Realizado por (técnico / enfermero)<input data-k="tecnico" autocomplete="off"></label>
+        <label class="f">Validado por (opcional)<input data-k="validador" autocomplete="off"></label>
+      </div>
+    </div>
+    <div id="repMsg"></div>
+    <div class="row">
+      <button type="button" class="btn" id="genRep">Generar informe</button>
+      <button type="button" class="btn ghost" id="clrRep">Limpiar todo</button>
+    </div>
+  </div>
+  <div id="printArea"></div>
+  <div class="card noprint" id="histCard">
+    <h3>Historial de informes</h3>
+    <p class="lead" id="histCount"></p>
+    <label class="f">Buscar por paciente, n.º de historia, n.º de bolsa o n.º de informe<input id="histQ" type="search" autocomplete="off"></label>
+    <div id="histList" style="margin-top:10px"></div>
+    <div class="row">
+      <button type="button" class="btn ghost" id="histExport">Exportar copia</button>
+      <button type="button" class="btn ghost" id="histClear">Borrar todo</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AYUDA ============ -->
+<section id="help">
+  <h2>Guía de uso</h2>
+  <p class="lead">Cómo utilizar cada apartado de la app.</p>
+
+  <div class="card">
+    <h3>Uso rápido: «me piden un concentrado de hematíes»</h3>
+    <ol class="steps">
+      <li>En <b>Compatibilidad</b>, pulsa el grupo ABO y el Rh del paciente y deja marcado «Hematíes».</li>
+      <li>Lee la línea «Puede recibir» y la cuadrícula: busca primero una unidad en <b>verde</b> (mismo grupo).</li>
+      <li>Si el paciente es Rh negativo, pulsa «Abrir algoritmo Rh negativo» y sigue los pasos: Du, escrutinio en Coombs y ampliado en papaína.</li>
+      <li>Si el escrutinio sale positivo, el algoritmo te lleva al estudio de anticuerpos irregulares; usa la pestaña <b>Anticuerpos</b> para calcular cuántas unidades fenotipar.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>Significado de los colores</h3>
+    <div class="grid" style="margin:10px 0">
+      <div class="cell first"><b>A+</b><span>1.ª elección</span></div>
+      <div class="cell alt"><b>O+</b><span>Compatible</span></div>
+      <div class="cell cond"><b>O+</b><span>Condicional</span></div>
+      <div class="cell no"><b>B+</b><span>Incompatible</span></div>
+    </div>
+    <dl>
+      <dt>Verde · 1.ª elección</dt><dd>Mismo grupo que el paciente. Es lo que hay que usar siempre que haya stock.</dd>
+      <dt>Azul · Compatible</dt><dd>Grupo distinto pero seguro. Se usa cuando no hay isogrupo.</dd>
+      <dt>Ámbar · Condicional o excepcional</dt><dd>Solo en las condiciones que explica la nota inferior y, normalmente, con el visto bueno del hematólogo.</dd>
+      <dt>Rojo tachado · Incompatible o evitar</dt><dd>No transfundir.</dd>
+    </dl>
+    <p class="lead">Lee siempre las notas que aparecen debajo de la cuadrícula: cambian según el componente, el Rh y la casilla de mujer en edad fértil / niña.</p>
+  </div>
+
+  <details><summary>Pestaña Compatibilidad</summary><div class="body"><ul>
+    <li><b>Hematíes:</b> necesita ABO y Rh. La cuadrícula muestra los 8 grupos posibles del donante.</li>
+    <li><b>Plasma:</b> solo necesita el ABO; el Rh no influye. La compatibilidad es la inversa de la de hematíes.</li>
+    <li><b>Plaquetas:</b> se prefiere el mismo ABO; el resto depende del plasma que acompaña a la unidad.</li>
+    <li><b>Casilla «Mujer en edad fértil o niña»:</b> márcala en pacientes Rh negativo para que la app desaconseje los componentes Rh positivo.</li>
+    <li>La app solo valora ABO y Rh. Si el paciente tiene anticuerpos irregulares, la unidad además debe ser antígeno-negativo y cruzada en Coombs.</li></ul></div></details>
+
+  <details><summary>Pestaña Algoritmos</summary><div class="body"><ul>
+    <li>Elige uno de los tres algoritmos y responde pulsando la opción que corresponde a tu resultado.</li>
+    <li>Arriba queda el <b>recorrido</b> con lo que has ido contestando, útil para repasar o anotar.</li>
+    <li>«Paso anterior» deshace la última respuesta; «Todos los algoritmos» vuelve al inicio.</li>
+    <li>Las tarjetas con borde rojo y la etiqueta «Conclusión» son el final del recorrido: indican qué hacer.</li>
+    <li>El recorrido se pierde al cerrar la página, salvo que generes un informe (queda incluido en él). Registra siempre en el sistema del banco de sangre.</li></ul></div></details>
+
+  <details><summary>Pestaña Anticuerpos</summary><div class="body"><ul>
+    <li>Pulsa todos los anticuerpos identificados en el paciente (puedes marcar varios).</li>
+    <li>Indica con − y + cuántas unidades compatibles necesitas.</li>
+    <li>La app calcula el <b>porcentaje de unidades antígeno-negativo</b> y cuántas hay que fenotipar aproximadamente para encontrarlas.</li>
+    <li>Ejemplo: anti-E + anti-K → el 65 % de las unidades sirve; para 2 unidades hay que fenotipar unas 4.</li>
+    <li>Las frecuencias son aproximadas (población caucásica): es una estimación, no una garantía.</li>
+    <li>La tabla inferior resume significación clínica y efecto de la papaína de cada anticuerpo.</li></ul></div></details>
+
+  <details><summary>Informe final (botón «Informe»)</summary><div class="body"><ul>
+    <li>Recoge paciente, muestra, resultados (grupo, Du, escrutinio, papaína, anticuerpos) y las unidades entregadas con su número, grupo, caducidad y prueba cruzada.</li>
+    <li>Al abrirlo copia lo que ya hayas marcado en la app: grupo, Rh, componente y anticuerpos. Si has seguido un algoritmo, añade el recorrido al informe.</li>
+    <li>Para generarlo hace falta, como mínimo, identificar al paciente <b>o</b> una unidad, y el nombre de quien lo realiza.</li>
+    <li>Cada unidad se comprueba frente al grupo del paciente; el informe destaca en rojo las alertas (unidad incompatible, prueba cruzada incompatible, pruebas que faltan).</li>
+    <li>«Imprimir / Guardar PDF» abre el diálogo de impresión (en el móvil, elige «Guardar como PDF»). «Copiar informe» copia el texto para pegarlo en otra aplicación. Si abres la app desde el enlace de claude.ai, solo está disponible «Copiar informe».</li>
+    <li><b>Historial:</b> cada informe generado queda guardado en este navegador. Puedes buscarlo por paciente, n.º de historia o <b>n.º de bolsa</b>, volver a verlo e imprimirlo tal como se emitió, o borrarlo.</li>
+    <li>Si corriges un dato y vuelves a generar, se crea un informe nuevo con otro número; el anterior se conserva.</li>
+    <li>El historial solo existe en este equipo y navegador, y desaparece si se borran los datos de navegación. «Exportar copia» descarga un archivo de respaldo con todos los informes (no disponible desde el enlace de claude.ai).</li></ul></div></details>
+
+  <details><summary>Pestañas Técnica y Urgencia</summary><div class="body"><ul>
+    <li><b>Técnica:</b> pulsa cada título para desplegar los pasos en tarjeta de gel. Son un recordatorio; mandan el inserto del fabricante y el PNT.</li>
+    <li><b>Urgencia:</b> qué entregar cuando no hay tiempo de completar las pruebas. Recuerda extraer la muestra antes de transfundir.</li></ul></div></details>
+
+  <details><summary>Glosario</summary><div class="body"><dl>
+    <dt>EAI</dt><dd>Escrutinio de anticuerpos irregulares: plasma del paciente frente a 3 hematíes de fenotipo conocido.</dd>
+    <dt>Du (D débil)</dt><dd>Búsqueda de antígeno D de expresión débil mediante antiglobulina indirecta en pacientes que tipan como Rh negativo.</dd>
+    <dt>Coombs indirecto</dt><dd>Prueba de antiglobulina indirecta: detecta anticuerpos libres en el plasma (escrutinio, panel, prueba cruzada).</dd>
+    <dt>Coombs directo</dt><dd>Prueba de antiglobulina directa: detecta anticuerpos o complemento ya fijados al hematíe del paciente.</dd>
+    <dt>Papaína</dt><dd>Enzima que potencia la detección de anticuerpos Rh, Kidd y Lewis y destruye los antígenos Duffy, M, N y S.</dd>
+    <dt>Autocontrol</dt><dd>Plasma del paciente frente a sus propios hematíes; orienta hacia autoanticuerpo si es positivo.</dd>
+    <dt>Panel</dt><dd>Conjunto de 11 hematíes fenotipados para identificar la especificidad del anticuerpo.</dd>
+    <dt>Isogrupo</dt><dd>Mismo grupo ABO y Rh que el paciente.</dd>
+    <dt>DP</dt><dd>Doble población: mezcla de hematíes aglutinados y no aglutinados en el mismo pocillo.</dd>
+    <dt>PAS</dt><dd>Solución aditiva de plaquetas; reduce la cantidad de plasma de la unidad.</dd>
+    <dt>PNT</dt><dd>Procedimiento normalizado de trabajo del centro.</dd>
+  </dl></div></details>
+
+  <div class="card" id="criterios">
+    <h3>Criterios aplicados</h3>
+    <p class="lead">Reglas con las que trabaja la app y fuente en la que se describen (los números remiten a la bibliografía).</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Apartado</th><th>Criterio</th><th>Ref.</th></tr></thead>
+      <tbody>
+        <tr><td><b>Hematíes · ABO</b></td><td>Los antígenos A/B de la unidad no deben estar ausentes en el paciente (que tendría el anticuerpo natural correspondiente). Preferencia por isogrupo; O como alternativa universal.</td><td class="num">1, 2, 3</td></tr>
+        <tr><td><b>Hematíes · RhD</b></td><td>Rh negativo recibe Rh negativo. Rh positivo en paciente Rh negativo solo de forma excepcional, sin anti-D y por decisión facultativa; se evita en mujeres &lt; 50 años y niñas.</td><td class="num">1, 2, 6</td></tr>
+        <tr><td><b>Plasma</b></td><td>Compatibilidad ABO inversa a la de hematíes: el plasma no debe contener anti-A/anti-B frente a los hematíes del paciente. AB universal. No se considera el RhD.</td><td class="num">1, 2, 3</td></tr>
+        <tr><td><b>Plaquetas</b></td><td>Preferencia por ABO idéntico. Plasma ABO incompatible aceptable con solución aditiva o título bajo según centro. RhD negativo preferente en mujeres en edad fértil y niñas Rh negativo; si reciben Rh positivo, valorar Ig anti-D.</td><td class="num">2, 7</td></tr>
+        <tr><td><b>Du (D débil)</b></td><td>Antiglobulina indirecta con anti-D IgG cuando el tipaje directo es negativo o débil; solo valorable con control (Coombs directo) negativo. Como receptor, manejo conservador como Rh negativo salvo genotipo D débil tipo 1, 2 o 3.</td><td class="num">1, 8</td></tr>
+        <tr><td><b>Escrutinio (EAI)</b></td><td>Plasma del paciente frente a hematíes de escrutinio por antiglobulina indirecta a 37 °C. Resultado positivo obliga a identificar antes de transfundir (salvo urgencia vital).</td><td class="num">1, 6</td></tr>
+        <tr><td><b>Ampliado en papaína</b></td><td>En pacientes Rh negativo con escrutinio en Coombs negativo se repite con hematíes papainizados. <b>Criterio propio del centro</b>, no exigido por las guías generales. Efecto de la enzima sobre cada antígeno según bibliografía.</td><td class="num">PNT; 1, 9, 10</td></tr>
+        <tr><td><b>Identificación</b></td><td>Panel en Coombs y enzima, autocontrol y Coombs directo. Especificidad confirmada con 3 células antígeno-positivo reactivas y 3 antígeno-negativo no reactivas, y fenotipo del paciente negativo para el antígeno.</td><td class="num">1, 6, 11</td></tr>
+        <tr><td><b>Significación clínica</b></td><td>Anticuerpos Rh, Kell, Duffy, Kidd y S/s: unidades antígeno-negativo y prueba cruzada en antiglobulina. Lewis, P1, N y M no reactivo a 37 °C: unidades compatibles en prueba cruzada a 37 °C.</td><td class="num">1, 6, 10</td></tr>
+        <tr><td><b>Calculadora</b></td><td>Fracción de unidades compatibles = producto de las frecuencias de donantes antígeno-negativo de cada anticuerpo. Frecuencias aproximadas en población caucásica.</td><td class="num">1, 9</td></tr>
+        <tr><td><b>Muestra</b></td><td>Identificación inequívoca en cabecera. Vigencia de 72 h si hubo transfusión o embarazo en los 3 meses previos. Confirmación del grupo con una segunda determinación si no hay histórico.</td><td class="num">1, 4, 6</td></tr>
+        <tr><td><b>Anti-CD38</b></td><td>Panreactividad por daratumumab: repetir con hematíes tratados con DTT y respetar Kell.</td><td class="num">12</td></tr>
+        <tr><td><b>Urgencia</b></td><td>Grupo desconocido: hematíes O (Rh negativo de preferencia) y plasma AB; muestra pretransfusional antes de transfundir; paso a isogrupo en cuanto se conozca.</td><td class="num">1, 2</td></tr>
+        <tr><td><b>Técnica en gel</b></td><td>Volúmenes, tiempos y graduación de reacciones del sistema ID de Bio-Rad, transcritos de forma orientativa.</td><td class="num">13</td></tr>
+        <tr><td><b>Informe y trazabilidad</b></td><td>Registro que vincula paciente, muestra, resultados y n.º de unidad. El registro legal es el del sistema del servicio de transfusión.</td><td class="num">4, 5, 14</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card" id="biblio">
+    <h3>Bibliografía</h3>
+    <ol class="refs">
+      <li>Cohn CS, Delaney M, Johnson ST, Katz LM, Schwartz J, eds. <i>Technical Manual</i>. 21.ª ed. Bethesda: AABB; 2023.</li>
+      <li>Sociedad Española de Transfusión Sanguínea y Terapia Celular (SETS). <i>Guía sobre la transfusión de componentes sanguíneos y derivados plasmáticos</i>. 4.ª ed. Barcelona: SETS; 2010. (Consultar la edición vigente.)</li>
+      <li>European Directorate for the Quality of Medicines &amp; HealthCare (EDQM). <i>Guide to the preparation, use and quality assurance of blood components</i>. 22.ª ed. Estrasburgo: Consejo de Europa; 2025.</li>
+      <li>Real Decreto 1088/2005, de 16 de septiembre, por el que se establecen los requisitos técnicos y condiciones mínimas de la hemodonación y de los centros y servicios de transfusión. BOE n.º 225, 20 de septiembre de 2005.</li>
+      <li>Real Decreto 1343/2007, de 11 de octubre, por el que se establecen normas y especificaciones relativas al sistema de calidad de los centros y servicios de transfusión. BOE n.º 262, 1 de noviembre de 2007.</li>
+      <li>Milkins C, Berryman J, Cantwell C, et al.; British Committee for Standards in Haematology. Guidelines for pre-transfusion compatibility procedures in blood transfusion laboratories. <i>Transfus Med</i>. 2013;23(1):3-35.</li>
+      <li>Estcourt LJ, Birchall J, Allard S, et al.; British Committee for Standards in Haematology. Guidelines for the use of platelet transfusions. <i>Br J Haematol</i>. 2017;176(3):365-394.</li>
+      <li>Sandler SG, Flegel WA, Westhoff CM, et al. It's time to phase in <i>RHD</i> genotyping for patients with a serologic weak D phenotype. <i>Transfusion</i>. 2015;55(3):680-689.</li>
+      <li>Reid ME, Lomas-Francis C, Olsson ML. <i>The Blood Group Antigen FactsBook</i>. 3.ª ed. Londres: Academic Press; 2012.</li>
+      <li>Daniels G. <i>Human Blood Groups</i>. 3.ª ed. Oxford: Wiley-Blackwell; 2013.</li>
+      <li>Harmening DM. <i>Modern Blood Banking &amp; Transfusion Practices</i>. 7.ª ed. Filadelfia: F.A. Davis; 2019.</li>
+      <li>Chapuy CI, Nicholson RT, Aguad MD, et al. Resolving the daratumumab interference with blood compatibility testing. <i>Transfusion</i>. 2015;55(6 Pt 2):1545-1554.</li>
+      <li>Bio-Rad Laboratories. Instrucciones de uso de las tarjetas y reactivos ID-System (ID-Card LISS/Coombs, ID-Card NaCl/Enzyme test, ID-DiaCell, ID-DiaPanel). Consultar el inserto del lote en uso.</li>
+      <li>Fundación CAT. <i>Estándares en Hemoterapia</i>. 5.ª ed. Madrid: Fundación CAT; 2019. (Consultar la edición vigente.)</li>
+    </ol>
+    <div class="note"><b>Alcance de estas referencias.</b> Son las obras de consulta en las que se describen los criterios anteriores. El contenido de la app es un resumen de práctica general y <b>no se ha cotejado dato a dato</b> con cada obra; las frecuencias antigénicas y los volúmenes de técnica son aproximados. El servicio debe validarlo frente a su PNT y a las ediciones vigentes antes del uso asistencial.</div>
+  </div>
+
+  <div class="note red"><b>Límites de la app.</b> No cubre neonatos (&lt; 4 meses), trasplante de progenitores con cambio de grupo ni requerimientos especiales (irradiado, lavado, fenotipo ampliado). Ante cualquier duda o resultado inesperado, consultar al hematólogo.</div>
+</section>
+
+<div class="modal" id="confirmBox" hidden role="dialog" aria-modal="true" aria-labelledby="confirmMsg">
+  <div class="box"><p id="confirmMsg"></p>
+    <div class="row"><button type="button" class="btn ghost" id="confirmNo">Cancelar</button><button type="button" class="btn danger" id="confirmYes">Borrar</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<footer>
+  Herramienta de apoyo. No sustituye a los protocolos (PNT) del centro, al sistema informático del banco de sangre ni al criterio del hematólogo responsable. Debe ser validada por el servicio antes de su uso asistencial.
+  <br><button type="button" class="footlink" onclick="showTab('help');document.getElementById('criterios').scrollIntoView()">Criterios y bibliografía</button>
+</footer>
+</main>
+
+<script>
+"use strict";
+/* =====================================================================
+   DATOS — editar aquí para adaptar la app al protocolo del centro
+   ===================================================================== */
+const ABO = ["O","A","B","AB"];
+const AG  = {O:[], A:["A"], B:["B"], AB:["A","B"]};   // antígenos en el hematíe
+
+/* Anticuerpos: f = % de donantes antígeno-positivo (población caucásica, aprox.)
+   sig: "si" clínicamente significativo · "aveces" · "no" habitualmente no
+   pap: efecto de la papaína sobre la reactividad                              */
+const ABS = [
+  {id:"D",  sis:"Rh",     f:85,   sig:"si",     pap:"Potencia"},
+  {id:"C",  sis:"Rh",     f:68,   sig:"si",     pap:"Potencia"},
+  {id:"E",  sis:"Rh",     f:29,   sig:"si",     pap:"Potencia"},
+  {id:"c",  sis:"Rh",     f:80,   sig:"si",     pap:"Potencia"},
+  {id:"e",  sis:"Rh",     f:98,   sig:"si",     pap:"Potencia"},
+  {id:"Cw", sis:"Rh",     f:2,    sig:"si",     pap:"Potencia"},
+  {id:"K",  sis:"Kell",   f:9,    sig:"si",     pap:"Sin cambio"},
+  {id:"k",  sis:"Kell",   f:99.8, sig:"si",     pap:"Sin cambio"},
+  {id:"Kpa",sis:"Kell",   f:2,    sig:"si",     pap:"Sin cambio"},
+  {id:"Fya",sis:"Duffy",  f:66,   sig:"si",     pap:"Destruye"},
+  {id:"Fyb",sis:"Duffy",  f:83,   sig:"si",     pap:"Destruye"},
+  {id:"Jka",sis:"Kidd",   f:77,   sig:"si",     pap:"Potencia"},
+  {id:"Jkb",sis:"Kidd",   f:74,   sig:"si",     pap:"Potencia"},
+  {id:"S",  sis:"MNS",    f:55,   sig:"si",     pap:"Destruye (variable)"},
+  {id:"s",  sis:"MNS",    f:89,   sig:"si",     pap:"Variable"},
+  {id:"M",  sis:"MNS",    f:78,   sig:"aveces", pap:"Destruye"},
+  {id:"N",  sis:"MNS",    f:72,   sig:"no",     pap:"Destruye"},
+  {id:"Lea",sis:"Lewis",  f:22,   sig:"no",     pap:"Potencia"},
+  {id:"Leb",sis:"Lewis",  f:72,   sig:"no",     pap:"Potencia"},
+  {id:"P1", sis:"P1PK",   f:79,   sig:"no",     pap:"Potencia"},
+  {id:"Lua",sis:"Lutheran",f:8,   sig:"aveces", pap:"Sin cambio / variable"}
+];
+
+/* Algoritmos: cada nodo tiene título, cuerpo (HTML) y opciones {l: etiqueta, to: nodo}.
+   Un nodo sin opciones es un final.                                            */
+const NODES = {
+  sol:{t:"Verificar solicitud y muestra", b:`<ul>
+      <li>Identificación inequívoca: nombre, apellidos y n.º de historia coinciden en solicitud, tubo y pulsera.</li>
+      <li>Tubo EDTA etiquetado en la cabecera del paciente, con fecha, hora y extractor.</li>
+      <li>Vigencia de la muestra: 72 h si ha habido transfusión o embarazo en los últimos 3 meses.</li>
+      <li>Consultar histórico: grupo previo, anticuerpos conocidos, requerimientos especiales (irradiado, fenotipado…).</li></ul>`,
+    o:[{l:"Todo correcto",to:"grupo"},{l:"Discrepancia o muestra mal identificada",to:"rechazo"}]},
+  rechazo:{end:1,t:"Rechazar la muestra", b:`<p>No corregir etiquetas ni solicitudes. Pedir <b>nueva extracción</b> y registrar la incidencia (hemovigilancia). Si la transfusión es vital, actuar según el protocolo de urgencia (pestaña Urgencia).</p>`},
+  grupo:{t:"Grupo ABO y RhD", b:`<p>Grupo hemático y sérico en tarjeta ID. Comparar con el histórico del paciente.</p>`,
+    o:[{l:"Hemático y sérico concordantes, coincide con histórico",to:"rh"},
+       {l:"Concordante, pero sin histórico previo",to:"grupo2"},
+       {l:"Discrepancia hemático/sérico o con el histórico",to:"discrep"}]},
+  grupo2:{t:"Paciente sin grupo previo", b:`<p>Confirmar el grupo con una <b>segunda determinación</b> (idealmente sobre una segunda muestra extraída de forma independiente), según el protocolo del centro.</p>
+      <p>Si hay que transfundir antes de la confirmación: hematíes grupo O.</p>`,
+    o:[{l:"Continuar",to:"rh"}]},
+  discrep:{end:1,t:"No emitir grupo: investigar la discrepancia", b:`<ul>
+      <li>Repetir la técnica; descartar error de muestra o de identificación (nueva extracción).</li>
+      <li>Valorar: transfusión reciente, trasplante de progenitores, subgrupos de A, crioaglutininas, rouleaux, recién nacido, hipogammaglobulinemia.</li>
+      <li>Avisar al hematólogo.</li>
+      <li>Si urge transfundir mientras tanto: <b>hematíes O</b> y <b>plasma AB</b>.</li></ul>`},
+  rh:{t:"Resultado del RhD", b:`<p>Lectura del pocillo anti-D de la tarjeta (control negativo válido).</p>`,
+    o:[{l:"RhD positivo",to:"eai_pos"},{l:"RhD negativo (o reacción débil ≤ 2+)",to:"du"}]},
+
+  du:{tag:"Rh negativo", t:"Realizar Du (D débil)", b:`<p>Prueba de antiglobulina indirecta con anti-D IgG en tarjeta <b>ID-Card LISS/Coombs</b>, con control (Coombs directo / autocontrol) en paralelo.</p>
+      <p class="lead">Técnica: pestaña Técnica → «Du (D débil)».</p>`,
+    o:[{l:"Du negativo, control negativo",to:"du_neg"},
+       {l:"Du positivo, control negativo",to:"du_pos"},
+       {l:"Control (Coombs directo) positivo",to:"du_inv"}]},
+  du_neg:{tag:"Rh negativo", t:"Rh negativo confirmado", b:`<p>Informar como <b>RhD negativo</b>. Transfundir hematíes Rh negativo.</p><p>Siguiente paso: escrutinio de anticuerpos irregulares.</p>`,
+    o:[{l:"Continuar con el escrutinio",to:"eai_neg"}]},
+  du_pos:{tag:"Rh negativo", t:"D débil (Du positivo)", b:`<ul>
+      <li>Registrar como <b>D débil</b> y comunicar al hematólogo.</li>
+      <li><b>Como receptor:</b> hasta que el centro defina otra cosa (p. ej. genotipado D débil tipo 1, 2 o 3), manejar como <b>Rh negativo</b>, sobre todo en mujeres en edad fértil y niñas, por la posibilidad de D parcial.</li>
+      <li><b>Como donante / recién nacido de madre Rh negativo:</b> se considera Rh positivo.</li></ul>
+      <p>Siguiente paso: escrutinio de anticuerpos irregulares.</p>`,
+    o:[{l:"Continuar con el escrutinio",to:"eai_neg"}]},
+  du_inv:{tag:"Rh negativo", t:"Du no valorable", b:`<p>Con Coombs directo positivo el hematíe ya está sensibilizado y el Du no es interpretable.</p><ul>
+      <li>Manejar al paciente como <b>Rh negativo</b>.</li>
+      <li>Estudiar el Coombs directo positivo (autoanticuerpo, transfusión reciente, fármacos).</li>
+      <li>Realizar igualmente el escrutinio de anticuerpos irregulares y avisar al hematólogo.</li></ul>`,
+    o:[{l:"Continuar con el escrutinio",to:"eai_neg"}]},
+
+  eai_pos:{t:"Escrutinio de anticuerpos irregulares (EAI)", b:`<p>Plasma del paciente frente a <b>ID-DiaCell I-II-III</b> en tarjeta <b>LISS/Coombs</b> (antiglobulina indirecta, 37 °C).</p>`,
+    o:[{l:"Negativo en las 3 células",to:"fin_ok"},{l:"Positivo en alguna célula",to:"ident"}]},
+  eai_neg:{tag:"Rh negativo", t:"Escrutinio de anticuerpos irregulares (EAI)", b:`<p>Plasma del paciente frente a <b>ID-DiaCell I-II-III</b> en tarjeta <b>LISS/Coombs</b> (antiglobulina indirecta, 37 °C).</p>`,
+    o:[{l:"Negativo en las 3 células",to:"pap"},{l:"Positivo en alguna célula",to:"ident"}]},
+  pap:{tag:"Rh negativo", t:"Escrutinio ampliado en papaína", b:`<p>Con el escrutinio en Coombs negativo, ampliar con hematíes papainizados <b>ID-DiaCell I-II-III P</b> en tarjeta <b>ID-Card NaCl / Enzyme test</b>.</p>
+      <p>La papaína potencia los anticuerpos del sistema Rh (anti-D, -C, -E, -c), Kidd y Lewis, y permite detectar un <b>anti-D incipiente o a título bajo</b> que aún no se ve en Coombs.</p>
+      <p class="lead">Técnica: pestaña Técnica → «Escrutinio en papaína».</p>`,
+    o:[{l:"Papaína negativa",to:"fin_ok_neg"},{l:"Papaína positiva",to:"pap_pos"}]},
+  pap_pos:{tag:"Rh negativo", t:"Positivo solo en papaína", b:`<ul>
+      <li>Sospechar anticuerpo del sistema Rh en fase inicial (anti-D, anti-E, anti-C…) u otro potenciado por enzimas.</li>
+      <li>Preguntar por gammaglobulina anti-D reciente (anti-D pasivo), embarazo y transfusiones previas.</li>
+      <li>Pasar a identificación con panel en Coombs <b>y</b> en papaína.</li></ul>`,
+    o:[{l:"Ir a identificación de anticuerpos",to:"ident"}]},
+  fin_ok:{end:1,t:"Escrutinio negativo", b:`<ul>
+      <li>Seleccionar hematíes ABO/Rh compatibles (pestaña Compatibilidad).</li>
+      <li>Prueba de compatibilidad según protocolo del centro (prueba cruzada o «tipar y escrutar» con comprobación ABO de la unidad).</li>
+      <li>Registrar resultados y etiquetar la unidad para el paciente.</li></ul>`},
+  fin_ok_neg:{end:1,tag:"Rh negativo", t:"Escrutinio negativo (Coombs y papaína)", b:`<ul>
+      <li>Seleccionar hematíes <b>Rh negativo</b> ABO compatibles.</li>
+      <li>Prueba de compatibilidad según protocolo del centro.</li>
+      <li>Si por falta de stock se plantea transfundir Rh positivo: decisión del hematólogo; evitar en mujeres en edad fértil y niñas.</li></ul>`},
+
+  ident:{tag:"Estudio AI", t:"Identificación del anticuerpo", b:`<ol>
+      <li>Revisar historia: transfusiones, embarazos, Ig anti-D, fármacos (daratumumab / anti-CD38), diagnóstico.</li>
+      <li><b>Panel de identificación</b> (ID-DiaPanel, 11 células) en LISS/Coombs y <b>panel papainizado</b> (ID-DiaPanel-P) en tarjeta NaCl/Enzima.</li>
+      <li><b>Autocontrol</b> y <b>Coombs directo</b>.</li>
+      <li>Leer y graduar cada pocillo (0 a 4+), anotar en la hoja del panel del lote en uso.</li>
+      <li>Excluir especificidades con las células negativas (preferiblemente homocigotas) y buscar el patrón que encaja.</li></ol>`,
+    o:[{l:"Patrón que encaja con una o varias especificidades",to:"alo"},
+       {l:"Autocontrol o Coombs directo positivo",to:"auto"},
+       {l:"Todas las células positivas, autocontrol negativo",to:"pan"},
+       {l:"Patrón no concluyente",to:"nc"}]},
+  alo:{tag:"Estudio AI", t:"Confirmar la especificidad", b:`<ul>
+      <li><b>Regla de 3:</b> al menos 3 células antígeno-positivo reactivas y 3 antígeno-negativo no reactivas.</li>
+      <li><b>Fenotipo del paciente</b> negativo para el antígeno correspondiente (no valorable si se transfundió en los últimos 3 meses).</li>
+      <li>Excluir anticuerpos adicionales enmascarados (células seleccionadas, comportamiento en papaína).</li></ul>
+      <p>¿El anticuerpo es clínicamente significativo? (ver tabla en pestaña Anticuerpos)</p>`,
+    o:[{l:"Sí: Rh, Kell, Duffy, Kidd, S/s…",to:"fin_sig"},{l:"Habitualmente no: Lea, Leb, P1, N, M frío",to:"fin_nosig"}]},
+  fin_sig:{end:1,tag:"Estudio AI", t:"Aloanticuerpo clínicamente significativo", b:`<ul>
+      <li>Transfundir hematíes <b>antígeno-negativo</b> para cada anticuerpo identificado (fenotipar unidades; calculadora en pestaña Anticuerpos).</li>
+      <li><b>Prueba cruzada en Coombs</b> (antiglobulina) obligatoria con cada unidad.</li>
+      <li>Registrar el anticuerpo de forma permanente en el histórico: se respeta de por vida aunque deje de detectarse.</li>
+      <li>Informe para el paciente / tarjeta de anticuerpos. En gestantes: comunicar a obstetricia y titular si procede.</li>
+      <li>Valorar con el hematólogo el fenotipo ampliado preventivo (Rh-Kell) en pacientes politransfundidos.</li></ul>`},
+  fin_nosig:{end:1,tag:"Estudio AI", t:"Anticuerpo habitualmente sin significación clínica", b:`<ul>
+      <li>No es imprescindible seleccionar unidades antígeno-negativo.</li>
+      <li>Transfundir unidades <b>compatibles en prueba cruzada en Coombs a 37 °C</b>.</li>
+      <li>Si reacciona a 37 °C / en Coombs (p. ej. anti-M activo a 37 °C), tratar como significativo.</li>
+      <li>Registrar en el histórico.</li></ul>`},
+  auto:{end:1,tag:"Estudio AI", t:"Autocontrol / Coombs directo positivo", b:`<ul>
+      <li><b>Transfusión en los últimos 3 meses:</b> sospechar aloanticuerpo sobre hematíes transfundidos (reacción hemolítica retardada) → eluido e identificación.</li>
+      <li><b>Sin transfusión reciente:</b> probable autoanticuerpo (caliente o frío) o fármacos. Coombs directo monoespecífico (IgG / C3d).</li>
+      <li>Lo importante es <b>descartar aloanticuerpos ocultos</b>: adsorciones / eluido, habitualmente en centro de referencia.</li>
+      <li>Avisar al hematólogo. Si hay que transfundir: unidades con fenotipo Rh-Kell lo más compatible posible, bajo indicación médica.</li></ul>`},
+  pan:{end:1,tag:"Estudio AI", t:"Panreactividad con autocontrol negativo", b:`<ul>
+      <li>Posible anticuerpo frente a un <b>antígeno de alta frecuencia</b> o <b>mezcla de varios aloanticuerpos</b>.</li>
+      <li>Descartar tratamiento con <b>anti-CD38 (daratumumab)</b>: repetir con hematíes tratados con DTT; respetar Kell.</li>
+      <li>Comparar el comportamiento en papaína frente a Coombs para orientar.</li>
+      <li>Enviar a centro de referencia. Avisar al hematólogo: la búsqueda de unidades puede requerir tiempo.</li></ul>`},
+  nc:{end:1,tag:"Estudio AI", t:"Estudio no concluyente", b:`<ul>
+      <li>Ampliar con otro panel o lote, células seleccionadas y otras técnicas (papaína, temperatura).</li>
+      <li>Repetir en nueva muestra si se sospecha anticuerpo en formación.</li>
+      <li>Enviar a centro de referencia si persiste.</li>
+      <li>Si hay que transfundir: unidades compatibles en prueba cruzada en Coombs, con fenotipo Rh-Kell respetado, por decisión del hematólogo.</li></ul>`}
+};
+const FLOWS = [
+  {id:"sol",   t:"Solicitud de concentrado de hematíes", d:"Pruebas pretransfusionales completas, desde la recepción de la muestra."},
+  {id:"du",    t:"Paciente Rh negativo", d:"Du (D débil) → escrutinio en Coombs → ampliado en papaína."},
+  {id:"ident", t:"Estudio de anticuerpos irregulares", d:"Qué hacer cuando el escrutinio es positivo."}
+];
+
+const TECH = [
+  {t:"Tarjetas y reactivos habituales", b:`<ul>
+    <li><b>ID-Card DiaClon ABO/D + Reverse Grouping</b>: grupo hemático y sérico.</li>
+    <li><b>ID-Card LISS/Coombs</b> (antiglobulina poliespecífica anti-IgG + C3d): escrutinio, panel, prueba cruzada, Coombs directo, Du.</li>
+    <li><b>ID-Card NaCl, Enzyme test and cold agglutinins</b>: pruebas con hematíes papainizados.</li>
+    <li><b>ID-DiaCell I-II-III</b>: hematíes de escrutinio. <b>ID-DiaCell I-II-III P</b>: los mismos, papainizados.</li>
+    <li><b>ID-DiaPanel</b> (11 células) e <b>ID-DiaPanel-P</b> (papainizado): identificación.</li>
+    <li><b>ID-Diluent 2</b> (LISS modificado): suspensiones de hematíes.</li></ul>`},
+  {t:"Du (D débil)", b:`<ol>
+    <li>Suspensión de hematíes del paciente al 0,8 % en ID-Diluent 2.</li>
+    <li>En tarjeta LISS/Coombs: 50 µL de la suspensión + 50 µL de anti-D IgG (ID-DiaClon Anti-D para D débil).</li>
+    <li>Pocillo control: 50 µL de la suspensión sin anti-D (Coombs directo).</li>
+    <li>Incubar 15 min a 37 °C. Centrifugar 10 min. Leer.</li></ol>
+    <p><b>Interpretación:</b> positivo con control negativo = D débil. Control positivo = no valorable.</p>`},
+  {t:"Escrutinio de anticuerpos irregulares (Coombs)", b:`<ol>
+    <li>Identificar 3 pocillos de la tarjeta LISS/Coombs (I, II, III).</li>
+    <li>50 µL de cada célula ID-DiaCell I, II y III.</li>
+    <li>25 µL de plasma o suero del paciente en cada pocillo.</li>
+    <li>Incubar 15 min a 37 °C. Centrifugar 10 min. Leer.</li></ol>`},
+  {t:"Escrutinio en papaína (ampliado)", b:`<ol>
+    <li>Identificar 3 pocillos de la tarjeta NaCl / Enzyme test.</li>
+    <li>50 µL de cada célula papainizada ID-DiaCell I-II-III P.</li>
+    <li>25 µL de plasma o suero del paciente.</li>
+    <li>Incubar 15 min a 37 °C. Centrifugar 10 min. Leer.</li></ol>
+    <p><b>Recordar:</b> la papaína destruye Fy<sup>a</sup>, Fy<sup>b</sup>, M, N y S; un escrutinio en papaína nunca sustituye al de Coombs.</p>`},
+  {t:"Prueba cruzada mayor", b:`<ol>
+    <li>Suspensión al 0,8 % de hematíes del segmento de la unidad en ID-Diluent 2.</li>
+    <li>En tarjeta LISS/Coombs: 50 µL de la suspensión + 25 µL de plasma del paciente.</li>
+    <li>Incubar 15 min a 37 °C. Centrifugar 10 min. Leer.</li></ol>
+    <p>Cualquier aglutinación o hemólisis = <b>incompatible</b>: no entregar la unidad.</p>`},
+  {t:"Coombs directo", b:`<ol>
+    <li>Suspensión de hematíes del paciente al 0,8 % en ID-Diluent 2.</li>
+    <li>50 µL en un pocillo de tarjeta LISS/Coombs.</li>
+    <li>Sin incubación. Centrifugar 10 min. Leer.</li></ol>`},
+  {t:"Lectura y graduación de las reacciones", b:`<ul>
+    <li><b>4+</b>: banda compacta de hematíes en la superficie del gel.</li>
+    <li><b>3+</b>: aglutinados en la mitad superior de la columna.</li>
+    <li><b>2+</b>: aglutinados repartidos por toda la columna.</li>
+    <li><b>1+</b>: aglutinados en la mitad inferior, con botón en el fondo.</li>
+    <li><b>±</b>: botón con borde superior irregular.</li>
+    <li><b>0 (negativo)</b>: botón compacto y liso en el fondo.</li>
+    <li><b>DP (doble población)</b>: banda arriba y botón abajo — transfusión reciente, trasplante, subgrupos.</li>
+    <li><b>Hemólisis</b> del sobrenadante: se considera positivo.</li></ul>`}
+];
+
+/* =====================================================================
+   LÓGICA DE COMPATIBILIDAD
+   ===================================================================== */
+const subset = (a,b) => a.every(x => b.includes(x));
+const rbcOK    = (rec,don) => subset(AG[don], AG[rec]);  // los antígenos del donante no son extraños al receptor
+const plasmaOK = (rec,don) => subset(AG[rec], AG[don]);  // el plasma del donante no trae anticuerpos contra el receptor
+const LAB = {first:"1.ª elección", alt:"Compatible", cond:"Condicional", no:"Incompatible"};
+
+function evalCell(comp, rec, recRh, don, donRh, protect){
+  if (comp === "plasma"){
+    if (!plasmaOK(rec,don)) return {s:"no"};
+    return {s: rec===don ? "first" : "alt"};
+  }
+  if (comp === "hematies"){
+    if (!rbcOK(rec,don)) return {s:"no"};
+    if (recRh==="-" && donRh==="+") return protect ? {s:"no", l:"Evitar"} : {s:"cond", l:"Excepcional"};
+    return {s: (rec===don && recRh===donRh) ? "first" : "alt"};
+  }
+  // plaquetas
+  let s = rec===don ? "first" : plasmaOK(rec,don) ? "alt" : "cond";
+  let l;
+  if (recRh==="-" && donRh==="+"){
+    if (protect){ s="cond"; l="Con Ig anti-D"; }
+    else if (s==="first") s="alt";
+  }
+  return {s,l};
+}
+
+const state = {abo:null, rh:null, comp:"hematies", protect:false};
+const $ = id => document.getElementById(id);
+
+function seg(el, items, key){
+  el.innerHTML = items.map(([v,t]) => `<button type="button" data-v="${v}" aria-pressed="${state[key]===v}">${t}</button>`).join("");
+  el.onclick = e => { const b = e.target.closest("button"); if(!b) return; state[key]=b.dataset.v; seg(el,items,key); renderCompat(); };
+}
+const COMPNAME = {hematies:"Concentrado de hematíes", plasma:"Plasma", plaquetas:"Plaquetas"};
+
+function renderCompat(){
+  const out = $("compatOut"), {abo,rh,comp,protect} = state;
+  if (!abo || (!rh && comp!=="plasma")){
+    out.innerHTML = `<div class="card"><p class="lead" style="margin:0">Selecciona el grupo ABO${comp==="plasma"?"":" y el Rh"} del paciente para ver los grupos compatibles.</p></div>`;
+    return;
+  }
+  const rhs = comp==="plasma" ? [""] : ["+","-"];
+  const sign = r => r==="+" ? "+" : r==="-" ? "−" : "";
+  let cells = "", okList = [];
+  for (const r of rhs) for (const d of ABO){
+    const c = evalCell(comp, abo, rh, d, r, protect);
+    const name = d + sign(r);
+    if (c.s==="first") okList.unshift(name); else if (c.s==="alt") okList.push(name);
+    cells += `<div class="cell ${c.s}"><b>${name}</b><span>${c.l || LAB[c.s]}</span></div>`;
+  }
+  const patient = abo + (comp==="plasma" ? "" : " Rh " + (rh==="+"?"positivo":"negativo"));
+  let notes = "";
+  if (comp==="hematies"){
+    notes += `<div class="note blue">Usar siempre que sea posible el <b>mismo grupo</b> del paciente. Los grupos «Compatible» se reservan para cuando no hay isogrupo.</div>`;
+    if (rh==="-"){
+      notes += protect
+        ? `<div class="note red"><b>Rh positivo: evitar.</b> Solo en riesgo vital sin alternativa, por decisión del hematólogo, y valorando después la profilaxis con Ig anti-D.</div>`
+        : `<div class="note"><b>Rh positivo en paciente Rh negativo:</b> solo de forma excepcional (falta de stock, hemorragia masiva), si el paciente <b>no tiene anti-D</b> y por decisión del hematólogo.</div>`;
+      notes += `<div class="note green">Paciente Rh negativo: corresponde <b>Du</b> y escrutinio con <b>ampliado en papaína</b>. <button class="btn" style="display:block;margin-top:8px" onclick="openFlow('du')">Abrir algoritmo Rh negativo</button></div>`;
+    }
+    notes += `<div class="note">Si el paciente tiene <b>anticuerpos irregulares</b>, además del grupo la unidad debe ser antígeno-negativo y compatible en prueba cruzada en Coombs.</div>`;
+  } else if (comp==="plasma"){
+    notes += `<div class="note blue">En plasma la compatibilidad es <b>inversa</b> a la de hematíes: AB es el donante universal y O solo puede darse a O. El <b>Rh no se tiene en cuenta</b>.</div>
+              <div class="note">No precisa prueba cruzada. Descongelar a 37 °C y transfundir cuanto antes según protocolo. El crioprecipitado sigue el mismo criterio ABO de forma preferente.</div>`;
+  } else {
+    notes += `<div class="note blue"><b>1.ª elección:</b> mismo ABO. <b>Compatible:</b> el plasma de la unidad no contiene anticuerpos contra los hematíes del paciente (puede haber algo menos de rendimiento).</div>
+              <div class="note"><b>Condicional</b> (plasma ABO incompatible): aceptable en adultos si las plaquetas van en solución aditiva (PAS) o son de título bajo de anti-A/B, según protocolo del centro. Evitar en niños pequeños y transfusiones repetidas.</div>`;
+    if (rh==="-") notes += protect
+        ? `<div class="note red"><b>Plaquetas Rh positivo en mujer en edad fértil / niña Rh negativo:</b> evitar. Si no hay alternativa, valorar <b>Ig anti-D</b> con el hematólogo.</div>`
+        : `<div class="note">Paciente Rh negativo: preferir plaquetas Rh negativo. Las Rh positivo son aceptables si no hay otras (el riesgo de aloinmunización es bajo).</div>`;
+    notes += `<div class="note">No precisan prueba cruzada. Mantener en agitación a 20–24 °C hasta la entrega; no refrigerar.</div>`;
+  }
+  out.innerHTML = `<div class="card">
+      <div class="label">${COMPNAME[comp]} · paciente ${patient}</div>
+      <p class="summary">${okList.length ? "Puede recibir: " + okList.join(", ") : ""}</p>
+      <div class="grid">${cells}</div>
+      <div class="legend"><span><i style="background:var(--first)"></i>1.ª elección</span><span><i style="background:var(--alt)"></i>Compatible</span><span><i style="background:var(--cond)"></i>Con condiciones</span><span><i style="background:var(--no)"></i>No transfundir</span></div>
+    </div>${notes}`;
+}
+
+/* =====================================================================
+   ALGORITMOS
+   ===================================================================== */
+let path = [];   // [{node, choice}]
+let cur = null;
+
+function renderFlow(){
+  const out = $("flowOut");
+  if (!cur){
+    out.innerHTML = `<div class="flowlist">` + FLOWS.map(f => `<button type="button" data-f="${f.id}"><b>${f.t}</b><small>${f.d}</small></button>`).join("") + `</div>`;
+    out.querySelector(".flowlist").onclick = e => { const b=e.target.closest("button"); if(b) openFlow(b.dataset.f); };
+    return;
+  }
+  const n = NODES[cur];
+  const trail = path.length ? `<ul class="trail">` + path.map(p => `<li>${NODES[p.node].t} → <b>${p.choice}</b></li>`).join("") + `</ul>` : "";
+  const opts = n.o ? `<div class="opts">` + n.o.map((o,i) => `<button type="button" data-i="${i}">${o.l}</button>`).join("") + `</div>` : "";
+  out.innerHTML = `${trail}
+    <div class="card step ${n.end && !n.o ? "end":""}">
+      ${n.tag ? `<span class="tag">${n.tag}</span>` : ""}${n.end ? `<span class="tag">Conclusión</span>` : ""}
+      <h3>${n.t}</h3>${n.b}${opts}
+    </div>
+    <div class="row">
+      ${path.length ? `<button class="btn ghost" id="fBack">← Paso anterior</button>` : ""}
+      <button class="btn ghost" id="fHome">Todos los algoritmos</button>
+    </div>`;
+  const ob = out.querySelector(".opts");
+  if (ob) ob.onclick = e => { const b=e.target.closest("button"); if(!b) return; const o=n.o[+b.dataset.i]; path.push({node:cur, choice:o.l}); cur=o.to; renderFlow(); window.scrollTo({top:0}); };
+  if ($("fBack")) $("fBack").onclick = () => { cur = path.pop().node; renderFlow(); };
+  $("fHome").onclick = () => { cur=null; path=[]; renderFlow(); };
+}
+function openFlow(id){ cur=id; path=[]; showTab("flows"); renderFlow(); window.scrollTo({top:0}); }
+
+/* =====================================================================
+   ANTICUERPOS
+   ===================================================================== */
+const sel = new Set(); let units = 2;
+const SIG = {si:["Sí","first"], aveces:["A veces","cond"], no:["Habitualmente no","alt"]};
+const abName = id => "anti-" + id.replace(/^(Fy|Jk|Le|Lu|Kp)([ab])$/,"$1<sup>$2</sup>").replace(/^Cw$/,"C<sup>w</sup>");
+
+function renderAbs(){
+  $("abChips").innerHTML = ABS.map(a => `<button type="button" data-id="${a.id}" aria-pressed="${sel.has(a.id)}">${abName(a.id)}</button>`).join("");
+  $("uVal").textContent = units;
+  const out = $("abOut");
+  if (!sel.size){ out.innerHTML = `<p class="lead" style="margin-top:14px">Ningún anticuerpo seleccionado.</p>`; return; }
+  const chosen = ABS.filter(a => sel.has(a.id));
+  const frac = chosen.reduce((p,a) => p * (1 - a.f/100), 1);
+  const pct = frac*100;
+  const toTest = Math.ceil(units / frac);
+  const fmt = pct >= 10 ? pct.toFixed(0) : pct >= 1 ? pct.toFixed(1) : pct.toFixed(2);
+  const sig = chosen.filter(a => a.sig!=="no"), nosig = chosen.filter(a => a.sig==="no");
+  const dest = chosen.filter(a => a.pap.startsWith("Destruye"));
+  out.innerHTML = `<div class="stats">
+      <div><div class="big">${fmt.replace(".",",")} %</div><small>de unidades ABO compatibles serán antígeno-negativo</small></div>
+      <div><div class="big">≈ ${toTest}</div><small>unidades a fenotipar para encontrar ${units}</small></div>
+    </div>
+    ${sig.length ? `<div class="note red">Seleccionar unidades negativas para: <b>${sig.map(a=>a.id.replace(/^(Fy|Jk|Lu|Kp)([ab])$/,"$1<sup>$2</sup>")).join(", ")}</b> y prueba cruzada en Coombs.</div>` : ""}
+    ${nosig.length ? `<div class="note blue">${nosig.map(a=>abName(a.id)).join(", ")}: habitualmente sin significación clínica; basta con prueba cruzada compatible en Coombs a 37 °C.</div>` : ""}
+    ${dest.length ? `<div class="note">${dest.map(a=>abName(a.id)).join(", ")}: no se detecta(n) en papaína (antígeno destruido por la enzima).</div>` : ""}
+    ${pct < 1 ? `<div class="note">Compatibilidad muy baja: contactar con el centro de transfusión / centro de referencia para búsqueda de unidades fenotipadas.</div>` : ""}`;
+}
+$("abChips").onclick = e => { const b=e.target.closest("button"); if(!b) return; sel.has(b.dataset.id) ? sel.delete(b.dataset.id) : sel.add(b.dataset.id); renderAbs(); };
+$("uMinus").onclick = () => { units=Math.max(1,units-1); renderAbs(); };
+$("uPlus").onclick  = () => { units=Math.min(20,units+1); renderAbs(); };
+$("abTable").innerHTML = `<thead><tr><th>Anticuerpo</th><th>Sistema</th><th>Significación clínica</th><th>Papaína</th><th>Donantes Ag+</th><th>Unidades compatibles</th></tr></thead><tbody>` +
+  ABS.map(a => `<tr><td><b>${abName(a.id)}</b></td><td>${a.sis}</td><td><span class="pill ${SIG[a.sig][1]}">${SIG[a.sig][0]}</span></td><td>${a.pap}</td><td class="num">${String(a.f).replace(".",",")} %</td><td class="num">${String(+(100-a.f).toFixed(1)).replace(".",",")} %</td></tr>`).join("") + `</tbody>`;
+
+/* =====================================================================
+   TÉCNICA + NAVEGACIÓN
+   ===================================================================== */
+$("techOut").innerHTML = TECH.map(x => `<details><summary>${x.t}</summary><div class="body">${x.b}</div></details>`).join("");
+
+function showTab(id){
+  document.querySelectorAll("main section").forEach(s => s.classList.toggle("on", s.id===id));
+  document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab===id));
+  $("helpBtn").setAttribute("aria-pressed", id==="help");
+  $("repBtn").setAttribute("aria-pressed", id==="rep");
+}
+
+/* =====================================================================
+   INFORME FINAL
+   ===================================================================== */
+let R = {comp:"hematies", units:[]};
+/* Confirmaciones y avisos dentro de la página (los diálogos del navegador no funcionan en todos los móviles ni visores) */
+let confirmCb = null;
+function askConfirm(msg, yesLabel, cb){ $("confirmMsg").textContent = msg; $("confirmYes").textContent = yesLabel; confirmCb = cb; $("confirmBox").hidden = false; $("confirmNo").focus(); }
+$("confirmNo").onclick = () => { $("confirmBox").hidden = true; confirmCb = null; };
+$("confirmYes").onclick = () => { $("confirmBox").hidden = true; const cb = confirmCb; confirmCb = null; if (cb) cb(); };
+$("confirmBox").onclick = e => { if (e.target.id==="confirmBox") $("confirmNo").click(); };
+let toastT; function toast(msg){ const t=$("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2500); }
+/* Dentro de un visor embebido no se puede imprimir ni descargar archivos */
+const FRAMED = (() => { try { return window.top !== window.self; } catch { return true; } })();
+function copyText(txt){
+  const fallback = () => { const ta=document.createElement("textarea"); ta.value=txt; ta.setAttribute("readonly",""); ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); let ok=false; try{ ok=document.execCommand("copy"); }catch{} ta.remove(); toast(ok ? "Informe copiado" : "No se pudo copiar: selecciona el texto del informe y cópialo a mano"); };
+  try { navigator.clipboard.writeText(txt).then(() => toast("Informe copiado"), fallback); } catch { fallback(); }
+}
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtD = v => { if(!v) return ""; const [d,t] = v.split("T"); const [y,m,dd] = d.split("-"); return `${dd}/${m}/${y}` + (t ? " " + t : ""); };
+const rhTxt = r => r==="+" ? "positivo" : r==="-" ? "negativo" : "";
+const grp = (a,r) => a ? a + (r==="+" ? "+" : r==="-" ? "−" : "") : "";
+
+function unitCheck(u){
+  if (!u.abo || !R.abo) return null;
+  if (R.comp!=="plasma" && (!u.rh || !R.rh)) return null;
+  const c = evalCell(R.comp, R.abo, R.rh, u.abo, u.rh, !!R.protect);
+  const txt = {first:"Isogrupo (1.ª elección)", alt:"Compatible", cond:"Condicional" + (c.l ? " · " + c.l : ""), no: c.l==="Evitar" ? "EVITAR (Rh positivo)" : "INCOMPATIBLE"}[c.s];
+  return {s:c.s, txt};
+}
+function syncForm(){
+  document.querySelectorAll("#repForm [data-k]").forEach(el => { if (el.type==="checkbox") el.checked = !!R[el.dataset.k]; else el.value = R[el.dataset.k] ?? ""; });
+}
+function renderUnits(){
+  const o = (list,v) => list.map(x => { const [val,t] = Array.isArray(x) ? x : [x,x]; return `<option value="${val}" ${v===val?"selected":""}>${t}</option>`; }).join("");
+  $("repUnits").innerHTML = R.units.map((u,i) => `<div class="unit">
+      <div class="uhead"><span>Unidad ${i+1}</span><button type="button" data-del="${i}">Quitar</button></div>
+      <div class="fgrid">
+        <label class="f full">N.º de unidad / donación (etiqueta de la bolsa)<input data-u="num" data-i="${i}" value="${esc(u.num)}" autocomplete="off"></label>
+        <label class="f">Grupo ABO de la bolsa<select data-u="abo" data-i="${i}">${o(["","O","A","B","AB"],u.abo||"")}</select></label>
+        <label class="f">Rh de la bolsa<select data-u="rh" data-i="${i}">${o([["",""],["+","Positivo"],["-","Negativo"]],u.rh||"")}</select></label>
+        <label class="f">Caducidad<input type="date" data-u="cad" data-i="${i}" value="${esc(u.cad)}"></label>
+        <label class="f">Prueba cruzada<select data-u="pc" data-i="${i}">${o(["","Compatible","Incompatible","Pendiente","No procede"],u.pc||"")}</select></label>
+      </div>
+      <div class="ustat" data-st="${i}"></div>
+    </div>`).join("");
+  unitStatus();
+}
+function unitStatus(){
+  R.units.forEach((u,i) => {
+    const el = document.querySelector(`[data-st="${i}"]`); if(!el) return;
+    const c = unitCheck(u);
+    const bad = u.pc==="Incompatible";
+    el.textContent = (c ? "Frente al paciente: " + c.txt : "") + (bad ? (c?" · ":"") + "Prueba cruzada incompatible" : "");
+    el.style.color = (bad || (c && c.s==="no")) ? "var(--no)" : c ? `var(--${c.s})` : "";
+  });
+}
+function openReport(){
+  if (!R.abo && state.abo) R.abo = state.abo;
+  if (!R.rh && state.rh) R.rh = state.rh;
+  if (!R._touchedComp) R.comp = state.comp;
+  if (!R.protect && state.protect) R.protect = true;
+  if (!R.acs && sel.size) R.acs = ABS.filter(a => sel.has(a.id)).map(a => "anti-" + a.id).join(", ");
+  if (!R.units.length) R.units.push({});
+  syncForm(); renderUnits(); showTab("rep"); window.scrollTo({top:0});
+}
+$("repForm").addEventListener("input", e => {
+  const el = e.target;
+  if (el.dataset.k){ R[el.dataset.k] = el.type==="checkbox" ? el.checked : el.value.trim(); if (el.dataset.k==="comp") R._touchedComp = true; }
+  if (el.dataset.u) R.units[+el.dataset.i][el.dataset.u] = el.value.trim();
+  unitStatus();
+});
+$("repUnits").onclick = e => { const b = e.target.closest("[data-del]"); if(!b) return; R.units.splice(+b.dataset.del,1); renderUnits(); };
+$("addUnit").onclick = () => { R.units.push({}); renderUnits(); };
+$("clrRep").onclick = () => askConfirm("¿Borrar todos los datos del formulario?", "Borrar", () => { R = {comp:"hematies", units:[{}]}; syncForm(); renderUnits(); $("printArea").innerHTML = ""; $("repMsg").innerHTML = ""; });
+
+$("genRep").onclick = () => {
+  const units = R.units.filter(u => u.num || u.abo);
+  const errs = [];
+  if (!R.nombre && !R.nhc && !units.some(u => u.num)) errs.push("Identifica al paciente (nombre o n.º de historia) o al menos una unidad (n.º de bolsa).");
+  if (!R.tecnico) errs.push("Indica quién realiza el estudio.");
+  if (errs.length){ $("repMsg").innerHTML = `<div class="note red">${errs.join("<br>")}</div>`; $("printArea").innerHTML = ""; return; }
+  $("repMsg").innerHTML = "";
+
+  const al = [];
+  units.forEach((u,i) => {
+    const name = "Unidad " + (u.num || i+1), c = unitCheck(u);
+    if (c && c.s==="no") al.push(`${esc(name)}: grupo ${grp(u.abo,u.rh)} no compatible con el paciente. <b>NO ENTREGAR.</b>`);
+    if (c && c.s==="cond") al.push(`${esc(name)}: compatibilidad condicional; requiere autorización del hematólogo.`);
+    if (u.pc==="Incompatible") al.push(`${esc(name)}: prueba cruzada incompatible. <b>NO ENTREGAR.</b>`);
+    if (!u.num) al.push(`Unidad ${i+1}: falta el n.º de bolsa (sin trazabilidad).`);
+    if (u.cad && u.cad < new Date().toISOString().slice(0,10)) al.push(`${esc(name)}: caducada (${fmtD(u.cad)}). <b>NO ENTREGAR.</b>`);
+  });
+  if (!R.nombre && !R.nhc) al.push("Informe sin identificación del paciente.");
+  if (R.rh==="-" && !R.du) al.push("Paciente Rh negativo sin resultado de Du registrado.");
+  if (R.rh==="-" && R.eai==="Negativo" && (!R.pap || R.pap==="No procede")) al.push("Rh negativo con escrutinio en Coombs negativo: falta el ampliado en papaína.");
+  if ((R.eai==="Positivo" || R.pap==="Positivo") && !R.acs) al.push("Escrutinio positivo sin anticuerpos identificados registrados.");
+  if (R.acs && R.comp==="hematies") al.push("Paciente con anticuerpos irregulares: la app no comprueba el fenotipo de las bolsas. Confirmar que cada unidad es antígeno-negativo y compatible en prueba cruzada en Coombs.");
+  if (!R.eai && R.comp==="hematies") al.push("Escrutinio de anticuerpos irregulares sin resultado registrado.");
+
+  const now = new Date(), p2 = n => String(n).padStart(2,"0");
+  const stamp = `${now.getFullYear()}${p2(now.getMonth()+1)}${p2(now.getDate())}-${p2(now.getHours())}${p2(now.getMinutes())}${p2(now.getSeconds())}`;
+  const when = `${p2(now.getDate())}/${p2(now.getMonth()+1)}/${now.getFullYear()} ${p2(now.getHours())}:${p2(now.getMinutes())}`;
+  const kv = rows => `<div class="kv">` + rows.filter(r => r[1]).map(r => `<div><span>${r[0]}</span><b>${esc(r[1])}</b></div>`).join("") + `</div>`;
+  const trail = path.length ? `<h3>Recorrido del algoritmo</h3><ol>` + path.map(p => `<li>${NODES[p.node].t}: <b>${p.choice}</b></li>`).join("") + (cur ? `<li>Resultado: <b>${NODES[cur].t}</b></li>` : "") + `</ol>` : "";
+
+  const html = `<div class="report">
+    <div class="rhead">
+      <div><h2>Informe de estudio pretransfusional</h2><small>${esc(R.centro) || "Servicio de transfusión"}</small></div>
+      <div><small>N.º de informe: <b>INF-${stamp}</b></small><small>Emitido: ${when}</small></div>
+    </div>
+    <h3>Paciente</h3>
+    ${kv([["Apellidos y nombre",R.nombre],["N.º historia",R.nhc],["Fecha de nacimiento",fmtD(R.fnac)],["Sexo",R.sexo],["Servicio / cama",R.servicio],["N.º de solicitud",R.solicitud]]) }
+    <h3>Muestra y resultados</h3>
+    ${kv([["N.º de muestra",R.muestra],["Extracción",fmtD(R.fext)],["Grupo ABO / Rh",R.abo ? R.abo + (R.rh ? " Rh " + rhTxt(R.rh) : "") : ""],["Du (D débil)",R.du],["Coombs directo",R.cd],["Escrutinio en Coombs",R.eai],["Escrutinio en papaína",R.pap],["Anticuerpos identificados",R.acs]])}
+    <h3>Componente: ${COMPNAME[R.comp]}</h3>
+    ${units.length ? `<table><thead><tr><th>N.º de unidad</th><th>Grupo</th><th>Caducidad</th><th>Prueba cruzada</th><th>Frente al paciente</th></tr></thead><tbody>` +
+      units.map(u => { const c = unitCheck(u); return `<tr><td><b>${esc(u.num) || "—"}</b></td><td>${grp(u.abo,u.rh) || "—"}</td><td>${fmtD(u.cad) || "—"}</td><td>${esc(u.pc) || "—"}</td><td>${c ? c.txt : "No evaluable"}</td></tr>`; }).join("") + `</tbody></table>`
+      : `<p>Sin unidades registradas.</p>`}
+    ${trail}
+    ${R.obs ? `<h3>Observaciones</h3><p style="white-space:pre-wrap">${esc(R.obs)}</p>` : ""}
+    ${al.length ? `<div class="alerts"><b>Alertas</b><ul>${al.map(a => `<li>${a}</li>`).join("")}</ul></div>` : `<div class="okbox">Sin alertas: las unidades registradas son compatibles con los datos introducidos.</div>`}
+    <div class="signs"><div>Realizado por: <b>${esc(R.tecnico)}</b><br>Firma:</div><div>Validado por: <b>${esc(R.validador)}</b><br>Firma:</div></div>
+    <p class="fine">Documento generado con HemoterapiApp como herramienta de apoyo a partir de datos introducidos manualmente. No sustituye el registro en el sistema informático del banco de sangre ni la validación facultativa.</p>
+  </div>`;
+  const saved = saveHist({id:"INF-"+stamp, when, nombre:R.nombre||"", nhc:R.nhc||"", units:units.map(u => u.num).filter(Boolean), alerts:al.length, html});
+  if (!saved) $("repMsg").innerHTML = `<div class="note red">El informe se ha generado, pero <b>no se ha podido guardar en el historial</b> (almacenamiento del navegador lleno o desactivado). Imprímelo o guárdalo como PDF ahora.</div>`;
+  showReport(html);
+};
+
+/* ---------- Historial (localStorage de este navegador) ---------- */
+const HKEY = "hemoterapiapp.informes";
+function loadHist(){ try { return JSON.parse(localStorage.getItem(HKEY)) || []; } catch { return []; } }
+function storeHist(a){ try { localStorage.setItem(HKEY, JSON.stringify(a)); return true; } catch { return false; } }
+function saveHist(rec){ const a = loadHist(); a.unshift(rec); const ok = storeHist(a); renderHist(); return ok; }
+function showReport(html){
+  $("printArea").innerHTML = html + `<div class="row noprint">${FRAMED ? "" : `<button type="button" class="btn" onclick="window.print()">Imprimir / Guardar PDF</button>`}<button type="button" class="btn ${FRAMED ? "" : "ghost"}" id="copyRep">Copiar informe</button></div>`;
+  $("copyRep").onclick = () => copyText($("printArea").querySelector(".report").innerText);
+  $("printArea").scrollIntoView({behavior:"smooth"});
+}
+function renderHist(){
+  const all = loadHist(), q = $("histQ").value.trim().toLowerCase();
+  const list = q ? all.filter(r => [r.id, r.nombre, r.nhc, ...(r.units||[])].join(" ").toLowerCase().includes(q)) : all;
+  $("histCount").textContent = all.length ? `${all.length} informe${all.length===1?"":"s"} guardado${all.length===1?"":"s"} en este navegador` : "";
+  $("histList").innerHTML = !all.length ? `<p class="lead">Todavía no hay informes guardados.</p>`
+    : !list.length ? `<p class="lead">Ningún informe coincide con la búsqueda.</p>`
+    : list.map(r => `<div class="hitem">
+        <div><b>${esc(r.id)}</b> <small>${esc(r.when)}</small>${r.alerts ? ` <span class="pill no">${r.alerts} alerta${r.alerts===1?"":"s"}</span>` : ""}
+          <div>${esc(r.nombre) || "Sin nombre"}${r.nhc ? " · NHC " + esc(r.nhc) : ""}</div>
+          <small>Bolsas: ${r.units && r.units.length ? r.units.map(esc).join(", ") : "—"}</small></div>
+        <div class="hbtns"><button type="button" class="btn ghost" data-view="${esc(r.id)}">Ver</button><button type="button" class="btn ghost" data-rm="${esc(r.id)}">Borrar</button></div>
+      </div>`).join("");
+}
+$("histQ").oninput = renderHist;
+$("histList").onclick = e => {
+  const v = e.target.closest("[data-view]"), d = e.target.closest("[data-rm]");
+  if (v){ const r = loadHist().find(x => x.id===v.dataset.view); if (r) showReport(r.html); }
+  if (d){ const id = d.dataset.rm; askConfirm(`¿Borrar definitivamente el informe ${id}?`, "Borrar", () => { storeHist(loadHist().filter(x => x.id!==id)); renderHist(); toast("Informe borrado"); }); }
+};
+$("histExport").onclick = () => {
+  const a = loadHist(); if (!a.length) return;
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(new Blob([JSON.stringify(a,null,1)], {type:"application/json"}));
+  link.download = `hemoterapiapp-informes-${new Date().toISOString().slice(0,10)}.json`;
+  link.click(); URL.revokeObjectURL(link.href);
+};
+$("histClear").onclick = () => {
+  if (!loadHist().length) return;
+  askConfirm("¿Borrar TODOS los informes guardados en este dispositivo? No se puede deshacer.", "Borrar todo", () => { storeHist([]); renderHist(); $("printArea").innerHTML = ""; toast("Historial borrado"); });
+};
+if (FRAMED) $("histExport").hidden = true;
+renderHist();
+document.querySelector("nav.tabs").onclick = e => { const b=e.target.closest("button"); if(b){ showTab(b.dataset.tab); window.scrollTo({top:0}); } };
+
+seg($("selAbo"), ABO.map(g=>[g,g]), "abo");
+seg($("selRh"), [["+","Positivo"],["-","Negativo"]], "rh");
+seg($("selComp"), [["hematies","Hematíes"],["plasma","Plasma"],["plaquetas","Plaquetas"]], "comp");
+$("protect").onchange = e => { state.protect = e.target.checked; renderCompat(); };
+renderCompat(); renderFlow(); renderAbs();
+</script>
+<script>
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+</script>
+</body>
+</html>
