@@ -1273,7 +1273,7 @@ function copyText(txt){
   try { navigator.clipboard.writeText(txt).then(() => toast("Informe copiado"), fallback); } catch { fallback(); }
 }
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const fmtD = v => { if(!v) return ""; const [d,t] = v.split("T"); const [y,m,dd] = d.split("-"); return `${dd}/${m}/${y}` + (t ? " " + t : ""); };
+const fmtD = v => { if(!v) return ""; const [d,t] = String(v).split("T"); const [y,m,dd] = d.split("-"); return esc(`${dd}/${m}/${y}` + (t ? " " + t : "")); };
 const rhTxt = r => r==="+" ? "positivo" : r==="-" ? "negativo" : "";
 const grp = (a,r) => a ? a + (r==="+" ? "+" : r==="-" ? "−" : "") : "";
 
