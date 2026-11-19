@@ -137,6 +137,9 @@ details.topic h4{margin:14px 0 2px;font-size:.95rem}
 .qcell.cond{background:var(--cond-bg);color:var(--cond);border-color:var(--cond)}
 .qcell.no{background:var(--no-bg);color:var(--no);border-color:var(--no)}
 @media (max-width:400px){.unis{grid-template-columns:1fr}}
+.syspill{font-size:.85rem;color:var(--muted);margin:0 0 10px}
+#selSys button{font-size:.9rem;line-height:1.25}
+#sysNote .note{margin-bottom:0}
 dl{margin:.4em 0}
 dt{font-weight:700;margin-top:.7em}
 dd{margin:0;color:var(--muted);font-size:.94rem}
@@ -266,6 +269,7 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
 
 <!-- ============ COMPATIBILIDAD ============ -->
 <section id="compat" class="on">
+  <div class="note blue" id="sysHint" hidden><b>¿Qué reactivos usa tu servicio?</b> La app trae los pasos de Bio-Rad y de Ortho. <button type="button" class="btn" style="display:block;margin-top:8px" onclick="showTab('tech');window.scrollTo({top:0})">Elegir reactivos y equipo</button></div>
   <h2>¿Qué se le puede transfundir?</h2>
   <p class="lead">Indica el grupo del paciente y el componente solicitado.</p>
   <div class="card">
@@ -301,15 +305,22 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
   </div>
   <div class="card">
     <h3>Tabla de referencia</h3>
-    <p class="lead">Frecuencia antigénica aproximada en población caucásica. Efecto de la papaína sobre el antígeno.</p>
+    <p class="lead">Frecuencia antigénica aproximada en población caucásica. Efecto de las enzimas (papaína o ficina) sobre el antígeno.</p>
     <div class="tablewrap"><table id="abTable"></table></div>
   </div>
 </section>
 
 <!-- ============ TÉCNICA ============ -->
 <section id="tech">
-  <h2>Técnica en tarjetas de gel (Bio-Rad ID-System)</h2>
-  <p class="lead">Resumen orientativo. Volúmenes y tiempos deben confirmarse con el inserto del fabricante y el PNT del centro.</p>
+  <h2>Técnica en columna</h2>
+  <p class="lead">Resumen orientativo de las pruebas manuales. Volúmenes y tiempos deben confirmarse con el inserto del fabricante y el PNT del centro.</p>
+  <div class="card" id="sysCard">
+    <div class="label">Reactivos que usa tu servicio</div>
+    <div class="seg c2" id="selSys"></div>
+    <div class="label">Equipo</div>
+    <div class="chips" id="selEq"></div>
+    <div id="sysNote"></div>
+  </div>
   <div class="learnrow" data-ll="gel,coombs,enzimas"></div>
   <div id="techOut"></div>
 </section>
@@ -391,8 +402,11 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
         <label class="f">Du (D débil)<select data-k="du"><option></option><option>No procede</option><option>Negativo</option><option>Positivo (D débil)</option><option>No valorable</option></select></label>
         <label class="f">Coombs directo<select data-k="cd"><option></option><option>No realizado</option><option>Negativo</option><option>Positivo</option></select></label>
         <label class="f">Escrutinio en Coombs (EAI)<select data-k="eai"><option></option><option>Negativo</option><option>Positivo</option><option>Pendiente</option></select></label>
-        <label class="f">Escrutinio en papaína<select data-k="pap"><option></option><option>No procede</option><option>Negativo</option><option>Positivo</option><option>Pendiente</option></select></label>
+        <label class="f">Escrutinio con enzimas<select data-k="pap"><option></option><option>No procede</option><option>Negativo</option><option>Positivo</option><option>Pendiente</option></select></label>
         <label class="f full">Anticuerpos irregulares identificados<input data-k="acs" placeholder="p. ej. anti-E, anti-K" autocomplete="off"></label>
+        <label class="f">Lote de tarjetas / cassettes<input data-k="lotCard" autocomplete="off"></label>
+        <label class="f">Lote de células de escrutinio<input data-k="lotCells" autocomplete="off"></label>
+        <p class="lead full" id="repSys" style="margin:0"></p>
       </div>
     </div>
     <div class="card">
@@ -441,7 +455,7 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
     <ol class="steps">
       <li>En <b>Compatibilidad</b>, pulsa el grupo ABO y el Rh del paciente y deja marcado «Hematíes».</li>
       <li>Lee la línea «Puede recibir» y la cuadrícula: busca primero una unidad en <b>verde</b> (mismo grupo).</li>
-      <li>Si el paciente es Rh negativo, pulsa «Abrir algoritmo Rh negativo» y sigue los pasos: Du, escrutinio en Coombs y ampliado en papaína.</li>
+      <li>Si el paciente es Rh negativo, pulsa «Abrir algoritmo Rh negativo» y sigue los pasos: Du, escrutinio en Coombs y ampliado con enzimas.</li>
       <li>Si el escrutinio sale positivo, el algoritmo te lleva al estudio de anticuerpos irregulares; usa la pestaña <b>Anticuerpos</b> para calcular cuántas unidades fenotipar.</li>
       <li>¿No entiendes el porqué de algo? Pulsa los botones con un libro o abre la pestaña <b>Teoría</b>.</li>
     </ol>
@@ -484,10 +498,10 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
     <li>La app calcula el <b>porcentaje de unidades antígeno-negativo</b> y cuántas hay que fenotipar aproximadamente para encontrarlas.</li>
     <li>Ejemplo: anti-E + anti-K → el 65 % de las unidades sirve; para 2 unidades hay que fenotipar unas 4.</li>
     <li>Las frecuencias son aproximadas (población caucásica): es una estimación, no una garantía.</li>
-    <li>La tabla inferior resume significación clínica y efecto de la papaína de cada anticuerpo.</li></ul></div></details>
+    <li>La tabla inferior resume significación clínica y efecto de las enzimas sobre cada anticuerpo.</li></ul></div></details>
 
   <details><summary>Informe final (botón «Informe»)</summary><div class="body"><ul>
-    <li>Recoge paciente, muestra, resultados (grupo, Du, escrutinio, papaína, anticuerpos) y las unidades entregadas con su número, grupo, caducidad y prueba cruzada.</li>
+    <li>Recoge paciente, muestra, resultados (grupo, Du, escrutinio, enzimas, anticuerpos), reactivos y lotes usados y las unidades entregadas con su número, grupo, caducidad y prueba cruzada.</li>
     <li>Al abrirlo copia lo que ya hayas marcado en la app: grupo, Rh, componente y anticuerpos. Si has seguido un algoritmo, añade el recorrido al informe.</li>
     <li>Para generarlo hace falta, como mínimo, identificar al paciente <b>o</b> una unidad, y el nombre de quien lo realiza.</li>
     <li>Cada unidad se comprueba frente al grupo del paciente; el informe destaca en rojo las alertas (unidad incompatible, prueba cruzada incompatible, pruebas que faltan).</li>
@@ -497,11 +511,12 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
     <li>El historial solo existe en este equipo y navegador, y desaparece si se borran los datos de navegación. «Exportar copia» descarga un archivo de respaldo con todos los informes (no disponible desde el enlace de claude.ai).</li></ul></div></details>
 
   <details><summary>Pestañas Técnica y Urgencia</summary><div class="body"><ul>
-    <li><b>Técnica:</b> pulsa cada título para desplegar los pasos en tarjeta de gel. Son un recordatorio; mandan el inserto del fabricante y el PNT.</li>
+    <li><b>Reactivos y equipo:</b> arriba de la pestaña Técnica eliges si tu servicio usa <b>Bio-Rad</b> (tarjetas de gel) u <b>Ortho</b> (cassettes BioVue), y si trabaja a mano o con analizador (IH-500, IH-1000, ORTHO VISION, VISION Max). La elección se recuerda en el dispositivo y cambia los nombres de reactivos, volúmenes y pasos en Técnica, Algoritmos e Informe.</li>
+    <li><b>Técnica:</b> pulsa cada título para desplegar los pasos. Son un recordatorio; mandan el inserto del fabricante y el PNT.</li>
     <li><b>Urgencia:</b> qué entregar cuando no hay tiempo de completar las pruebas. Recuerda extraer la muestra antes de transfundir.</li></ul></div></details>
 
   <details><summary>Pestaña Teoría</summary><div class="body"><ul>
-    <li>Explica desde cero los conceptos: componentes, ABO, donantes y receptores universales, Rh, D débil, anticuerpos irregulares, pruebas, Coombs, papaína, tarjetas de gel, administración segura y reacciones transfusionales. Incluye un glosario.</li>
+    <li>Explica desde cero los conceptos: componentes, ABO, donantes y receptores universales, Rh, D débil, anticuerpos irregulares, pruebas, Coombs, enzimas, tarjetas de columna, administración segura y reacciones transfusionales. Incluye un glosario.</li>
     <li>Los botones rosados con un libro que aparecen en otras pantallas llevan directamente al tema que explica esa regla.</li>
     <li>«Ponte a prueba» propone casos al azar para practicar la compatibilidad de hematíes y plasma.</li></ul></div></details>
 
@@ -517,14 +532,14 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
         <tr><td><b>Plaquetas</b></td><td>Preferencia por ABO idéntico. Plasma ABO incompatible aceptable con solución aditiva o título bajo según centro. RhD negativo preferente en mujeres en edad fértil y niñas Rh negativo; si reciben Rh positivo, valorar Ig anti-D.</td><td class="num">2, 7</td></tr>
         <tr><td><b>Du (D débil)</b></td><td>Antiglobulina indirecta con anti-D IgG cuando el tipaje directo es negativo o débil; solo valorable con control (Coombs directo) negativo. Como receptor, manejo conservador como Rh negativo salvo genotipo D débil tipo 1, 2 o 3.</td><td class="num">1, 8</td></tr>
         <tr><td><b>Escrutinio (EAI)</b></td><td>Plasma del paciente frente a hematíes de escrutinio por antiglobulina indirecta a 37 °C. Resultado positivo obliga a identificar antes de transfundir (salvo urgencia vital).</td><td class="num">1, 6</td></tr>
-        <tr><td><b>Ampliado en papaína</b></td><td>En pacientes Rh negativo con escrutinio en Coombs negativo se repite con hematíes papainizados. <b>Criterio propio del centro</b>, no exigido por las guías generales. Efecto de la enzima sobre cada antígeno según bibliografía.</td><td class="num">PNT; 1, 9, 10</td></tr>
+        <tr><td><b>Ampliado con enzimas</b></td><td>En pacientes Rh negativo con escrutinio en Coombs negativo se repite con hematíes tratados con enzimas (papaína en Bio-Rad, ficina en Ortho). <b>Criterio propio del centro</b>, no exigido por las guías generales. Efecto de la enzima sobre cada antígeno según bibliografía.</td><td class="num">PNT; 1, 9, 10</td></tr>
         <tr><td><b>Identificación</b></td><td>Panel en Coombs y enzima, autocontrol y Coombs directo. Especificidad confirmada con 3 células antígeno-positivo reactivas y 3 antígeno-negativo no reactivas, y fenotipo del paciente negativo para el antígeno.</td><td class="num">1, 6, 11</td></tr>
         <tr><td><b>Significación clínica</b></td><td>Anticuerpos Rh, Kell, Duffy, Kidd y S/s: unidades antígeno-negativo y prueba cruzada en antiglobulina. Lewis, P1, N y M no reactivo a 37 °C: unidades compatibles en prueba cruzada a 37 °C.</td><td class="num">1, 6, 10</td></tr>
         <tr><td><b>Calculadora</b></td><td>Fracción de unidades compatibles = producto de las frecuencias de donantes antígeno-negativo de cada anticuerpo. Frecuencias aproximadas en población caucásica.</td><td class="num">1, 9</td></tr>
         <tr><td><b>Muestra</b></td><td>Identificación inequívoca en cabecera. Vigencia de 72 h si hubo transfusión o embarazo en los 3 meses previos. Confirmación del grupo con una segunda determinación si no hay histórico.</td><td class="num">1, 4, 6</td></tr>
         <tr><td><b>Anti-CD38</b></td><td>Panreactividad por daratumumab: repetir con hematíes tratados con DTT y respetar Kell.</td><td class="num">12</td></tr>
         <tr><td><b>Urgencia</b></td><td>Grupo desconocido: hematíes O (Rh negativo de preferencia) y plasma AB; muestra pretransfusional antes de transfundir; paso a isogrupo en cuanto se conozca.</td><td class="num">1, 2</td></tr>
-        <tr><td><b>Técnica en gel</b></td><td>Volúmenes, tiempos y graduación de reacciones del sistema ID de Bio-Rad, transcritos de forma orientativa.</td><td class="num">13</td></tr>
+        <tr><td><b>Técnica en columna</b></td><td>Volúmenes, tiempos y graduación de reacciones de Bio-Rad ID-System y Ortho BioVue, transcritos de forma orientativa. Según el sistema elegido en la pestaña Técnica.</td><td class="num">13, 15</td></tr>
         <tr><td><b>Informe y trazabilidad</b></td><td>Registro que vincula paciente, muestra, resultados y n.º de unidad. El registro legal es el del sistema del servicio de transfusión.</td><td class="num">4, 5, 14</td></tr>
       </tbody>
     </table></div>
@@ -547,6 +562,7 @@ footer{color:var(--muted);font-size:.78rem;margin:22px 0 10px;text-align:center}
       <li>Chapuy CI, Nicholson RT, Aguad MD, et al. Resolving the daratumumab interference with blood compatibility testing. <i>Transfusion</i>. 2015;55(6 Pt 2):1545-1554.</li>
       <li>Bio-Rad Laboratories. Instrucciones de uso de las tarjetas y reactivos ID-System (ID-Card LISS/Coombs, ID-Card NaCl/Enzyme test, ID-DiaCell, ID-DiaPanel). Consultar el inserto del lote en uso.</li>
       <li>Fundación CAT. <i>Estándares en Hemoterapia</i>. 5.ª ed. Madrid: Fundación CAT; 2019. (Consultar la edición vigente.)</li>
+      <li>QuidelOrtho (Ortho Clinical Diagnostics). Instrucciones de uso de los cassettes ORTHO BioVue (ABO-Rh/Reverse, AHG poliespecífico, Anti-IgG, Neutral) y de los reactivos 0.8% SURGISCREEN, 0.8% AFFIRMAGEN, 0.8% RESOLVE Panel A y C y ORTHO 0.8% Red Cell Diluent. Consultar el inserto del lote en uso.</li>
     </ol>
     <div class="note"><b>Alcance de estas referencias.</b> Son las obras de consulta en las que se describen los criterios anteriores. El contenido de la app es un resumen de práctica general y <b>no se ha cotejado dato a dato</b> con cada obra; las frecuencias antigénicas y los volúmenes de técnica son aproximados. El servicio debe validarlo frente a su PNT y a las ediciones vigentes antes del uso asistencial.</div>
   </div>
@@ -602,6 +618,41 @@ const ABS = [
   {id:"Lua",sis:"Lutheran",f:8,   sig:"aveces", pap:"Sin cambio / variable"}
 ];
 
+/* Sistemas de reactivos. Los textos de técnica y algoritmos usan {{clave}} y se rellenan con el sistema elegido.
+   Volúmenes y tiempos orientativos: confirmar siempre con el inserto del lote en uso. */
+const SYSTEMS = {
+  biorad: {
+    name:"Bio-Rad · ID-System (gel)", short:"Bio-Rad", col:"tarjeta", cols:"tarjetas", matrix:"gel de dextrano",
+    enz:"papaína", enzAdj:"papainizados",
+    cGroup:"ID-Card DiaClon ABO/D + Reverse Grouping", cAhg:"ID-Card LISS/Coombs", cWeakD:"ID-Card LISS/Coombs",
+    cNeutral:"ID-Card NaCl, Enzyme test and cold agglutinins",
+    screen:"ID-DiaCell I-II-III", screenEnz:"ID-DiaCell I-II-III P (papainizados)",
+    panel:"ID-DiaPanel (11 células)", panelEnz:"ID-DiaPanel-P (papainizado)",
+    rev:"ID-DiaCell A1 y B", dil:"ID-Diluent 2 (LISS modificado)", antiD:"anti-D IgG para D débil (ID-DiaClon Anti-D)",
+    vCells:"50 µL", vPlasma:"25 µL", vAntiD:"50 µL",
+    inc:"Incubar 15 min a 37 °C (ID-Incubator).", cent:"Centrifugar 10 min en ID-Centrifuge.",
+    eq:{ih500:"IH-500", ih1000:"IH-1000"}, ref:"13"
+  },
+  ortho: {
+    name:"Ortho · BioVue (microesferas de vidrio)", short:"Ortho", col:"cassette", cols:"cassettes", matrix:"microesferas de vidrio",
+    enz:"ficina", enzAdj:"tratados con ficina",
+    cGroup:"cassette ORTHO BioVue ABO-Rh/Reverse", cAhg:"cassette ORTHO BioVue AHG poliespecífico (anti-IgG, -C3d)",
+    cWeakD:"cassette ORTHO BioVue Anti-IgG (o AHG, según inserto)", cNeutral:"cassette ORTHO BioVue Neutral",
+    screen:"0.8% SURGISCREEN (células 1, 2 y 3)", screenEnz:"hematíes de escrutinio tratados con ficina (preparación propia según PNT o producto comercial disponible)",
+    panel:"0.8% RESOLVE Panel A (11 células)", panelEnz:"0.8% RESOLVE Panel C (tratado con ficina)",
+    rev:"0.8% AFFIRMAGEN (A1 y B)", dil:"ORTHO 0.8% Red Cell Diluent", antiD:"anti-D apto para D débil por antiglobulina (p. ej. ORTHO BioClone Anti-D)",
+    vCells:"50 µL", vPlasma:"40 µL", vAntiD:"40 µL",
+    inc:"Incubar 15 min a 37 °C en el bloque calefactor BioVue.", cent:"Centrifugar con el programa de la centrífuga ORTHO BioVue.",
+    eq:{vision:"ORTHO VISION", visionmax:"ORTHO VISION Max"}, ref:"15"
+  }
+};
+const CFGKEY = "hemoterapiapp.ajustes";
+let CFG = {sys:"biorad", eq:"manual", saved:false};
+try { const c = JSON.parse(localStorage.getItem(CFGKEY)); if (c && SYSTEMS[c.sys]) CFG = {sys:c.sys, eq:c.eq || "manual", saved:true}; } catch {}
+const S = () => SYSTEMS[CFG.sys];
+const eqName = () => CFG.eq==="manual" ? "técnica manual" : CFG.eq==="otro" ? "otro analizador" : (S().eq[CFG.eq] || "técnica manual");
+const tpl = str => String(str).replace(/\{\{(\w+)\}\}/g, (m,k) => S()[k] ?? m);
+
 /* Algoritmos: cada nodo tiene título, cuerpo (HTML) y opciones {l: etiqueta, to: nodo}.
    Un nodo sin opciones es un final.                                            */
 const NODES = {
@@ -624,10 +675,10 @@ const NODES = {
       <li>Valorar: transfusión reciente, trasplante de progenitores, subgrupos de A, crioaglutininas, rouleaux, recién nacido, hipogammaglobulinemia.</li>
       <li>Avisar al hematólogo.</li>
       <li>Si urge transfundir mientras tanto: <b>hematíes O</b> y <b>plasma AB</b>.</li></ul>`},
-  rh:{learn:["rh"],t:"Resultado del RhD", b:`<p>Lectura del pocillo anti-D de la tarjeta (control negativo válido).</p>`,
+  rh:{learn:["rh"],t:"Resultado del RhD", b:`<p>Lectura del pocillo anti-D ({{cGroup}}), con control negativo válido.</p>`,
     o:[{l:"RhD positivo",to:"eai_pos"},{l:"RhD negativo (o reacción débil ≤ 2+)",to:"du"}]},
 
-  du:{learn:["du"],tag:"Rh negativo", t:"Realizar Du (D débil)", b:`<p>Prueba de antiglobulina indirecta con anti-D IgG en tarjeta <b>ID-Card LISS/Coombs</b>, con control (Coombs directo / autocontrol) en paralelo.</p>
+  du:{learn:["du"],tag:"Rh negativo", t:"Realizar Du (D débil)", b:`<p>Prueba de antiglobulina indirecta con {{antiD}} en <b>{{cWeakD}}</b>, con control (Coombs directo / autocontrol) en paralelo.</p>
       <p class="lead">Técnica: pestaña Técnica → «Du (D débil)».</p>`,
     o:[{l:"Du negativo, control negativo",to:"du_neg"},
        {l:"Du positivo, control negativo",to:"du_pos"},
@@ -646,31 +697,31 @@ const NODES = {
       <li>Realizar igualmente el escrutinio de anticuerpos irregulares y avisar al hematólogo.</li></ul>`,
     o:[{l:"Continuar con el escrutinio",to:"eai_neg"}]},
 
-  eai_pos:{learn:["pruebas","coombs"],t:"Escrutinio de anticuerpos irregulares (EAI)", b:`<p>Plasma del paciente frente a <b>ID-DiaCell I-II-III</b> en tarjeta <b>LISS/Coombs</b> (antiglobulina indirecta, 37 °C).</p>`,
+  eai_pos:{learn:["pruebas","coombs"],t:"Escrutinio de anticuerpos irregulares (EAI)", b:`<p>Plasma del paciente frente a <b>{{screen}}</b> en <b>{{cAhg}}</b> (antiglobulina indirecta, 37 °C).</p>`,
     o:[{l:"Negativo en las 3 células",to:"fin_ok"},{l:"Positivo en alguna célula",to:"ident"}]},
-  eai_neg:{learn:["pruebas","coombs"],tag:"Rh negativo", t:"Escrutinio de anticuerpos irregulares (EAI)", b:`<p>Plasma del paciente frente a <b>ID-DiaCell I-II-III</b> en tarjeta <b>LISS/Coombs</b> (antiglobulina indirecta, 37 °C).</p>`,
+  eai_neg:{learn:["pruebas","coombs"],tag:"Rh negativo", t:"Escrutinio de anticuerpos irregulares (EAI)", b:`<p>Plasma del paciente frente a <b>{{screen}}</b> en <b>{{cAhg}}</b> (antiglobulina indirecta, 37 °C).</p>`,
     o:[{l:"Negativo en las 3 células",to:"pap"},{l:"Positivo en alguna célula",to:"ident"}]},
-  pap:{learn:["enzimas"],tag:"Rh negativo", t:"Escrutinio ampliado en papaína", b:`<p>Con el escrutinio en Coombs negativo, ampliar con hematíes papainizados <b>ID-DiaCell I-II-III P</b> en tarjeta <b>ID-Card NaCl / Enzyme test</b>.</p>
-      <p>La papaína potencia los anticuerpos del sistema Rh (anti-D, -C, -E, -c), Kidd y Lewis, y permite detectar un <b>anti-D incipiente o a título bajo</b> que aún no se ve en Coombs.</p>
-      <p class="lead">Técnica: pestaña Técnica → «Escrutinio en papaína».</p>`,
-    o:[{l:"Papaína negativa",to:"fin_ok_neg"},{l:"Papaína positiva",to:"pap_pos"}]},
-  pap_pos:{learn:["enzimas"],tag:"Rh negativo", t:"Positivo solo en papaína", b:`<ul>
+  pap:{learn:["enzimas"],tag:"Rh negativo", t:"Escrutinio ampliado con enzimas ({{enz}})", b:`<p>Con el escrutinio en Coombs negativo, ampliar con <b>{{screenEnz}}</b> en <b>{{cNeutral}}</b>.</p>
+      <p>La {{enz}} potencia los anticuerpos del sistema Rh (anti-D, -C, -E, -c), Kidd y Lewis, y permite detectar un <b>anti-D incipiente o a título bajo</b> que aún no se ve en Coombs.</p>
+      <p class="lead">Técnica: pestaña Técnica → «Escrutinio con enzimas».</p>`,
+    o:[{l:"Escrutinio con enzimas negativo",to:"fin_ok_neg"},{l:"Escrutinio con enzimas positivo",to:"pap_pos"}]},
+  pap_pos:{learn:["enzimas"],tag:"Rh negativo", t:"Positivo solo con enzimas", b:`<ul>
       <li>Sospechar anticuerpo del sistema Rh en fase inicial (anti-D, anti-E, anti-C…) u otro potenciado por enzimas.</li>
       <li>Preguntar por gammaglobulina anti-D reciente (anti-D pasivo), embarazo y transfusiones previas.</li>
-      <li>Pasar a identificación con panel en Coombs <b>y</b> en papaína.</li></ul>`,
+      <li>Pasar a identificación con panel en Coombs <b>y</b> panel tratado con {{enz}}.</li></ul>`,
     o:[{l:"Ir a identificación de anticuerpos",to:"ident"}]},
   fin_ok:{learn:["universal"],end:1,t:"Escrutinio negativo", b:`<ul>
       <li>Seleccionar hematíes ABO/Rh compatibles (pestaña Compatibilidad).</li>
       <li>Prueba de compatibilidad según protocolo del centro (prueba cruzada o «tipar y escrutar» con comprobación ABO de la unidad).</li>
       <li>Registrar resultados y etiquetar la unidad para el paciente.</li></ul>`},
-  fin_ok_neg:{learn:["rh"],end:1,tag:"Rh negativo", t:"Escrutinio negativo (Coombs y papaína)", b:`<ul>
+  fin_ok_neg:{learn:["rh"],end:1,tag:"Rh negativo", t:"Escrutinio negativo (Coombs y enzimas)", b:`<ul>
       <li>Seleccionar hematíes <b>Rh negativo</b> ABO compatibles.</li>
       <li>Prueba de compatibilidad según protocolo del centro.</li>
       <li>Si por falta de stock se plantea transfundir Rh positivo: decisión del hematólogo; evitar en mujeres en edad fértil y niñas.</li></ul>`},
 
   ident:{learn:["irregulares","coombs"],tag:"Estudio AI", t:"Identificación del anticuerpo", b:`<ol>
       <li>Revisar historia: transfusiones, embarazos, Ig anti-D, fármacos (daratumumab / anti-CD38), diagnóstico.</li>
-      <li><b>Panel de identificación</b> (ID-DiaPanel, 11 células) en LISS/Coombs y <b>panel papainizado</b> (ID-DiaPanel-P) en tarjeta NaCl/Enzima.</li>
+      <li><b>Panel de identificación</b> ({{panel}}) en {{cAhg}} y <b>panel enzimático</b> ({{panelEnz}}) en {{cNeutral}}.</li>
       <li><b>Autocontrol</b> y <b>Coombs directo</b>.</li>
       <li>Leer y graduar cada pocillo (0 a 4+), anotar en la hoja del panel del lote en uso.</li>
       <li>Excluir especificidades con las células negativas (preferiblemente homocigotas) y buscar el patrón que encaja.</li></ol>`,
@@ -681,7 +732,7 @@ const NODES = {
   alo:{learn:["irregulares"],tag:"Estudio AI", t:"Confirmar la especificidad", b:`<ul>
       <li><b>Regla de 3:</b> al menos 3 células antígeno-positivo reactivas y 3 antígeno-negativo no reactivas.</li>
       <li><b>Fenotipo del paciente</b> negativo para el antígeno correspondiente (no valorable si se transfundió en los últimos 3 meses).</li>
-      <li>Excluir anticuerpos adicionales enmascarados (células seleccionadas, comportamiento en papaína).</li></ul>
+      <li>Excluir anticuerpos adicionales enmascarados (células seleccionadas, comportamiento con enzimas).</li></ul>
       <p>¿El anticuerpo es clínicamente significativo? (ver tabla en pestaña Anticuerpos)</p>`,
     o:[{l:"Sí: Rh, Kell, Duffy, Kidd, S/s…",to:"fin_sig"},{l:"Habitualmente no: Lea, Leb, P1, N, M frío",to:"fin_nosig"}]},
   fin_sig:{learn:["irregulares"],end:1,tag:"Estudio AI", t:"Aloanticuerpo clínicamente significativo", b:`<ul>
@@ -703,63 +754,65 @@ const NODES = {
   pan:{learn:["irregulares"],end:1,tag:"Estudio AI", t:"Panreactividad con autocontrol negativo", b:`<ul>
       <li>Posible anticuerpo frente a un <b>antígeno de alta frecuencia</b> o <b>mezcla de varios aloanticuerpos</b>.</li>
       <li>Descartar tratamiento con <b>anti-CD38 (daratumumab)</b>: repetir con hematíes tratados con DTT; respetar Kell.</li>
-      <li>Comparar el comportamiento en papaína frente a Coombs para orientar.</li>
+      <li>Comparar el comportamiento con enzimas frente a Coombs para orientar.</li>
       <li>Enviar a centro de referencia. Avisar al hematólogo: la búsqueda de unidades puede requerir tiempo.</li></ul>`},
   nc:{learn:["irregulares"],end:1,tag:"Estudio AI", t:"Estudio no concluyente", b:`<ul>
-      <li>Ampliar con otro panel o lote, células seleccionadas y otras técnicas (papaína, temperatura).</li>
+      <li>Ampliar con otro panel o lote, células seleccionadas y otras técnicas (enzimas, temperatura).</li>
       <li>Repetir en nueva muestra si se sospecha anticuerpo en formación.</li>
       <li>Enviar a centro de referencia si persiste.</li>
       <li>Si hay que transfundir: unidades compatibles en prueba cruzada en Coombs, con fenotipo Rh-Kell respetado, por decisión del hematólogo.</li></ul>`}
 };
 const FLOWS = [
   {id:"sol",   t:"Solicitud de concentrado de hematíes", d:"Pruebas pretransfusionales completas, desde la recepción de la muestra."},
-  {id:"du",    t:"Paciente Rh negativo", d:"Du (D débil) → escrutinio en Coombs → ampliado en papaína."},
+  {id:"du",    t:"Paciente Rh negativo", d:"Du (D débil) → escrutinio en Coombs → ampliado con enzimas."},
   {id:"ident", t:"Estudio de anticuerpos irregulares", d:"Qué hacer cuando el escrutinio es positivo."}
 ];
 
 const TECH = [
-  {t:"Tarjetas y reactivos habituales", b:`<ul>
-    <li><b>ID-Card DiaClon ABO/D + Reverse Grouping</b>: grupo hemático y sérico.</li>
-    <li><b>ID-Card LISS/Coombs</b> (antiglobulina poliespecífica anti-IgG + C3d): escrutinio, panel, prueba cruzada, Coombs directo, Du.</li>
-    <li><b>ID-Card NaCl, Enzyme test and cold agglutinins</b>: pruebas con hematíes papainizados.</li>
-    <li><b>ID-DiaCell I-II-III</b>: hematíes de escrutinio. <b>ID-DiaCell I-II-III P</b>: los mismos, papainizados.</li>
-    <li><b>ID-DiaPanel</b> (11 células) e <b>ID-DiaPanel-P</b> (papainizado): identificación.</li>
-    <li><b>ID-Diluent 2</b> (LISS modificado): suspensiones de hematíes.</li></ul>`},
+  {t:"Reactivos habituales ({{short}})", b:`<ul>
+    <li><b>{{cGroup}}</b>: grupo hemático y sérico (hematíes reactivos: {{rev}}).</li>
+    <li><b>{{cAhg}}</b>: escrutinio, panel, prueba cruzada y Coombs directo.</li>
+    <li><b>{{cNeutral}}</b>: pruebas con hematíes {{enzAdj}}.</li>
+    <li><b>{{screen}}</b>: hematíes de escrutinio. Con enzimas: {{screenEnz}}.</li>
+    <li><b>{{panel}}</b> y <b>{{panelEnz}}</b>: identificación.</li>
+    <li><b>{{dil}}</b>: suspensiones de hematíes al 0,8 %.</li></ul>
+    <p class="lead">Columna de {{matrix}}. Los nombres comerciales pueden variar según el catálogo y el país.</p>`},
   {t:"Du (D débil)", b:`<ol>
-    <li>Suspensión de hematíes del paciente al 0,8 % en ID-Diluent 2.</li>
-    <li>En tarjeta LISS/Coombs: 50 µL de la suspensión + 50 µL de anti-D IgG (ID-DiaClon Anti-D para D débil).</li>
-    <li>Pocillo control: 50 µL de la suspensión sin anti-D (Coombs directo).</li>
-    <li>Incubar 15 min a 37 °C. Centrifugar 10 min. Leer.</li></ol>
+    <li>Suspensión de hematíes del paciente al 0,8 % en {{dil}}.</li>
+    <li>En {{cWeakD}}: {{vCells}} de la suspensión + {{vAntiD}} de {{antiD}}.</li>
+    <li>Pocillo control: {{vCells}} de la suspensión sin anti-D (Coombs directo).</li>
+    <li>{{inc}} {{cent}} Leer.</li></ol>
     <p><b>Interpretación:</b> positivo con control negativo = D débil. Control positivo = no valorable.</p>`},
   {t:"Escrutinio de anticuerpos irregulares (Coombs)", b:`<ol>
-    <li>Identificar 3 pocillos de la tarjeta LISS/Coombs (I, II, III).</li>
-    <li>50 µL de cada célula ID-DiaCell I, II y III.</li>
-    <li>25 µL de plasma o suero del paciente en cada pocillo.</li>
-    <li>Incubar 15 min a 37 °C. Centrifugar 10 min. Leer.</li></ol>`},
-  {t:"Escrutinio en papaína (ampliado)", b:`<ol>
-    <li>Identificar 3 pocillos de la tarjeta NaCl / Enzyme test.</li>
-    <li>50 µL de cada célula papainizada ID-DiaCell I-II-III P.</li>
-    <li>25 µL de plasma o suero del paciente.</li>
-    <li>Incubar 15 min a 37 °C. Centrifugar 10 min. Leer.</li></ol>
-    <p><b>Recordar:</b> la papaína destruye Fy<sup>a</sup>, Fy<sup>b</sup>, M, N y S; un escrutinio en papaína nunca sustituye al de Coombs.</p>`},
+    <li>Identificar 3 pocillos de {{cAhg}}.</li>
+    <li>{{vCells}} de cada célula de {{screen}}.</li>
+    <li>{{vPlasma}} de plasma o suero del paciente en cada pocillo.</li>
+    <li>{{inc}} {{cent}} Leer.</li></ol>`},
+  {t:"Escrutinio con enzimas ({{enz}}), ampliado", b:`<ol>
+    <li>Identificar 3 pocillos de {{cNeutral}}.</li>
+    <li>{{vCells}} de cada célula: {{screenEnz}}.</li>
+    <li>{{vPlasma}} de plasma o suero del paciente.</li>
+    <li>{{inc}} {{cent}} Leer.</li></ol>
+    <p><b>Recordar:</b> la {{enz}} destruye Fy<sup>a</sup>, Fy<sup>b</sup>, M, N y S; un escrutinio con enzimas nunca sustituye al de Coombs.</p>`},
   {t:"Prueba cruzada mayor", b:`<ol>
-    <li>Suspensión al 0,8 % de hematíes del segmento de la unidad en ID-Diluent 2.</li>
-    <li>En tarjeta LISS/Coombs: 50 µL de la suspensión + 25 µL de plasma del paciente.</li>
-    <li>Incubar 15 min a 37 °C. Centrifugar 10 min. Leer.</li></ol>
+    <li>Suspensión al 0,8 % de hematíes del segmento de la unidad en {{dil}}.</li>
+    <li>En {{cAhg}}: {{vCells}} de la suspensión + {{vPlasma}} de plasma del paciente.</li>
+    <li>{{inc}} {{cent}} Leer.</li></ol>
     <p>Cualquier aglutinación o hemólisis = <b>incompatible</b>: no entregar la unidad.</p>`},
   {t:"Coombs directo", b:`<ol>
-    <li>Suspensión de hematíes del paciente al 0,8 % en ID-Diluent 2.</li>
-    <li>50 µL en un pocillo de tarjeta LISS/Coombs.</li>
-    <li>Sin incubación. Centrifugar 10 min. Leer.</li></ol>`},
+    <li>Suspensión de hematíes del paciente al 0,8 % en {{dil}}.</li>
+    <li>{{vCells}} en un pocillo de {{cAhg}}.</li>
+    <li>Sin incubación. {{cent}} Leer.</li></ol>`},
   {t:"Lectura y graduación de las reacciones", b:`<ul>
-    <li><b>4+</b>: banda compacta de hematíes en la superficie del gel.</li>
+    <li><b>4+</b>: banda compacta de hematíes en la parte superior de la columna.</li>
     <li><b>3+</b>: aglutinados en la mitad superior de la columna.</li>
     <li><b>2+</b>: aglutinados repartidos por toda la columna.</li>
     <li><b>1+</b>: aglutinados en la mitad inferior, con botón en el fondo.</li>
     <li><b>±</b>: botón con borde superior irregular.</li>
     <li><b>0 (negativo)</b>: botón compacto y liso en el fondo.</li>
     <li><b>DP (doble población)</b>: banda arriba y botón abajo — transfusión reciente, trasplante, subgrupos.</li>
-    <li><b>Hemólisis</b> del sobrenadante: se considera positivo.</li></ul>`}
+    <li><b>Hemólisis</b> del sobrenadante: se considera positivo.</li></ul>
+    <p class="lead">La graduación es la misma en gel (Bio-Rad) y en microesferas (Ortho).</p>`}
 ];
 
 /* =====================================================================
@@ -822,7 +875,7 @@ function renderCompat(){
       notes += protect
         ? `<div class="note red"><b>Rh positivo: evitar.</b> Solo en riesgo vital sin alternativa, por decisión del hematólogo, y valorando después la profilaxis con Ig anti-D.</div>`
         : `<div class="note"><b>Rh positivo en paciente Rh negativo:</b> solo de forma excepcional (falta de stock, hemorragia masiva), si el paciente <b>no tiene anti-D</b> y por decisión del hematólogo.</div>`;
-      notes += `<div class="note green">Paciente Rh negativo: corresponde <b>Du</b> y escrutinio con <b>ampliado en papaína</b>. <button class="btn" style="display:block;margin-top:8px" onclick="openFlow('du')">Abrir algoritmo Rh negativo</button></div>`;
+      notes += `<div class="note green">Paciente Rh negativo: corresponde <b>Du</b> y escrutinio con <b>ampliado con enzimas</b>. <button class="btn" style="display:block;margin-top:8px" onclick="openFlow('du')">Abrir algoritmo Rh negativo</button></div>`;
     }
     notes += `<div class="note">Si el paciente tiene <b>anticuerpos irregulares</b>, además del grupo la unidad debe ser antígeno-negativo y compatible en prueba cruzada en Coombs.</div>`;
   } else if (comp==="plasma"){
@@ -851,20 +904,21 @@ function renderCompat(){
 let path = [];   // [{node, choice}]
 let cur = null;
 
+const sysPill = () => `<p class="syspill">Reactivos: <b>${S().short}</b> · ${eqName()} <button type="button" class="footlink" onclick="showTab('tech');window.scrollTo({top:0})">cambiar</button></p>`;
 function renderFlow(){
   const out = $("flowOut");
   if (!cur){
-    out.innerHTML = `<div class="flowlist">` + FLOWS.map(f => `<button type="button" data-f="${f.id}"><b>${f.t}</b><small>${f.d}</small></button>`).join("") + `</div>`;
+    out.innerHTML = sysPill() + `<div class="flowlist">` + FLOWS.map(f => `<button type="button" data-f="${f.id}"><b>${f.t}</b><small>${f.d}</small></button>`).join("") + `</div>`;
     out.querySelector(".flowlist").onclick = e => { const b=e.target.closest("button"); if(b) openFlow(b.dataset.f); };
     return;
   }
   const n = NODES[cur];
-  const trail = path.length ? `<ul class="trail">` + path.map(p => `<li>${NODES[p.node].t} → <b>${p.choice}</b></li>`).join("") + `</ul>` : "";
+  const trail = sysPill() + (path.length ? `<ul class="trail">` + path.map(p => `<li>${tpl(NODES[p.node].t)} → <b>${p.choice}</b></li>`).join("") + `</ul>` : "");
   const opts = n.o ? `<div class="opts">` + n.o.map((o,i) => `<button type="button" data-i="${i}">${o.l}</button>`).join("") + `</div>` : "";
   out.innerHTML = `${trail}
     <div class="card step ${n.end && !n.o ? "end":""}">
       ${n.tag ? `<span class="tag">${n.tag}</span>` : ""}${n.end ? `<span class="tag">Conclusión</span>` : ""}
-      <h3>${n.t}</h3>${n.b}${n.learn ? learnLinks(n.learn) : ""}${opts}
+      <h3>${tpl(n.t)}</h3>${tpl(n.b)}${n.learn ? learnLinks(n.learn) : ""}${opts}
     </div>
     <div class="row">
       ${path.length ? `<button class="btn ghost" id="fBack">← Paso anterior</button>` : ""}
@@ -902,13 +956,13 @@ function renderAbs(){
     </div>
     ${sig.length ? `<div class="note red">Seleccionar unidades negativas para: <b>${sig.map(a=>a.id.replace(/^(Fy|Jk|Lu|Kp)([ab])$/,"$1<sup>$2</sup>")).join(", ")}</b> y prueba cruzada en Coombs.</div>` : ""}
     ${nosig.length ? `<div class="note blue">${nosig.map(a=>abName(a.id)).join(", ")}: habitualmente sin significación clínica; basta con prueba cruzada compatible en Coombs a 37 °C.</div>` : ""}
-    ${dest.length ? `<div class="note">${dest.map(a=>abName(a.id)).join(", ")}: no se detecta(n) en papaína (antígeno destruido por la enzima).</div>` : ""}
+    ${dest.length ? `<div class="note">${dest.map(a=>abName(a.id)).join(", ")}: no se detecta(n) con enzimas (papaína o ficina destruyen el antígeno).</div>` : ""}
     ${pct < 1 ? `<div class="note">Compatibilidad muy baja: contactar con el centro de transfusión / centro de referencia para búsqueda de unidades fenotipadas.</div>` : ""}`;
 }
 $("abChips").onclick = e => { const b=e.target.closest("button"); if(!b) return; sel.has(b.dataset.id) ? sel.delete(b.dataset.id) : sel.add(b.dataset.id); renderAbs(); };
 $("uMinus").onclick = () => { units=Math.max(1,units-1); renderAbs(); };
 $("uPlus").onclick  = () => { units=Math.min(20,units+1); renderAbs(); };
-$("abTable").innerHTML = `<thead><tr><th>Anticuerpo</th><th>Sistema</th><th>Significación clínica</th><th>Papaína</th><th>Donantes Ag+</th><th>Unidades compatibles</th></tr></thead><tbody>` +
+$("abTable").innerHTML = `<thead><tr><th>Anticuerpo</th><th>Sistema</th><th>Significación clínica</th><th>Enzimas</th><th>Donantes Ag+</th><th>Unidades compatibles</th></tr></thead><tbody>` +
   ABS.map(a => `<tr><td><b>${abName(a.id)}</b></td><td>${a.sis}</td><td><span class="pill ${SIG[a.sig][1]}">${SIG[a.sig][0]}</span></td><td>${a.pap}</td><td class="num">${String(a.f).replace(".",",")} %</td><td class="num">${String(+(100-a.f).toFixed(1)).replace(".",",")} %</td></tr>`).join("") + `</tbody>`;
 
 /* =====================================================================
@@ -1036,34 +1090,35 @@ const THEORY = [
       <tr><td><b>Se usa en</b></td><td>Anemia hemolítica autoinmune, sospecha de reacción transfusional, recién nacido con ictericia, efecto de fármacos.</td><td>Escrutinio, identificación, prueba cruzada y Du.</td></tr>
     </tbody>
   </table></div>
-  <div class="note blue">En las tarjetas LISS/Coombs de Bio-Rad la antiglobulina ya está dentro del gel; no hay que añadirla ni lavar los hematíes.</div>`},
+  <div class="note blue">En las técnicas en columna (Bio-Rad LISS/Coombs, Ortho BioVue AHG o Anti-IgG) la antiglobulina ya está dentro de la columna; no hay que añadirla ni lavar los hematíes.</div>`},
 
-{id:"enzimas", t:"Las enzimas: para qué sirve la papaína", s:"Por qué se amplía el escrutinio en los Rh negativo.", b:`
-  <p>La superficie del hematíe tiene carga negativa, y eso hace que los hematíes se repelan. La <b>papaína</b> es una enzima que recorta parte de esa superficie: los hematíes quedan más cerca unos de otros y algunos anticuerpos los aglutinan con más facilidad.</p>
+{id:"enzimas", t:"Las enzimas: papaína y ficina", s:"Por qué se amplía el escrutinio en los Rh negativo.", b:`
+  <p>La superficie del hematíe tiene carga negativa, y eso hace que los hematíes se repelan. La <b>papaína</b> (Bio-Rad) y la <b>ficina</b> (Ortho) son enzimas de origen vegetal que recortan parte de esa superficie: los hematíes quedan más cerca unos de otros y algunos anticuerpos los aglutinan con más facilidad.</p>
   <div class="tablewrap"><table>
-    <thead><tr><th>Efecto de la papaína</th><th>Antígenos</th><th>Consecuencia</th></tr></thead>
+    <thead><tr><th>Efecto de la enzima</th><th>Antígenos</th><th>Consecuencia</th></tr></thead>
     <tbody>
       <tr><td><span class="pill first">Potencia</span></td><td>Rh (D, C, E, c, e), Kidd, Lewis, P1</td><td>Detecta anticuerpos débiles o recién formados.</td></tr>
-      <tr><td><span class="pill no">Destruye</span></td><td>Duffy (Fy<sup>a</sup>, Fy<sup>b</sup>), M, N, S</td><td>Esos anticuerpos <b>no</b> se ven en papaína.</td></tr>
+      <tr><td><span class="pill no">Destruye</span></td><td>Duffy (Fy<sup>a</sup>, Fy<sup>b</sup>), M, N, S</td><td>Esos anticuerpos <b>no</b> se ven con enzimas.</td></tr>
       <tr><td><span class="pill alt">Sin cambio</span></td><td>Kell</td><td>Se detecta igual.</td></tr>
     </tbody>
   </table></div>
-  <div class="note green"><b>Por qué en los Rh negativo:</b> un anti-D que está empezando a formarse puede estar en cantidad tan baja que no se vea en Coombs. La papaína lo potencia y permite detectarlo antes de que cause un problema.</div>
+  <div class="note blue">Papaína y ficina tienen prácticamente los mismos efectos. Cada fabricante usa una: el razonamiento es igual.</div>
+  <div class="note green"><b>Por qué en los Rh negativo:</b> un anti-D que está empezando a formarse puede estar en cantidad tan baja que no se vea en Coombs. La enzima lo potencia y permite detectarlo antes de que cause un problema.</div>
   <div class="note red"><b>Nunca sustituye al Coombs:</b> se perderían los anticuerpos Duffy, M, N y S. Es un complemento.</div>`},
 
-{id:"gel", t:"Cómo funciona la tarjeta de gel", s:"Cómo leer un pocillo y qué significa cada grado.", b:`
-  <p>Cada tarjeta tiene varios microtubos. Arriba hay una pequeña cámara donde se ponen los hematíes y el plasma o reactivo; debajo, una columna de <b>gel que hace de filtro</b>. Tras incubar, la tarjeta se centrifuga:</p>
+{id:"gel", t:"Cómo funcionan las tarjetas de columna", s:"Gel (Bio-Rad) o microesferas (Ortho): cómo leer cada grado.", b:`
+  <p>Cada tarjeta (Bio-Rad) o cassette (Ortho) tiene varios microtubos. Arriba hay una pequeña cámara donde se ponen los hematíes y el plasma o reactivo; debajo, una columna que hace de <b>filtro</b>: de <b>gel de dextrano</b> en Bio-Rad y de <b>microesferas de vidrio</b> en Ortho BioVue. El principio y la lectura son los mismos. Tras incubar, se centrifuga:</p>
   <ul>
-    <li>Los hematíes <b>sueltos</b> atraviesan el gel y forman un botón en el fondo: <b>negativo</b>.</li>
-    <li>Los hematíes <b>aglutinados</b> son demasiado grandes y quedan atrapados en el gel: <b>positivo</b>. Cuanto más arriba se quedan, más fuerte es la reacción.</li>
+    <li>Los hematíes <b>sueltos</b> atraviesan la columna y forman un botón en el fondo: <b>negativo</b>.</li>
+    <li>Los hematíes <b>aglutinados</b> son demasiado grandes y quedan atrapados en la columna: <b>positivo</b>. Cuanto más arriba se quedan, más fuerte es la reacción.</li>
   </ul>
-  <figure class="gelfig"><div id="gelSvg"></div><figcaption>Lectura de las reacciones en gel, de más fuerte (4+) a negativa (0). DP: doble población.</figcaption></figure>
+  <figure class="gelfig"><div id="gelSvg"></div><figcaption>Lectura de las reacciones en columna, de más fuerte (4+) a negativa (0). DP: doble población.</figcaption></figure>
   <div class="tablewrap"><table>
-    <thead><tr><th>Tipo de tarjeta</th><th>Para qué</th></tr></thead>
+    <thead><tr><th>Tipo</th><th>Bio-Rad</th><th>Ortho BioVue</th><th>Para qué</th></tr></thead>
     <tbody>
-      <tr><td><b>Con antisueros (ABO/D)</b></td><td>Grupo del paciente. El gel ya contiene anti-A, anti-B y anti-D.</td></tr>
-      <tr><td><b>LISS/Coombs</b></td><td>Contiene antiglobulina: escrutinio, identificación, prueba cruzada, Coombs directo y Du.</td></tr>
-      <tr><td><b>NaCl / enzimas</b></td><td>Gel neutro: pruebas con hematíes tratados con papaína y aglutininas frías.</td></tr>
+      <tr><td><b>Con antisueros</b></td><td>DiaClon ABO/D</td><td>ABO-Rh/Reverse</td><td>Grupo del paciente. La columna ya contiene anti-A, anti-B y anti-D.</td></tr>
+      <tr><td><b>Con antiglobulina</b></td><td>LISS/Coombs</td><td>AHG poliespecífico, Anti-IgG</td><td>Escrutinio, identificación, prueba cruzada, Coombs directo y Du.</td></tr>
+      <tr><td><b>Neutra</b></td><td>NaCl, Enzyme test</td><td>Neutral</td><td>Pruebas con hematíes tratados con enzimas y aglutininas frías.</td></tr>
     </tbody>
   </table></div>
   <div class="note blue">Lee cada pocillo con buena luz, por delante y por detrás, y anota siempre el grado. Un resultado dudoso se repite.</div>`},
@@ -1135,7 +1190,9 @@ const THEORY = [
     <dt>Du (D débil)</dt><dd>Antígeno D de expresión débil, detectado con antiglobulina.</dd>
     <dt>EAI</dt><dd>Escrutinio de anticuerpos irregulares.</dd>
     <dt>EHFRN</dt><dd>Enfermedad hemolítica del feto y del recién nacido: anticuerpos de la madre que destruyen los hematíes del hijo.</dd>
+    <dt>Cassette</dt><dd>Nombre que da Ortho a sus tarjetas de columna (BioVue).</dd>
     <dt>Fenotipo</dt><dd>Lista de antígenos que tienen unos hematíes (por ejemplo, «K negativo, E negativo»).</dd>
+    <dt>Ficina / papaína</dt><dd>Enzimas que tratan los hematíes para potenciar algunos anticuerpos (Rh, Kidd, Lewis) y destruyen otros antígenos (Duffy, M, N, S).</dd>
     <dt>Hemólisis</dt><dd>Rotura de los hematíes.</dd>
     <dt>Hemovigilancia</dt><dd>Sistema de notificación y estudio de reacciones e incidentes transfusionales.</dd>
     <dt>IgM / IgG</dt><dd>Tipos de anticuerpo. IgM: grandes, aglutinan directamente (anti-A, anti-B). IgG: pequeños, necesitan antiglobulina para verse y atraviesan la placenta.</dd>
@@ -1246,7 +1303,20 @@ document.querySelectorAll("[data-ll]").forEach(el => el.outerHTML = learnLinks(e
 /* =====================================================================
    TÉCNICA + NAVEGACIÓN
    ===================================================================== */
-$("techOut").innerHTML = TECH.map(x => `<details><summary>${x.t}</summary><div class="body">${x.b}</div></details>`).join("");
+function renderTech(){
+  const sysBtns = Object.entries(SYSTEMS).map(([k,v]) => [k, v.name]);
+  $("selSys").innerHTML = sysBtns.map(([k,t]) => `<button type="button" data-v="${k}" aria-pressed="${CFG.sys===k}">${t}</button>`).join("");
+  const eqs = [["manual","Técnica manual"], ...Object.entries(S().eq), ["otro","Otro analizador"]];
+  $("selEq").innerHTML = eqs.map(([k,t]) => `<button type="button" data-v="${k}" aria-pressed="${CFG.eq===k}">${t}</button>`).join("");
+  $("sysNote").innerHTML = (CFG.eq==="manual" ? "" : `<div class="note blue">Con <b>${eqName()}</b>, el grupo, el escrutinio y la prueba cruzada suelen hacerse en el equipo según el menú configurado. Los pasos manuales de abajo sirven para repeticiones, pruebas fuera de menú y contingencia (equipo parado). Validación de resultados según el procedimiento del equipo.</div>`)
+    + (CFG.saved ? "" : `<p class="lead" style="margin:10px 0 0">Elige una opción: se recordará en este dispositivo.</p>`);
+  const open = [...document.querySelectorAll("#techOut details")].map(d => d.open);
+  $("techOut").innerHTML = TECH.map((x,i) => `<details ${open[i] ? "open" : ""}><summary>${tpl(x.t)}</summary><div class="body">${tpl(x.b)}</div></details>`).join("");
+  $("sysHint").hidden = CFG.saved;
+}
+function saveCfg(){ CFG.saved = true; try { localStorage.setItem(CFGKEY, JSON.stringify({sys:CFG.sys, eq:CFG.eq})); } catch {} renderTech(); if (cur) renderFlow(); }
+$("selSys").onclick = e => { const b = e.target.closest("[data-v]"); if (!b) return; if (CFG.sys !== b.dataset.v){ CFG.sys = b.dataset.v; CFG.eq = "manual"; } saveCfg(); toast("Reactivos: " + S().short); };
+$("selEq").onclick = e => { const b = e.target.closest("[data-v]"); if (!b) return; CFG.eq = b.dataset.v; saveCfg(); };
 
 function showTab(id){
   document.querySelectorAll("main section").forEach(s => s.classList.toggle("on", s.id===id));
@@ -1318,7 +1388,7 @@ function openReport(){
   if (!R.protect && state.protect) R.protect = true;
   if (!R.acs && sel.size) R.acs = ABS.filter(a => sel.has(a.id)).map(a => "anti-" + a.id).join(", ");
   if (!R.units.length) R.units.push({});
-  syncForm(); renderUnits(); showTab("rep"); window.scrollTo({top:0});
+  syncForm(); renderUnits(); $("repSys").innerHTML = `Reactivos: <b>${S().name}</b> · ${eqName()}. Se cambian en la pestaña Técnica.`; showTab("rep"); window.scrollTo({top:0});
 }
 $("repForm").addEventListener("input", e => {
   const el = e.target;
@@ -1349,7 +1419,7 @@ $("genRep").onclick = () => {
   });
   if (!R.nombre && !R.nhc) al.push("Informe sin identificación del paciente.");
   if (R.rh==="-" && !R.du) al.push("Paciente Rh negativo sin resultado de Du registrado.");
-  if (R.rh==="-" && R.eai==="Negativo" && (!R.pap || R.pap==="No procede")) al.push("Rh negativo con escrutinio en Coombs negativo: falta el ampliado en papaína.");
+  if (R.rh==="-" && R.eai==="Negativo" && (!R.pap || R.pap==="No procede")) al.push("Rh negativo con escrutinio en Coombs negativo: falta el ampliado con enzimas.");
   if ((R.eai==="Positivo" || R.pap==="Positivo") && !R.acs) al.push("Escrutinio positivo sin anticuerpos identificados registrados.");
   if (R.acs && R.comp==="hematies") al.push("Paciente con anticuerpos irregulares: la app no comprueba el fenotipo de las bolsas. Confirmar que cada unidad es antígeno-negativo y compatible en prueba cruzada en Coombs.");
   if (!R.eai && R.comp==="hematies") al.push("Escrutinio de anticuerpos irregulares sin resultado registrado.");
@@ -1358,7 +1428,7 @@ $("genRep").onclick = () => {
   const stamp = `${now.getFullYear()}${p2(now.getMonth()+1)}${p2(now.getDate())}-${p2(now.getHours())}${p2(now.getMinutes())}${p2(now.getSeconds())}`;
   const when = `${p2(now.getDate())}/${p2(now.getMonth()+1)}/${now.getFullYear()} ${p2(now.getHours())}:${p2(now.getMinutes())}`;
   const kv = rows => `<div class="kv">` + rows.filter(r => r[1]).map(r => `<div><span>${r[0]}</span><b>${esc(r[1])}</b></div>`).join("") + `</div>`;
-  const trail = path.length ? `<h3>Recorrido del algoritmo</h3><ol>` + path.map(p => `<li>${NODES[p.node].t}: <b>${p.choice}</b></li>`).join("") + (cur ? `<li>Resultado: <b>${NODES[cur].t}</b></li>` : "") + `</ol>` : "";
+  const trail = path.length ? `<h3>Recorrido del algoritmo</h3><ol>` + path.map(p => `<li>${tpl(NODES[p.node].t)}: <b>${p.choice}</b></li>`).join("") + (cur ? `<li>Resultado: <b>${tpl(NODES[cur].t)}</b></li>` : "") + `</ol>` : "";
 
   const html = `<div class="report">
     <div class="rhead">
@@ -1368,7 +1438,7 @@ $("genRep").onclick = () => {
     <h3>Paciente</h3>
     ${kv([["Apellidos y nombre",R.nombre],["N.º historia",R.nhc],["Fecha de nacimiento",fmtD(R.fnac)],["Sexo",R.sexo],["Servicio / cama",R.servicio],["N.º de solicitud",R.solicitud]]) }
     <h3>Muestra y resultados</h3>
-    ${kv([["N.º de muestra",R.muestra],["Extracción",fmtD(R.fext)],["Grupo ABO / Rh",R.abo ? R.abo + (R.rh ? " Rh " + rhTxt(R.rh) : "") : ""],["Du (D débil)",R.du],["Coombs directo",R.cd],["Escrutinio en Coombs",R.eai],["Escrutinio en papaína",R.pap],["Anticuerpos identificados",R.acs]])}
+    ${kv([["N.º de muestra",R.muestra],["Extracción",fmtD(R.fext)],["Grupo ABO / Rh",R.abo ? R.abo + (R.rh ? " Rh " + rhTxt(R.rh) : "") : ""],["Du (D débil)",R.du],["Coombs directo",R.cd],["Escrutinio en Coombs",R.eai],["Escrutinio con enzimas",R.pap],["Anticuerpos identificados",R.acs],["Reactivos",S().short + " · " + eqName()],["Lote tarjetas/cassettes",R.lotCard],["Lote células escrutinio",R.lotCells]])}
     <h3>Componente: ${COMPNAME[R.comp]}</h3>
     ${units.length ? `<table><thead><tr><th>N.º de unidad</th><th>Grupo</th><th>Caducidad</th><th>Prueba cruzada</th><th>Frente al paciente</th></tr></thead><tbody>` +
       units.map(u => { const c = unitCheck(u); return `<tr><td><b>${esc(u.num) || "—"}</b></td><td>${grp(u.abo,u.rh) || "—"}</td><td>${fmtD(u.cad) || "—"}</td><td>${esc(u.pc) || "—"}</td><td>${c ? c.txt : "No evaluable"}</td></tr>`; }).join("") + `</tbody></table>`
@@ -1432,7 +1502,7 @@ seg($("selAbo"), ABO.map(g=>[g,g]), "abo");
 seg($("selRh"), [["+","Positivo"],["-","Negativo"]], "rh");
 seg($("selComp"), [["hematies","Hematíes"],["plasma","Plasma"],["plaquetas","Plaquetas"]], "comp");
 $("protect").onchange = e => { state.protect = e.target.checked; renderCompat(); };
-renderCompat(); renderFlow(); renderAbs();
+renderCompat(); renderFlow(); renderAbs(); renderTech();
 </script>
 <script>
 if ("serviceWorker" in navigator && location.protocol !== "file:") {

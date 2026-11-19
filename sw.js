@@ -1,5 +1,5 @@
 /* Service worker de HemoterapiApp: permite usar la app sin conexión. Generado por build-web.js */
-const CACHE = "hemoterapiapp-483ffff50f78";
+const CACHE = "hemoterapiapp-6b6f948b49ff";
 const FILES = ["./","index.html","manifest.webmanifest","icon-192.png","icon-512.png","apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
